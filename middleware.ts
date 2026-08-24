@@ -59,4 +59,7 @@ export function middleware(request: NextRequest) {
 export const config = {
   // Match everything except Next internals and static files (which carry dots).
   matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)"],
+  // Run on the Node.js runtime so the bundle's `__dirname` globals are defined
+  // on Vercel (the Edge runtime leaves them undefined → ReferenceError).
+  runtime: "nodejs",
 };
