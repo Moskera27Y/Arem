@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { Icon, type IconName } from "@/components/ui/icons";
 
@@ -64,6 +64,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
   const locale = useLocale();
+  const router = useRouter();
 
   useEffect(() => {
     setDrawerOpen(false);
@@ -75,6 +76,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       document.body.style.overflow = "";
     };
   }, [drawerOpen]);
+
+  const logout = async () => {
+    await fetch("/api/admin/logout", { method: "POST" });
+    router.replace("/login");
+  };
 
   const pageTitle =
     NAV_ITEMS.find((item) => item.href !== "/admin" && pathname.startsWith(item.href))?.label ??
@@ -89,6 +95,9 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
           <Link href={`/${locale}`} className="footer__social" style={{ justifyContent: "center" }}>
             <Icon name="external" size={13} /> Storefront
           </Link>
+          <button type="button" onClick={logout} className="admin-nav__link" style={{ width: "100%", textAlign: "left" }}>
+            <Icon name="close" size={15} /> Cerrar sesión
+          </button>
         </div>
       </aside>
 

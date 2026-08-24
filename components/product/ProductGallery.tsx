@@ -1,10 +1,10 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { ImageRef } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
-import { useAdminStore } from "@/lib/admin/store";
+import { useMediaMap } from "@/lib/admin/storefront-hooks";
 import { Icon } from "@/components/ui/icons";
 
 interface ProductGalleryProps {
@@ -21,19 +21,13 @@ interface ProductGalleryProps {
 export function ProductGallery({ images, name }: ProductGalleryProps) {
   const locale = useLocale();
   const dict = getDictionary(locale);
-  const { mediaAssets, hydrated } = useAdminStore();
   const [active, setActive] = useState(0);
   const touchStartX = useRef<number | null>(null);
 
-  // Resolve any managed media replacements (single lookup, no hooks-in-loop).
-  const mediaMap = useMemo(() => {
-    const map = new Map<string, string>();
-    if (hydrated) {
-      for (const asset of mediaAssets) map.set(asset.key, asset.src);
-    }
-    return map;
-  }, [mediaAssets, hydrated]);
-  const resolveSrc = (src: string) => mediaMap.get(src) ?? src;
+  // Resolve any managed media replacements (persistent Neon media) keyed by
+  // the original content src.
+  const mediaMap = useMediaMap();
+  const resolveSrc = (src: string) => mediaMap.get(src)?.src ?? src;
 
   const count = images.length;
   if (count === 0) return null;

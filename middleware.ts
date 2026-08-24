@@ -19,9 +19,15 @@ import {
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // The Admin panel is intentionally not locale-prefixed and lives outside
-  // the storefront routing rules.
-  if (pathname === "/admin" || pathname.startsWith("/admin/")) {
+  // The Admin panel, the login page and the API routes are intentionally not
+  // locale-prefixed and live outside the storefront routing rules.
+  if (
+    pathname === "/admin" ||
+    pathname.startsWith("/admin/") ||
+    pathname === "/login" ||
+    pathname.startsWith("/login/") ||
+    pathname.startsWith("/api/")
+  ) {
     return NextResponse.next();
   }
 

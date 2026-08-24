@@ -7,7 +7,7 @@
  * exactly, which keeps server/client markup identical.
  */
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   resolveCategories,
   resolveProduct,
@@ -145,15 +145,73 @@ export const SOCIAL_LINK_LABELS: Record<SocialLink["network"], string> = {
 };
 
 /**
- * Media override for a public image. Keyed by the original content src; after
- * hydration returns the current (possibly replaced) src + bilingual alt, or
- * null when the asset is unmanaged or unchanged.
+ * Media override for a public image. Keyed by the original content src.
+ * Reads the live media from the server (`/api/media`, backed by Neon) so
+ * Admin edits are visible after deployment and in any session. Results are
+ * cached for the page session.
  */
+
+type MediaMap = Map<string, { src: string; alt: { en: string; es: string } }>;
+let mediaCache: MediaMap | null = null;
+let mediaPromise: Promise<MediaMap> | null = null;
+
+function fetchMediaMap(): Promise<MediaMap> {
+  if (mediaCache) return Promise.resolve(mediaCache);
+  if (!mediaPromise) {
+    mediaPromise = fetch("/api/media")
+      .then((r) => (r.ok ? r.json() : []))
+      .then((rows: unknown[]) => {
+        const m: MediaMap = new Map();
+        for (const raw of rows) {
+          const row = raw as { key?: string; url?: string; alt_en?: string | null; alt_es?: string | null };
+          if (row.key && row.url) m.set(row.key, { src: row.url, alt: { en: row.alt_en ?? "", es: row.alt_es ?? "" } });
+        }
+        mediaCache = m;
+        return m;
+      })
+      .catch(() => {
+        const empty: MediaMap = new Map();
+        mediaCache = empty;
+        return empty;
+      });
+  }
+  return mediaPromise;
+}
+
 export function useManagedMedia(key: string): { src: string; alt: { en: string; es: string } } | null {
-  const { mediaAssets, hydrated } = useAdminStore();
-  return useMemo(() => {
-    if (!hydrated || mediaAssets.length === 0) return null;
-    const asset = mediaAssets.find((m) => m.key === key);
-    return asset ? { src: asset.src, alt: asset.alt } : null;
-  }, [key, mediaAssets, hydrated]);
+  const [map, setMap] = useState<MediaMap | null>(mediaCache);
+  useEffect(() => {
+    if (mediaCache) {
+      setMap(mediaCache);
+      return;
+    }
+    let alive = true;
+    fetchMediaMap().then((m) => {
+      if (alive) setMap(m);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+  return useMemo(() => map?.get(key) ?? null, [map, key]);
+}
+
+/** The full media map (key -> { src, alt }) loaded from Neon, for components
+ * that render many managed images at once (e.g. the product gallery). */
+export function useMediaMap(): MediaMap {
+  const [map, setMap] = useState<MediaMap | null>(mediaCache);
+  useEffect(() => {
+    if (mediaCache) {
+      setMap(mediaCache);
+      return;
+    }
+    let alive = true;
+    fetchMediaMap().then((m) => {
+      if (alive) setMap(m);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+  return map ?? new Map();
 }
