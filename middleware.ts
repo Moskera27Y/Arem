@@ -59,4 +59,7 @@ export function middleware(request: NextRequest) {
 export const config = {
   // Match everything except Next internals and static files (which carry dots).
   matcher: ["/((?!_next/static|_next/image|favicon.ico|.*\\..*).*)"],
+  // Middleware runs on Vercel's Edge runtime by default; force it explicitly so
+  // Vercel bundles it correctly (instead of as an ESM-loaded Node function).
+  runtime: "edge",
 };
