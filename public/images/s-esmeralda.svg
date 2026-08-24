@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" role="img" aria-label="Mountain emerald">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#E7EBE4"/><stop offset="1" stop-color="#CBD5C4"/>
+</linearGradient>
+<rect width="1400" height="900" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1)" transform-origin="700 450">
+
+<polygon points="700.0,225.0 894.9,337.5 894.9,562.5 700.0,675.0 505.1,562.5 505.1,337.5" fill="#2F6B4F"/>
+<polygon points="700.0,315.0 816.9,382.5 816.9,517.5 700.0,585.0 583.1,517.5 583.1,382.5" fill="#E7EBE4" opacity="0.85"/>
+<polygon points="700.0,382.5 758.5,416.3 758.5,483.8 700.0,517.5 641.5,483.8 641.5,416.3" fill="#2E4436" opacity="0.7"/>
+<path d="M475 450 L475 360 L535 345" stroke="#E7EBE4" stroke-width="15" fill="none"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1400" height="900" fill="url(#v)"/>
+<rect width="1400" height="900" filter="url(#g)" opacity="0.9"/>
+</svg>

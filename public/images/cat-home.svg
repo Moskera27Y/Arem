@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Handwoven baskets">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#E8E5D6"/><stop offset="1" stop-color="#D4D3BA"/>
+</linearGradient>
+<rect width="1200" height="900" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1)" transform-origin="600 450">
+<path d="M300 180 Q600 18 900 180" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M300 247.5 Q600 85.5 900 247.5" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M300 315 Q600 153 900 315" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M300 382.5 Q600 220.50000000000003 900 382.5" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M300 450 Q600 288 900 450" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M300 517.5 Q600 355.5 900 517.5" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M300 585 Q600 423 900 585" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M300 652.5 Q600 490.5 900 652.5" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M300 720 Q600 558 900 720" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M307.5 195 Q444 450 307.5 705" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M405 195 Q541.5 450 405 705" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M502.5 195 Q639 450 502.5 705" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M600 195 Q736.5 450 600 705" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M697.5 195 Q834 450 697.5 705" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M795 195 Q931.5 450 795 705" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M892.5 195 Q1029 450 892.5 705" stroke="#3E4531" stroke-width="19.5" fill="none"/><path d="M435 195 Q600 105 765 195" stroke="#3E4531" stroke-width="22.5" fill="none"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1200" height="900" fill="url(#v)"/>
+<rect width="1200" height="900" filter="url(#g)" opacity="0.9"/>
+</svg>

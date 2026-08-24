@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-label="Andean highlands at dawn">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#F8F2E4"/><stop offset="1" stop-color="#EDE2C9"/>
+</linearGradient>
+<rect width="1920" height="1080" fill="url(#bg)"/>
+
+<g transform="translate(0 -54) scale(1.25)" transform-origin="960 540">
+
+<path d="M0 1080 L0 666 L654 468 L1014 684 L1194 558 L1920 738 L1920 1080 Z" fill="#D8C4A0" opacity="0.55"/>
+<path d="M0 1080 L0 774 L798 612 L1086 774 L1320 648 L1920 810 L1920 1080 Z" fill="#A6502E" opacity="0.8"/>
+<circle cx="600" cy="306" r="81" fill="#A6502E" opacity="0.85"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1920" height="1080" fill="url(#v)"/>
+<rect width="1920" height="1080" filter="url(#g)" opacity="0.9"/>
+</svg>

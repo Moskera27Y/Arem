@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" role="img" aria-label="Loom in an artisan workshop">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#E8E5D6"/><stop offset="1" stop-color="#D4D3BA"/>
+</linearGradient>
+<rect width="1600" height="1100" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1)" transform-origin="800 550">
+<line x1="387.5" y1="110" x2="387.5" y2="990" stroke="#3E4531" stroke-width="14.666666666666666" opacity="0.7"/><line x1="470" y1="110" x2="470" y2="990" stroke="#3E4531" stroke-width="14.666666666666666" opacity="0.7"/><line x1="552.5" y1="110" x2="552.5" y2="990" stroke="#3E4531" stroke-width="14.666666666666666" opacity="0.7"/><line x1="635" y1="110" x2="635" y2="990" stroke="#3E4531" stroke-width="14.666666666666666" opacity="0.7"/><line x1="717.5" y1="110" x2="717.5" y2="990" stroke="#3E4531" stroke-width="14.666666666666666" opacity="0.7"/><line x1="800" y1="110" x2="800" y2="990" stroke="#3E4531" stroke-width="14.666666666666666" opacity="0.7"/><line x1="882.5" y1="110" x2="882.5" y2="990" stroke="#3E4531" stroke-width="14.666666666666666" opacity="0.7"/><line x1="965" y1="110" x2="965" y2="990" stroke="#3E4531" stroke-width="14.666666666666666" opacity="0.7"/><line x1="1047.5" y1="110" x2="1047.5" y2="990" stroke="#3E4531" stroke-width="14.666666666666666" opacity="0.7"/><line x1="1130" y1="110" x2="1130" y2="990" stroke="#3E4531" stroke-width="14.666666666666666" opacity="0.7"/><line x1="1212.5" y1="110" x2="1212.5" y2="990" stroke="#3E4531" stroke-width="14.666666666666666" opacity="0.7"/><line x1="360" y1="137.5" x2="1240" y2="137.5" stroke="#5A6442" stroke-width="21.999999999999996" opacity="0.85"/><line x1="360" y1="220" x2="1240" y2="220" stroke="#A9A879" stroke-width="21.999999999999996" opacity="0.85"/><line x1="360" y1="302.5" x2="1240" y2="302.5" stroke="#A9A879" stroke-width="21.999999999999996" opacity="0.85"/><line x1="360" y1="385" x2="1240" y2="385" stroke="#5A6442" stroke-width="21.999999999999996" opacity="0.85"/><line x1="360" y1="467.5" x2="1240" y2="467.5" stroke="#A9A879" stroke-width="21.999999999999996" opacity="0.85"/><line x1="360" y1="550" x2="1240" y2="550" stroke="#A9A879" stroke-width="21.999999999999996" opacity="0.85"/><line x1="360" y1="632.5" x2="1240" y2="632.5" stroke="#5A6442" stroke-width="21.999999999999996" opacity="0.85"/><line x1="360" y1="715" x2="1240" y2="715" stroke="#A9A879" stroke-width="21.999999999999996" opacity="0.85"/><line x1="360" y1="797.5" x2="1240" y2="797.5" stroke="#A9A879" stroke-width="21.999999999999996" opacity="0.85"/><line x1="360" y1="880" x2="1240" y2="880" stroke="#5A6442" stroke-width="21.999999999999996" opacity="0.85"/><line x1="360" y1="962.5" x2="1240" y2="962.5" stroke="#A9A879" stroke-width="21.999999999999996" opacity="0.85"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1600" height="1100" fill="url(#v)"/>
+<rect width="1600" height="1100" filter="url(#g)" opacity="0.9"/>
+</svg>

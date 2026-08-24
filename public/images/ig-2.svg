@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="@arem.world">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#EBDAC4"/><stop offset="1" stop-color="#D8BD9B"/>
+</linearGradient>
+<rect width="800" height="800" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1)" transform-origin="400 400">
+
+<circle cx="280" cy="333.3333333333333" r="106.66666666666667" fill="#D8BD9B" stroke="#5C3A24" stroke-width="13.333333333333334"/>
+<circle cx="520" cy="333.3333333333333" r="106.66666666666667" fill="#D8BD9B" stroke="#5C3A24" stroke-width="13.333333333333334"/>
+<path d="M266.66666666666663 440 q13.333333333333334 93.33333333333334 0 146.66666666666669 M333.3333333333333 453.3333333333333 q13.333333333333334 80 0 133.33333333333334 M466.6666666666667 453.3333333333333 q-13.333333333333334 80 0 133.33333333333334 M533.3333333333334 440 q-13.333333333333334 93.33333333333334 0 146.66666666666669" stroke="#5C3A24" stroke-width="17.333333333333336" fill="none" stroke-linecap="round"/>
+<rect x="226.66666666666666" y="560" width="346.6666666666667" height="66.66666666666667" rx="33.333333333333336" fill="#8A3F22"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="800" height="800" fill="url(#v)"/>
+<rect width="800" height="800" filter="url(#g)" opacity="0.9"/>
+</svg>

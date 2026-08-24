@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" role="img" aria-label="Caribbean hammock">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#E9EDEB"/><stop offset="1" stop-color="#CBD8D2"/>
+</linearGradient>
+<rect width="1400" height="900" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1)" transform-origin="700 450">
+
+<path d="M310 345 Q505 150 700 345 Q895 540 1090 345" fill="#2E6E6E" opacity="0.9"/>
+<path d="M310 345 Q505 465 700 660 Q895 465 1090 345" fill="#27424A" opacity="0.82"/>
+<path d="M370 285 q22.5 75 -7.5 90" stroke="#86A8A0" stroke-width="15" fill="none"/><path d="M535 247.5 q22.5 75 -7.5 90" stroke="#86A8A0" stroke-width="15" fill="none"/><path d="M700 210 q22.5 75 -7.5 90" stroke="#86A8A0" stroke-width="15" fill="none"/><path d="M865 172.5 q22.5 75 -7.5 90" stroke="#86A8A0" stroke-width="15" fill="none"/><path d="M1030 135 q22.5 75 -7.5 90" stroke="#86A8A0" stroke-width="15" fill="none"/>
+<path d="M310 345 l-75 -195 M1090 345 l75 -195" stroke="#27424A" stroke-width="30" stroke-linecap="round"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1400" height="900" fill="url(#v)"/>
+<rect width="1400" height="900" filter="url(#g)" opacity="0.9"/>
+</svg>

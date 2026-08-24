@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-label="p-hamaca-brisa">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#E9EDEB"/><stop offset="1" stop-color="#CBD8D2"/>
+</linearGradient>
+<rect width="1200" height="1500" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1.05)" transform-origin="600 750">
+
+<path d="M80 610 Q340 350 600 610 Q860 870 1120 610" fill="#2E6E6E" opacity="0.9"/>
+<path d="M80 610 Q340 770 600 1030 Q860 770 1120 610" fill="#27424A" opacity="0.82"/>
+<path d="M160 530 q30 100 -10 120" stroke="#86A8A0" stroke-width="20" fill="none"/><path d="M380 480 q30 100 -10 120" stroke="#86A8A0" stroke-width="20" fill="none"/><path d="M600 430 q30 100 -10 120" stroke="#86A8A0" stroke-width="20" fill="none"/><path d="M820 380 q30 100 -10 120" stroke="#86A8A0" stroke-width="20" fill="none"/><path d="M1040 330 q30 100 -10 120" stroke="#86A8A0" stroke-width="20" fill="none"/>
+<path d="M80 610 l-100 -260 M1120 610 l100 -260" stroke="#27424A" stroke-width="40" stroke-linecap="round"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1200" height="1500" fill="url(#v)"/>
+<rect width="1200" height="1500" filter="url(#g)" opacity="0.9"/>
+</svg>

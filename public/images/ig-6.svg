@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-label="@arem.world">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#ECE2D0"/><stop offset="1" stop-color="#D9C6A8"/>
+</linearGradient>
+<rect width="800" height="800" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1)" transform-origin="400 400">
+
+<ellipse cx="400" cy="400" rx="146.66666666666669" ry="240" fill="#6E4A2E"/>
+<path d="M333.3333333333333 186.66666666666666 q-26.666666666666668 213.33333333333334 0 426.6666666666667" stroke="#ECE2D0" stroke-width="13.333333333333334" fill="none" opacity="0.7"/><path d="M400 186.66666666666666 q-26.666666666666668 213.33333333333334 0 426.6666666666667" stroke="#ECE2D0" stroke-width="13.333333333333334" fill="none" opacity="0.7"/><path d="M466.6666666666667 186.66666666666666 q-26.666666666666668 213.33333333333334 0 426.6666666666667" stroke="#ECE2D0" stroke-width="13.333333333333334" fill="none" opacity="0.7"/>
+<ellipse cx="174.66666666666663" cy="243.99999999999997" rx="32" ry="22.400000000000002" transform="rotate(0 174.66666666666663 243.99999999999997)" fill="#4A3222" opacity="0.8"/><ellipse cx="365.3333333333333" cy="200.66666666666666" rx="40" ry="28" transform="rotate(24 365.3333333333333 200.66666666666666)" fill="#4A3222" opacity="0.8"/><ellipse cx="616.6666666666667" cy="313.3333333333333" rx="34.66666666666667" ry="24.26666666666667" transform="rotate(48 616.6666666666667 313.3333333333333)" fill="#4A3222" opacity="0.8"/><ellipse cx="538.6666666666667" cy="556" rx="29.333333333333336" ry="20.533333333333335" transform="rotate(72 538.6666666666667 556)" fill="#4A3222" opacity="0.8"/><ellipse cx="252.66666666666669" cy="495.33333333333337" rx="26.666666666666668" ry="18.666666666666668" transform="rotate(96 252.66666666666669 495.33333333333337)" fill="#4A3222" opacity="0.8"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="800" height="800" fill="url(#v)"/>
+<rect width="800" height="800" filter="url(#g)" opacity="0.9"/>
+</svg>

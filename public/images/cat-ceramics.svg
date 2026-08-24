@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Ceramic pottery">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#F1E7D3"/><stop offset="1" stop-color="#E0D0B0"/>
+</linearGradient>
+<rect width="1200" height="900" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1)" transform-origin="600 450">
+
+<ellipse cx="600" cy="727.2" rx="258.75" ry="67.5" fill="#4A3C2A" opacity="0.18"/>
+<path d="M480 242.1 L502.5 182.1 H697.5 L720 242.1 C847.5 420 825 598.5 739.5 727.2 C667.5 816.3 532.5 816.3 460.5 727.2 C375 598.5 352.5 420 Z" fill="#C09A5B"/>
+<path d="M502.5 182.1 C555 143.10000000000002 645 143.10000000000002 697.5 182.1" fill="#4A3C2A" opacity="0.85"/>
+<path d="M476.25 539.1 C555 509.4 645 509.4 723.75 539.1" stroke="#F1E7D3" stroke-width="18" fill="none" opacity="0.85"/>
+<path d="M460.5 638.1 C555 598.5 645 598.5 739.5 638.1" stroke="#F1E7D3" stroke-width="15" fill="none" opacity="0.6"/>
+<path d="M555 311.4 C577.5 331.2 622.5 331.2 645 311.4" stroke="#F1E7D3" stroke-width="12" fill="none" opacity="0.5"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1200" height="900" fill="url(#v)"/>
+<rect width="1200" height="900" filter="url(#g)" opacity="0.9"/>
+</svg>

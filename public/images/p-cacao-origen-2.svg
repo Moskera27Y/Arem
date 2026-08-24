@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-label="p-cacao-origen">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#ECE2D0"/><stop offset="1" stop-color="#D9C6A8"/>
+</linearGradient>
+<rect width="1200" height="1500" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1.05)" transform-origin="600 750">
+
+<ellipse cx="600" cy="750" rx="220" ry="360" fill="#6E4A2E"/>
+<path d="M500 430 q-40 320 0 640" stroke="#ECE2D0" stroke-width="20" fill="none" opacity="0.7"/><path d="M600 430 q-40 320 0 640" stroke="#ECE2D0" stroke-width="20" fill="none" opacity="0.7"/><path d="M700 430 q-40 320 0 640" stroke="#ECE2D0" stroke-width="20" fill="none" opacity="0.7"/>
+<ellipse cx="261.99999999999994" cy="516" rx="48" ry="33.6" transform="rotate(0 261.99999999999994 516)" fill="#4A3222" opacity="0.8"/><ellipse cx="548" cy="451" rx="60" ry="42" transform="rotate(24 548 451)" fill="#4A3222" opacity="0.8"/><ellipse cx="925" cy="620" rx="52" ry="36.4" transform="rotate(48 925 620)" fill="#4A3222" opacity="0.8"/><ellipse cx="808" cy="984" rx="44" ry="30.800000000000004" transform="rotate(72 808 984)" fill="#4A3222" opacity="0.8"/><ellipse cx="379" cy="893" rx="40" ry="28" transform="rotate(96 379 893)" fill="#4A3222" opacity="0.8"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1200" height="1500" fill="url(#v)"/>
+<rect width="1200" height="1500" filter="url(#g)" opacity="0.9"/>
+</svg>

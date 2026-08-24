@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" role="img" aria-label="Andes &amp; coffee axis">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#E8E5D6"/><stop offset="1" stop-color="#D4D3BA"/>
+</linearGradient>
+<rect width="1600" height="1100" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1)" transform-origin="800 550">
+
+<path d="M0 1100 L0 678.3333333333333 L488.33333333333337 476.6666666666667 L855 696.6666666666666 L1038.3333333333333 568.3333333333334 L1600 751.6666666666666 L1600 1100 Z" fill="#A9A879" opacity="0.55"/>
+<path d="M0 1100 L0 788.3333333333333 L635 623.3333333333334 L928.3333333333333 788.3333333333333 L1166.6666666666665 660 L1600 825 L1600 1100 Z" fill="#5A6442" opacity="0.8"/>
+<circle cx="433.33333333333337" cy="311.6666666666667" r="82.5" fill="#5A6442" opacity="0.85"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1600" height="1100" fill="url(#v)"/>
+<rect width="1600" height="1100" filter="url(#g)" opacity="0.9"/>
+</svg>

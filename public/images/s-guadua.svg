@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" role="img" aria-label="Guadua &amp; the coffee axis">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#E4E7DC"/><stop offset="1" stop-color="#CCD3C0"/>
+</linearGradient>
+<rect width="1400" height="900" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1)" transform-origin="700 450">
+<rect x="355" y="60" width="690" height="780" rx="30" fill="#38432F" opacity="0.9"/><rect x="370" y="105" width="660" height="67.5" fill="#CCD3C0"/><path d="M370 123 h660 M370 153 h660" stroke="#38432F" stroke-width="8.25" stroke-dasharray="16.5 25.5" opacity="0.5"/><rect x="370" y="222" width="660" height="67.5" fill="#4F6140"/><path d="M370 240 h660 M370 270 h660" stroke="#38432F" stroke-width="8.25" stroke-dasharray="16.5 25.5" opacity="0.5"/><rect x="370" y="339" width="660" height="67.5" fill="#9FAB85"/><path d="M370 357 h660 M370 387 h660" stroke="#38432F" stroke-width="8.25" stroke-dasharray="16.5 25.5" opacity="0.5"/><rect x="370" y="456" width="660" height="67.5" fill="#E4E7DC"/><path d="M370 474 h660 M370 504 h660" stroke="#38432F" stroke-width="8.25" stroke-dasharray="16.5 25.5" opacity="0.5"/><rect x="370" y="573" width="660" height="67.5" fill="#4F6140"/><path d="M370 591 h660 M370 621 h660" stroke="#38432F" stroke-width="8.25" stroke-dasharray="16.5 25.5" opacity="0.5"/><rect x="370" y="690" width="660" height="67.5" fill="#9FAB85"/><path d="M370 708 h660 M370 738 h660" stroke="#38432F" stroke-width="8.25" stroke-dasharray="16.5 25.5" opacity="0.5"/><rect x="370" y="807" width="660" height="67.5" fill="#CCD3C0"/><path d="M370 825 h660 M370 855 h660" stroke="#38432F" stroke-width="8.25" stroke-dasharray="16.5 25.5" opacity="0.5"/><rect x="355" y="60" width="690" height="780" rx="30" fill="none" stroke="#38432F" stroke-width="11.25"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1400" height="900" fill="url(#v)"/>
+<rect width="1400" height="900" filter="url(#g)" opacity="0.9"/>
+</svg>

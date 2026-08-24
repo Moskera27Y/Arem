@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-label="Guajira desert sun">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#F2E7D4"/><stop offset="1" stop-color="#E0CCAA"/>
+</linearGradient>
+<rect width="1920" height="1080" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1.1)" transform-origin="960 540">
+<circle cx="960" cy="540" r="234" fill="#B4552D" opacity="0.9"/><line x1="1239" y1="540" x2="1320" y2="540" stroke="#B4552D" stroke-width="21.599999999999998" stroke-linecap="round" opacity="0.85"/><line x1="1201.6210876558584" y1="679.5" x2="1271.769145362398" y2="720" stroke="#B4552D" stroke-width="21.599999999999998" stroke-linecap="round" opacity="0.85"/><line x1="1099.5" y1="781.6210876558583" x2="1140" y2="851.7691453623979" stroke="#B4552D" stroke-width="21.599999999999998" stroke-linecap="round" opacity="0.85"/><line x1="960" y1="819" x2="960" y2="900" stroke="#B4552D" stroke-width="21.599999999999998" stroke-linecap="round" opacity="0.85"/><line x1="820.5" y1="781.6210876558584" x2="780.0000000000001" y2="851.7691453623979" stroke="#B4552D" stroke-width="21.599999999999998" stroke-linecap="round" opacity="0.85"/><line x1="718.3789123441417" y1="679.5000000000001" x2="648.2308546376021" y2="720.0000000000001" stroke="#B4552D" stroke-width="21.599999999999998" stroke-linecap="round" opacity="0.85"/><line x1="681" y1="540" x2="600" y2="540" stroke="#B4552D" stroke-width="21.599999999999998" stroke-linecap="round" opacity="0.85"/><line x1="718.3789123441416" y1="400.5000000000001" x2="648.2308546376021" y2="360.0000000000001" stroke="#B4552D" stroke-width="21.599999999999998" stroke-linecap="round" opacity="0.85"/><line x1="820.4999999999999" y1="298.37891234414167" x2="779.9999999999998" y2="228.23085463760214" stroke="#B4552D" stroke-width="21.599999999999998" stroke-linecap="round" opacity="0.85"/><line x1="960" y1="261" x2="959.9999999999999" y2="180" stroke="#B4552D" stroke-width="21.599999999999998" stroke-linecap="round" opacity="0.85"/><line x1="1099.4999999999998" y1="298.3789123441415" x2="1139.9999999999998" y2="228.23085463760196" stroke="#B4552D" stroke-width="21.599999999999998" stroke-linecap="round" opacity="0.85"/><line x1="1201.6210876558582" y1="400.4999999999999" x2="1271.769145362398" y2="359.99999999999983" stroke="#B4552D" stroke-width="21.599999999999998" stroke-linecap="round" opacity="0.85"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1920" height="1080" fill="url(#v)"/>
+<rect width="1920" height="1080" filter="url(#g)" opacity="0.9"/>
+</svg>

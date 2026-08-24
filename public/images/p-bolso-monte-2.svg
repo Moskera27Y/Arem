@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-label="p-bolso-monte">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#ECE2D0"/><stop offset="1" stop-color="#D9C6A8"/>
+</linearGradient>
+<rect width="1200" height="1500" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1.05)" transform-origin="600 750">
+
+<path d="M140 810 q100 -100 300 -100 q200 0 300 100 q120 120 40 200 q-80 80 -200 60 q-220 -40 -360 -20 q-140 20 -220 -80 q-60 -80 140 -160 Z" fill="#6E4A2E"/>
+<rect x="480" y="550" width="240" height="260" rx="40" fill="#ECE2D0" stroke="#4A3222" stroke-width="20"/>
+<rect x="550" y="610" width="100" height="140" rx="20" fill="#4A3222"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1200" height="1500" fill="url(#v)"/>
+<rect width="1200" height="1500" filter="url(#g)" opacity="0.9"/>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-label="p-collar-andino">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#E7EBE4"/><stop offset="1" stop-color="#CBD5C4"/>
+</linearGradient>
+<rect width="1200" height="1500" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1.05)" transform-origin="600 750">
+
+<polygon points="600.0,450.0 859.8,600.0 859.8,900.0 600.0,1050.0 340.2,900.0 340.2,600.0" fill="#2F6B4F"/>
+<polygon points="600.0,570.0 755.9,660.0 755.9,840.0 600.0,930.0 444.1,840.0 444.1,660.0" fill="#E7EBE4" opacity="0.85"/>
+<polygon points="600.0,660.0 677.9,705.0 677.9,795.0 600.0,840.0 522.1,795.0 522.1,705.0" fill="#2E4436" opacity="0.7"/>
+<path d="M300 750 L300 630 L380 610" stroke="#E7EBE4" stroke-width="20" fill="none"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1200" height="1500" fill="url(#v)"/>
+<rect width="1200" height="1500" filter="url(#g)" opacity="0.9"/>
+</svg>

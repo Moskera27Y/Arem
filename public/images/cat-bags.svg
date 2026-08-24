@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" role="img" aria-label="Wayuu mochila bag">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#F2E7D4"/><stop offset="1" stop-color="#E0CCAA"/>
+</linearGradient>
+<rect width="1200" height="900" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1)" transform-origin="600 450">
+
+<path d="M270 255 C204 489 263.4 613.8 600 645 C936.6 613.8 996 489 930 255 L804.6 192.59999999999997 L395.4 192.59999999999997 Z" fill="#E0CCAA" stroke="#503A26" stroke-width="15"/>
+<path d="M395.4 192.59999999999997 C484.5 106.80000000000001 715.5 106.80000000000001 804.6 192.59999999999997" fill="none" stroke="#503A26" stroke-width="22.5"/>
+<path d="M418.5 372 L781.5 372" stroke="#503A26" stroke-width="25.5"/>
+<path d="M418.5 372 L484.5 481.2 L715.5 481.2 L781.5 372 Z" fill="none" stroke="#503A26" stroke-width="15"/>
+<path d="M481.20000000000005 270.6 l52.5 105 l-52.5 105" stroke="#B4552D" stroke-width="22.5" fill="none" opacity="0.9"/><path d="M425.1 272.6 l52.5 105 l-52.5 105" stroke="#B4552D" stroke-width="22.5" fill="none" opacity="0.78"/><path d="M369 274.6 l52.5 105 l-52.5 105" stroke="#B4552D" stroke-width="22.5" fill="none" opacity="0.66"/><path d="M309.6 276.6 l52.5 105 l-52.5 105" stroke="#B4552D" stroke-width="22.5" fill="none" opacity="0.54"/>
+<path d="M481.20000000000005 272.6 q37.5 -120 75 -15 q30 60 0 75" stroke="#B4552D" stroke-width="22.5" fill="none"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1200" height="900" fill="url(#v)"/>
+<rect width="1200" height="900" filter="url(#g)" opacity="0.9"/>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-label="p-mochila-katsu">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.30 0 0 0 0 0.28 0 0 0 0 0.24 0 0 0 0.07 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#F2E7D4"/><stop offset="1" stop-color="#E0CCAA"/>
+</linearGradient>
+<rect width="1200" height="1500" fill="url(#bg)"/>
+
+<g transform="translate(0 0) scale(1.05)" transform-origin="600 750">
+
+<path d="M160 490 C72 802 151.2 968.4 600 1010 C1048.8 968.4 1128 802 1040 490 L872.8 406.8 L327.2 406.8 Z" fill="#E0CCAA" stroke="#503A26" stroke-width="20"/>
+<path d="M327.2 406.8 C446 292.4 754 292.4 872.8 406.8" fill="none" stroke="#503A26" stroke-width="30"/>
+<path d="M358 646 L842 646" stroke="#503A26" stroke-width="34"/>
+<path d="M358 646 L446 791.6 L754 791.6 L842 646 Z" fill="none" stroke="#503A26" stroke-width="20"/>
+<path d="M441.6 510.79999999999995 l70 140 l-70 140" stroke="#B4552D" stroke-width="30" fill="none" opacity="0.9"/><path d="M366.8 512.8 l70 140 l-70 140" stroke="#B4552D" stroke-width="30" fill="none" opacity="0.78"/><path d="M292 514.8 l70 140 l-70 140" stroke="#B4552D" stroke-width="30" fill="none" opacity="0.66"/><path d="M212.8 516.8 l70 140 l-70 140" stroke="#B4552D" stroke-width="30" fill="none" opacity="0.54"/>
+<path d="M441.6 512.8 q50 -160 100 -20 q40 80 0 100" stroke="#B4552D" stroke-width="30" fill="none"/>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.16"/>
+</radialGradient>
+<rect width="1200" height="1500" fill="url(#v)"/>
+<rect width="1200" height="1500" filter="url(#g)" opacity="0.9"/>
+</svg>
