@@ -5,7 +5,7 @@ import {
   localeCookieName,
   locales,
   stripLocale,
-} from "@/lib/i18n/config";
+} from "./lib/i18n/config";
 
 /**
  * Locale routing middleware:
