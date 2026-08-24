@@ -1,21 +1,30 @@
 import Link from "next/link";
 
 interface LogoProps {
-  /** "dark" = ink wordmark (light backgrounds), "light" = paper wordmark (dark backgrounds). */
+  /**
+   * "dark" = natural brand colors (light backgrounds, e.g. the cream/ivory
+   * header). "light" = white monochrome silhouette for dark surfaces (footer).
+   * The SVG asset itself is never recolored or edited — only its on-surface
+   * rendering is adapted via CSS filter for contrast.
+   */
   variant?: "dark" | "light";
-  /** Locale-prefixed home path, e.g. "/en". Falls back to "/" (middleware redirects). */
+  /** Locale-prefixed home path, e.g. "/en" (used as the localized home link). */
   href?: string;
 }
 
 /**
- * AREM WORLD typographic wordmark — the primary brand identity.
- * (Phase 1 ships the wordmark; the final AREM mark drops in at launch.)
+ * AREM WORLD brand logo — the supplied `arem-world-logo.svg` wordmark.
+ * Rendered with preserved aspect ratio; sized by context via `.logo__img`.
  */
 export function Logo({ variant = "dark", href = "/" }: LogoProps) {
   return (
-    <Link href={href} className="logo" aria-label="AREM WORLD — home">
-      <span className="logo__word">AREM</span>
-      <span className="logo__sub">World · Colombia</span>
+    <Link href={href} className={`logo${variant === "light" ? " logo--light" : ""}`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/brand/arem-world-logo.svg"
+        alt="AREM WORLD — Colombian craftsmanship"
+        className="logo__img"
+      />
     </Link>
   );
 }

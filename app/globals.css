@@ -586,27 +586,30 @@ h4 {
 
 .logo {
   display: inline-flex;
-  flex-direction: column;
+  align-items: center;
   line-height: 1;
   color: var(--ink);
 }
 
-.logo__word {
-  font-family: var(--font-serif);
-  font-size: 1.7rem;
-  font-weight: 520;
-  letter-spacing: 0.28em;
-  text-indent: 0.28em;
+.logo__img {
+  display: block;
+  width: auto;
+  height: auto;
 }
 
-.logo__sub {
-  font-size: 0.52rem;
-  font-weight: 700;
-  letter-spacing: 0.42em;
-  text-indent: 0.42em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-top: 0.3rem;
+/* Brand logo sizing — preserved aspect ratio (760:240), no distortion. */
+.site-header .logo__img {
+  height: 46px; /* desktop header target ~42–52px */
+}
+
+.logo--light .logo__img {
+  /* White monochrome silhouette for dark surfaces (footer). The asset file is
+     unchanged; only its on-dark rendering is adapted for contrast. */
+  filter: brightness(0) invert(1);
+}
+
+.footer .logo__img {
+  height: 54px; /* footer slightly larger */
 }
 
 .nav {
@@ -2860,6 +2863,10 @@ h4 {
 
   .site-header__inner {
     gap: 0.5rem;
+  }
+
+  .site-header .logo__img {
+    height: 34px; /* mobile header target ~32–40px */
   }
 
   .header-actions {

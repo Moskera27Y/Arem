@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 240" role="img" aria-labelledby="title desc">
+  <title id="title">AREM WORLD</title>
+  <desc id="desc">Editorial wordmark for AREM WORLD with a Colombian flower emblem.</desc>
+  <defs>
+    <style>
+      .word { fill:#171511; font-family:Georgia, 'Times New Roman', serif; font-weight:400; letter-spacing:3px; }
+      .sub { fill:#9b5a33; font-family:Arial, Helvetica, sans-serif; font-weight:700; font-size:25px; letter-spacing:8px; }
+    </style>
+  </defs>
+  <g transform="translate(35 24)">
+    <text class="word" x="0" y="117" font-size="118">AR</text>
+    <g transform="translate(218 49)" fill="#9b2d2c">
+      <path d="M48 50C48 19 28 0 4 0c-5 29 10 51 36 55C15 56 0 75 0 100c28 4 50-13 55-38-1 27 18 48 45 48 5-27-14-48-39-53 26-3 42-26 36-54C73 2 53 20 48 50Z"/>
+      <circle cx="49" cy="56" r="16" fill="#d69a3b"/>
+      <circle cx="49" cy="56" r="7" fill="#171511"/>
+    </g>
+    <text class="word" x="327" y="117" font-size="118">EM</text>
+    <path d="M4 143H691" fill="none" stroke="#9b5a33" stroke-width="2"/>
+    <text class="sub" x="186" y="184">WORLD · COLOMBIA</text>
+  </g>
+</svg>
