@@ -12,7 +12,7 @@ import {
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import { formatDate } from "@/lib/format";
-import { AremImage } from "@/components/ui/AremImage";
+import { ManagedImage } from "@/components/ui/ManagedImage";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { Reveal } from "@/components/ui/Reveal";
 
@@ -74,7 +74,7 @@ export default async function StoryPage({ params }: StoryPageProps) {
             </div>
 
             <div className="article__media">
-              <AremImage src={story.image.src} alt={story.image.alt} />
+              <ManagedImage src={story.image.src} alt={story.image.alt} sizes="(min-width: 1024px) 60vw, 100vw" />
             </div>
 
             <div className="article__body">

@@ -9,7 +9,7 @@ import {
 } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { isLocale, type Locale } from "@/lib/i18n/config";
-import { AremImage } from "@/components/ui/AremImage";
+import { ManagedImage } from "@/components/ui/ManagedImage";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/icons";
@@ -60,7 +60,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
 
           <div className="split">
             <div className="split__media">
-              <AremImage src={region.image.src} alt={region.image.alt} />
+              <ManagedImage src={region.image.src} alt={region.image.alt} sizes="(min-width: 1024px) 50vw, 100vw" />
             </div>
             <div>
               <p className="eyebrow split__kicker">{region.department}</p>
@@ -91,7 +91,7 @@ export default async function RegionPage({ params }: RegionPageProps) {
                 <Reveal key={artisan.id}>
                   <article className="story-card">
                     <div className="story-card__media" style={{ aspectRatio: "4 / 5" }}>
-                      <AremImage src={artisan.image.src} alt={artisan.image.alt} />
+                      <ManagedImage src={artisan.image.src} alt={artisan.image.alt} sizes="(min-width: 1024px) 25vw, 50vw" />
                     </div>
                     <div className="story-card__body">
                       <span className="story-card__meta">{artisan.craft}</span>
