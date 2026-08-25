@@ -62,7 +62,7 @@ export function Header() {
             <Link href={`${localePrefix}/shop`} className="icon-btn" aria-label={dict.a11y.search} title={dict.a11y.search}>
               <Icon name="search" size={19} />
             </Link>
-            <Link href={`${localePrefix}/contact`} className="icon-btn" aria-label="Account" title="Account">
+            <Link href={`${localePrefix}/account`} className="icon-btn" aria-label={dict.account.myAccount} title={dict.account.myAccount}>
               <Icon name="user" size={19} />
             </Link>
             <Link
@@ -108,8 +108,8 @@ export function Header() {
             <Link href={`${localePrefix}/shop`} className="mobile-menu__row-link">
               <Icon name="search" size={15} /> {dict.a11y.search}
             </Link>
-            <Link href={`${localePrefix}/contact`} className="mobile-menu__row-link">
-              <Icon name="user" size={15} /> Account
+            <Link href={`${localePrefix}/account`} className="mobile-menu__row-link">
+              <Icon name="user" size={15} /> {dict.account.myAccount}
             </Link>
           </div>
           <div className="mobile-menu__meta">
