@@ -176,6 +176,106 @@ export interface Dictionary {
     contact: string;
     bottomNote: string;
   };
+  account: {
+    myAccount: string;
+    overview: string;
+    profile: string;
+    addresses: string;
+    wishlist: string;
+    orders: string;
+    security: string;
+    signIn: string;
+    signUp: string;
+    signOut: string;
+    backToShop: string;
+    signInTitle: string;
+    signInSub: string;
+    signUpTitle: string;
+    signUpSub: string;
+    forgotTitle: string;
+    forgotSub: string;
+    resetTitle: string;
+    resetSub: string;
+    resetPassword: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+    preferredLanguage: string;
+    languageEn: string;
+    languageEs: string;
+    save: string;
+    saving: string;
+    cancel: string;
+    edit: string;
+    delete: string;
+    add: string;
+    confirmDelete: string;
+    profileTitle: string;
+    profileSub: string;
+    profileSaved: string;
+    addressesTitle: string;
+    addressesSub: string;
+    addAddress: string;
+    editAddress: string;
+    recipientName: string;
+    addressLine1: string;
+    addressLine2: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    country: string;
+    defaultShipping: string;
+    defaultBilling: string;
+    addressSaved: string;
+    addressDeleted: string;
+    wishlistTitle: string;
+    wishlistSub: string;
+    wishlistSaved: string;
+    wishlistAccount: string;
+    ordersTitle: string;
+    ordersSub: string;
+    noOrders: string;
+    orderNumber: string;
+    orderDate: string;
+    paymentStatus: string;
+    fulfillmentStatus: string;
+    items: string;
+    quantity: string;
+    price: string;
+    shippingAddress: string;
+    trackingNumber: string;
+    trackingPending: string;
+    shipmentTimeline: string;
+    backToOrders: string;
+    statusPendingPayment: string;
+    statusPaid: string;
+    statusProcessing: string;
+    statusShipped: string;
+    statusDelivered: string;
+    statusCancelled: string;
+    statusRefunded: string;
+    paymentPending: string;
+    paymentPaid: string;
+    paymentRefunded: string;
+    paymentFailed: string;
+    securityTitle: string;
+    securitySub: string;
+    currentPassword: string;
+    newPassword: string;
+    changePassword: string;
+    passwordChanged: string;
+    invalidCredentials: string;
+    emailExists: string;
+    passwordTooShort: string;
+    emailInvalid: string;
+    accountCreated: string;
+    welcomeBack: string;
+    loading: string;
+    total: string;
+  };
 }
 
 const en: Dictionary = {
@@ -345,6 +445,106 @@ const en: Dictionary = {
     contact: "Contact",
     bottomNote: "Handmade · Paid with pride",
   },
+  account: {
+    myAccount: "My account",
+    overview: "Overview",
+    profile: "Profile",
+    addresses: "Addresses",
+    wishlist: "Wishlist",
+    orders: "Orders",
+    security: "Security",
+    signIn: "Sign in",
+    signUp: "Sign up",
+    signOut: "Sign out",
+    backToShop: "Back to the shop",
+    signInTitle: "Welcome back",
+    signInSub: "Sign in to manage your profile, addresses and orders.",
+    signUpTitle: "Create your account",
+    signUpSub: "Save your favorites and order history in one place.",
+    forgotTitle: "Reset your password",
+    forgotSub: "Enter your email and we'll send you a reset link.",
+    resetTitle: "Choose a new password",
+    resetSub: "Your old password is no longer valid.",
+    resetPassword: "Update password",
+    email: "Email",
+    password: "Password",
+    confirmPassword: "Confirm password",
+    firstName: "First name",
+    lastName: "Last name",
+    phone: "Phone",
+    preferredLanguage: "Preferred language",
+    languageEn: "English",
+    languageEs: "Español",
+    save: "Save",
+    saving: "Saving…",
+    cancel: "Cancel",
+    edit: "Edit",
+    delete: "Delete",
+    add: "Add",
+    confirmDelete: "Confirm deletion",
+    profileTitle: "Profile",
+    profileSub: "Your personal details and preferences.",
+    profileSaved: "Profile updated.",
+    addressesTitle: "Address book",
+    addressesSub: "Manage your shipping and billing addresses.",
+    addAddress: "Add address",
+    editAddress: "Edit address",
+    recipientName: "Recipient name",
+    addressLine1: "Address line 1",
+    addressLine2: "Address line 2",
+    city: "City",
+    state: "State / region",
+    postalCode: "Postal code",
+    country: "Country",
+    defaultShipping: "Default shipping",
+    defaultBilling: "Default billing",
+    addressSaved: "Address saved.",
+    addressDeleted: "Address deleted.",
+    wishlistTitle: "Your wishlist",
+    wishlistSub: "Favorites saved to your account.",
+    wishlistSaved: "Saved to your account.",
+    wishlistAccount: "This wishlist is stored securely in your account.",
+    ordersTitle: "Your orders",
+    ordersSub: "Track and review your orders.",
+    noOrders: "You have no orders yet.",
+    orderNumber: "Order",
+    orderDate: "Date",
+    paymentStatus: "Payment",
+    fulfillmentStatus: "Fulfillment",
+    items: "Items",
+    quantity: "Qty",
+    price: "Price",
+    shippingAddress: "Shipping address",
+    trackingNumber: "Tracking number",
+    trackingPending: "Tracking will appear once your order ships.",
+    shipmentTimeline: "Shipment status",
+    backToOrders: "Back to orders",
+    statusPendingPayment: "Pending payment",
+    statusPaid: "Paid",
+    statusProcessing: "Processing",
+    statusShipped: "Shipped",
+    statusDelivered: "Delivered",
+    statusCancelled: "Cancelled",
+    statusRefunded: "Refunded",
+    paymentPending: "Pending",
+    paymentPaid: "Paid",
+    paymentRefunded: "Refunded",
+    paymentFailed: "Failed",
+    securityTitle: "Security",
+    securitySub: "Update your password.",
+    currentPassword: "Current password",
+    newPassword: "New password",
+    changePassword: "Change password",
+    passwordChanged: "Password updated.",
+    invalidCredentials: "Invalid email or password.",
+    emailExists: "An account with this email already exists.",
+    passwordTooShort: "Password must be at least 8 characters.",
+    emailInvalid: "Enter a valid email address.",
+    accountCreated: "Account created.",
+    welcomeBack: "Signed in. Welcome back.",
+    loading: "Loading…",
+    total: "Total",
+  },
 };
 
 const es: Dictionary = {
@@ -513,6 +713,106 @@ const es: Dictionary = {
     help: "Ayuda",
     contact: "Contacto",
     bottomNote: "Hecho a mano · Pagado con orgullo",
+  },
+  account: {
+    myAccount: "Mi cuenta",
+    overview: "Resumen",
+    profile: "Perfil",
+    addresses: "Direcciones",
+    wishlist: "Favoritos",
+    orders: "Pedidos",
+    security: "Seguridad",
+    signIn: "Iniciar sesión",
+    signUp: "Crear cuenta",
+    signOut: "Cerrar sesión",
+    backToShop: "Volver a la tienda",
+    signInTitle: "Bienvenido de nuevo",
+    signInSub: "Inicia sesión para gestionar tu perfil, direcciones y pedidos.",
+    signUpTitle: "Crea tu cuenta",
+    signUpSub: "Guarda tus favoritos y tu historial de pedidos en un solo lugar.",
+    forgotTitle: "Restablece tu contraseña",
+    forgotSub: "Ingresa tu correo y te enviaremos un enlace de restablecimiento.",
+    resetTitle: "Elige una nueva contraseña",
+    resetSub: "Tu contraseña anterior ya no es válida.",
+    resetPassword: "Actualizar contraseña",
+    email: "Correo electrónico",
+    password: "Contraseña",
+    confirmPassword: "Confirmar contraseña",
+    firstName: "Nombre",
+    lastName: "Apellido",
+    phone: "Teléfono",
+    preferredLanguage: "Idioma preferido",
+    languageEn: "English",
+    languageEs: "Español",
+    save: "Guardar",
+    saving: "Guardando…",
+    cancel: "Cancelar",
+    edit: "Editar",
+    delete: "Eliminar",
+    add: "Añadir",
+    confirmDelete: "Confirmar eliminación",
+    profileTitle: "Perfil",
+    profileSub: "Tus datos personales y preferencias.",
+    profileSaved: "Perfil actualizado.",
+    addressesTitle: "Libreta de direcciones",
+    addressesSub: "Administra tus direcciones de envío y facturación.",
+    addAddress: "Añadir dirección",
+    editAddress: "Editar dirección",
+    recipientName: "Nombre del destinatario",
+    addressLine1: "Dirección línea 1",
+    addressLine2: "Dirección línea 2",
+    city: "Ciudad",
+    state: "Departamento / región",
+    postalCode: "Código postal",
+    country: "País",
+    defaultShipping: "Envío por defecto",
+    defaultBilling: "Facturación por defecto",
+    addressSaved: "Dirección guardada.",
+    addressDeleted: "Dirección eliminada.",
+    wishlistTitle: "Tus favoritos",
+    wishlistSub: "Piezas guardadas en tu cuenta.",
+    wishlistSaved: "Guardado en tu cuenta.",
+    wishlistAccount: "Esta lista se guarda de forma segura en tu cuenta.",
+    ordersTitle: "Tus pedidos",
+    ordersSub: "Consulta y sigue tus pedidos.",
+    noOrders: "Aún no tienes pedidos.",
+    orderNumber: "Pedido",
+    orderDate: "Fecha",
+    paymentStatus: "Pago",
+    fulfillmentStatus: "Cumplimiento",
+    items: "Artículos",
+    quantity: "Cant.",
+    price: "Precio",
+    shippingAddress: "Dirección de envío",
+    trackingNumber: "Número de seguimiento",
+    trackingPending: "El seguimiento aparecerá cuando tu pedido sea enviado.",
+    shipmentTimeline: "Estado del envío",
+    backToOrders: "Volver a pedidos",
+    statusPendingPayment: "Pago pendiente",
+    statusPaid: "Pagado",
+    statusProcessing: "En preparación",
+    statusShipped: "Enviado",
+    statusDelivered: "Entregado",
+    statusCancelled: "Cancelado",
+    statusRefunded: "Reembolsado",
+    paymentPending: "Pendiente",
+    paymentPaid: "Pagado",
+    paymentRefunded: "Reembolsado",
+    paymentFailed: "Fallido",
+    securityTitle: "Seguridad",
+    securitySub: "Actualiza tu contraseña.",
+    currentPassword: "Contraseña actual",
+    newPassword: "Nueva contraseña",
+    changePassword: "Cambiar contraseña",
+    passwordChanged: "Contraseña actualizada.",
+    invalidCredentials: "Correo o contraseña inválidos.",
+    emailExists: "Ya existe una cuenta con este correo.",
+    passwordTooShort: "La contraseña debe tener al menos 8 caracteres.",
+    emailInvalid: "Ingresa un correo válido.",
+    accountCreated: "Cuenta creada.",
+    welcomeBack: "Sesión iniciada. Bienvenido de nuevo.",
+    loading: "Cargando…",
+    total: "Total",
   },
 };
 

@@ -13,6 +13,7 @@ const NAV_ITEMS: { href: string; label: string; icon: IconName }[] = [
   { href: "/admin/promotions", label: "Promotions", icon: "percent" },
   { href: "/admin/social-links", label: "Social links", icon: "link" },
   { href: "/admin/media", label: "Media library", icon: "image" },
+  { href: "/admin/orders", label: "Orders", icon: "gift" },
 ];
 
 function AdminNav({ onNavigate }: { onNavigate?: () => void }) {

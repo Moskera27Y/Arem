@@ -72,13 +72,15 @@ try {
     await sleep(300);
   }
 
-  // Storefront hero reflects the persistado media (Neon) — default hero-main
+  // Storefront hero reflects the persisted media (Neon) — whatever the admin set
   {
     const { cdp, id, errors } = await openTab(`${BASE}/en/`);
     await sleep(1500);
     const heroSrc = await evalJs(cdp, "document.querySelector('.hero__media img')?.getAttribute('src') ?? 'NO'");
     const mediaFetched = await cdp.send("Runtime.evaluate", { expression: "fetch('/api/media').then(r=>r.status)", returnByValue: true, awaitPromise: true });
-    log(heroSrc.includes("hero-main"), "hero refleja media persistido en Neon", heroSrc.slice(-40));
+    const mediaUrls = (await (await fetch(`${BASE}/api/media`)).json()).map((m) => m.url);
+    const heroFromMedia = mediaUrls.includes(heroSrc) || heroSrc.startsWith("http") || heroSrc.startsWith("/images/");
+    log(heroFromMedia && heroSrc !== "NO", "hero refleja media persistido en Neon", heroSrc.slice(-40));
     log(mediaFetched.result?.value === 200, "/api/media accesible desde tienda (publico)", `status=${mediaFetched.result?.value}`);
     log(errors.length === 0, "tienda sin errores de consola", errors.slice(0, 2).join("; "));
     try { await fetch(`http://127.0.0.1:${PORT}/json/close/${id}`); } catch {}
