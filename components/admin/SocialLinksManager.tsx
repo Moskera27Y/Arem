@@ -1,13 +1,13 @@
 "use client";
 
 /**
- * Social links management — networks, URLs, active state, display order.
- * Changes flow into the storefront footer social section immediately.
+ * Social links management — networks, URLs, handle/display label, active
+ * state, display order. Backed by Neon (source of truth) so changes reflect
+ * on the public storefront after refresh for every visitor.
  */
 
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { SOCIAL_NETWORKS, type SocialLink } from "@/lib/admin/types";
-import { useAdminStore } from "@/lib/admin/store";
 import { ConfirmDialog, EmptyState, Field, PageHead } from "@/components/admin/ui";
 import { Icon } from "@/components/ui/icons";
 
@@ -20,19 +20,31 @@ interface LinkDraft {
   order: number;
 }
 
+type Row = { id: string; network: string; label: string | null; value: string; active: boolean; display_order: number };
+
+const toLink = (r: Row): SocialLink => ({ id: r.id, network: r.network as SocialLink["network"], label: r.label ?? undefined, value: r.value, active: r.active, order: r.display_order });
+
 export function SocialLinksManager() {
-  const { socialLinks, upsertSocialLink, deleteSocialLink } = useAdminStore();
+  const [socialLinks, setSocialLinks] = useState<SocialLink[]>([]);
   const [draft, setDraft] = useState<LinkDraft | null>(null);
   const [error, setError] = useState<string>();
   const [toDelete, setToDelete] = useState<string | null>(null);
 
-  const sorted = useMemo(
-    () => [...socialLinks].sort((a, b) => a.order - b.order),
-    [socialLinks],
-  );
+  const load = useCallback(async () => {
+    const res = await fetch("/api/admin/social-links");
+    if (res.ok) {
+      const rows = (await res.json()) as Row[];
+      setSocialLinks(rows.map(toLink));
+    }
+  }, []);
 
-  const networkLabel = (network: SocialLink["network"]) =>
-    SOCIAL_NETWORKS.find((n) => n.id === network)?.label ?? network;
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const sorted = useMemo(() => [...socialLinks].sort((a, b) => a.order - b.order), [socialLinks]);
+
+  const networkLabel = (network: SocialLink["network"]) => SOCIAL_NETWORKS.find((n) => n.id === network)?.label ?? network;
 
   const openNew = () => {
     setDraft({ network: "instagram", label: "", value: "", active: true, order: sorted.length + 1 });
@@ -40,42 +52,72 @@ export function SocialLinksManager() {
   };
 
   const openEdit = (link: SocialLink) => {
-    setDraft({
-      id: link.id,
-      network: link.network,
-      label: link.label ?? "",
-      value: link.value,
-      active: link.active,
-      order: link.order,
-    });
+    setDraft({ id: link.id, network: link.network, label: link.label ?? "", value: link.value, active: link.active, order: link.order });
     setError(undefined);
   };
 
-  const save = () => {
-    if (!draft) return;
-    if (!draft.value.trim()) {
-      setError("A URL or contact value is required.");
-      return;
+  const validate = () => {
+    if (!draft || !draft.value.trim()) return "A URL or contact value is required.";
+    if (draft.network === "instagram") {
+      const v = draft.value.trim();
+      const isUrl = /^https?:\/\/(www\.)?instagram\.com\//i.test(v);
+      const isHandle = /^@?[\w.\d_]+$/.test(v);
+      if (!isUrl && !isHandle) return "Instagram accepts a full instagram.com URL or a handle like @arem.world.";
     }
-    const network = draft.network;
-    upsertSocialLink({
-      id: draft.id ?? `soc-${Date.now().toString(36)}`,
-      network,
-      label: draft.label.trim() || undefined,
-      value: draft.value.trim(),
-      active: draft.active,
-      order: draft.order || 10,
-    });
-    setDraft(null);
+    return null;
   };
 
-  const move = (index: number, delta: -1 | 1) => {
+  const save = async () => {
+    if (!draft) return;
+    const vErr = validate();
+    if (vErr) {
+      setError(vErr);
+      return;
+    }
+    const res = await fetch("/api/admin/social-links", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: draft.id,
+        network: draft.network,
+        label: draft.label.trim() || undefined,
+        value: draft.value.trim(),
+        active: draft.active,
+        displayOrder: draft.order || 10,
+      }),
+    });
+    if (res.ok) {
+      setDraft(null);
+      await load();
+    } else {
+      const d = (await res.json().catch(() => ({}))) as { error?: string };
+      setError(d.error || "Error");
+    }
+  };
+
+  const move = async (index: number, delta: -1 | 1) => {
     const target = index + delta;
     if (target < 0 || target >= sorted.length) return;
     const next = [...sorted];
     const [item] = next.splice(index, 1);
     next.splice(target, 0, item);
-    next.forEach((link, i) => upsertSocialLink({ ...link, order: i + 1 }));
+    setSocialLinks(next.map((link, i) => ({ ...link, order: i + 1 })));
+    await Promise.all(
+      next.map((link, i) =>
+        fetch("/api/admin/social-links", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ id: link.id, network: link.network, label: link.label || undefined, value: link.value, active: link.active, displayOrder: i + 1 }),
+        }),
+      ),
+    );
+    await load();
+  };
+
+  const doDelete = async (id: string) => {
+    const res = await fetch(`/api/admin/social-links/${id}`, { method: "DELETE" });
+    if (res.ok) await load();
+    setToDelete(null);
   };
 
   return (
@@ -256,7 +298,7 @@ export function SocialLinksManager() {
         title="Delete this social link?"
         text="The link will disappear from the storefront footer. This cannot be undone."
         onConfirm={() => {
-          if (toDelete) deleteSocialLink(toDelete);
+          if (toDelete) doDelete(toDelete);
           setToDelete(null);
         }}
         onCancel={() => setToDelete(null)}

@@ -1421,6 +1421,18 @@ h4 {
   gap: 0.75rem;
 }
 
+.insta-head__link { text-decoration: none; color: inherit; }
+.insta-head__link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.insta-handle {
+  display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 0.5rem;
+  font-size: var(--text-sm, 14px); font-weight: 600; color: #1e4036;
+  text-decoration: none;
+}
+.insta-handle:hover { text-decoration: underline; text-underline-offset: 3px; }
+.insta-follow { white-space: nowrap; }
+.insta-empty-note { margin-top: 0.75rem; font-size: var(--text-sm, 14px); color: #6b645a; }
+.insta-tile.is-static { cursor: default; }
+
 .insta-tile {
   position: relative;
   aspect-ratio: 1;

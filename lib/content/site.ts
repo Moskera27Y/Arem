@@ -76,11 +76,7 @@ export const siteSeed: SiteSeed = {
       { label: L("WhatsApp", "WhatsApp"), value: L("+57 300 123 4567", "+57 300 123 4567") },
       { label: L("Bogotá · Colombia", "Bogotá · Colombia"), value: L("Carrera 7 # 45-12", "Carrera 7 # 45-12") },
     ],
-    socials: [
-      { label: "Instagram", href: "https://instagram.com" },
-      { label: "TikTok", href: "https://tiktok.com" },
-      { label: "Pinterest", href: "https://pinterest.com" },
-    ],
+    socials: [],
     bottom: L(
       "© 2026 AREM WORLD. Made with love in Colombia.",
       "© 2026 AREM WORLD. Hecho con amor en Colombia.",

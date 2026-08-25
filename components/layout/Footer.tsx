@@ -29,7 +29,7 @@ export function Footer({ locale }: { locale: Locale }) {
               )}
             </p>
             <p className="footer__about">{footer.about}</p>
-            <FooterSocials fallback={footer.socials} />
+            <FooterSocials />
           </div>
 
           {footer.columns.map((column) => (
