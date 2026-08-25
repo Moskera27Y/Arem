@@ -1,81 +1,73 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getCollectionBySlug, getProductById, getCollections } from "@/lib/content";
+import { getProductById } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { isLocale, type Locale } from "@/lib/i18n/config";
-import { AremImage } from "@/components/ui/AremImage";
+import { getCollectionBySlug, listProductIdsForCollection } from "@/lib/server/collections";
+import { ManagedImage } from "@/components/ui/ManagedImage";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { Reveal } from "@/components/ui/Reveal";
 
-interface CollectionPageProps {
-  params: Promise<{ locale: string; slug: string }>;
-}
+export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: CollectionPageProps): Promise<Metadata> {
+interface Params { locale: string; slug: string }
+
+export async function generateMetadata({ params }: { params: Promise<Params> }): Promise<Metadata> {
   const { locale: raw, slug } = await params;
   const locale = isLocale(raw) ? raw : ("en" as Locale);
-  const collection = getCollectionBySlug(locale, slug);
-  if (!collection) return { title: getDictionary(locale).meta.notFoundCollection };
-  return { title: collection.name, description: collection.description };
+  const c = await getCollectionBySlug(slug);
+  if (!c) return { title: getDictionary(locale).meta.notFoundCollection };
+  return { title: locale === "es" ? c.name_es : c.name_en, description: locale === "es" ? c.description_es || undefined : c.description_en || undefined };
 }
 
-export async function generateStaticParams() {
-  return getCollections("en").flatMap((collection) => [
-    { locale: "en", slug: collection.slug },
-    { locale: "es", slug: collection.slug },
-  ]);
-}
-
-export default async function CollectionPage({ params }: CollectionPageProps) {
+export default async function CollectionPage({ params }: { params: Promise<Params> }) {
   const { locale: raw, slug } = await params;
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
   const dict = getDictionary(locale);
-  const localePrefix = `/${locale}`;
+  const prefix = `/${locale}`;
 
-  const collection = getCollectionBySlug(locale, slug);
-  if (!collection) notFound();
+  const c = await getCollectionBySlug(slug);
+  if (!c || !c.is_active) notFound();
 
-  const items = collection.productIds
-    .map((id) => getProductById(locale, id))
-    .filter((p): p is NonNullable<typeof p> => Boolean(p));
+  const name = locale === "es" ? c.name_es : c.name_en;
+  const description = locale === "es" ? c.description_es || "" : c.description_en || "";
+  const story = locale === "es" ? c.story_es || "" : c.story_en || "";
+  const tagline = locale === "es" ? c.tagline_es || "" : c.tagline_en || "";
+  const imageSrc = c.image_url || c.image_key || "";
+  const imageAlt = locale === "es" ? c.image_alt_es || "" : c.image_alt_en || "";
+  const ids = await listProductIdsForCollection(c.id);
+  const items = ids.map((id) => getProductById(locale, id)).filter((p): p is NonNullable<typeof p> => Boolean(p));
 
   return (
     <>
       <section className="section section--flush-top">
         <div className="container">
           <nav className="breadcrumbs" aria-label="Breadcrumbs" style={{ marginBottom: "2rem" }}>
-            <Link href={localePrefix}>{dict.common.home}</Link>
+            <Link href={prefix}>{dict.common.home}</Link>
             <span className="breadcrumbs__sep">/</span>
-            <Link href={`${localePrefix}/collections`}>{dict.nav.collections}</Link>
+            <Link href={`${prefix}/collections`}>{dict.nav.collections}</Link>
             <span className="breadcrumbs__sep">/</span>
-            <span>{collection.name}</span>
+            <span>{name}</span>
           </nav>
 
           <div className="collection-hero">
             <div className="collection-hero__media">
-              <AremImage src={collection.image.src} alt={collection.image.alt} />
+              {imageSrc ? <ManagedImage src={imageSrc} alt={imageAlt} sizes="(min-width: 1024px) 50vw, 100vw" /> : null}
             </div>
             <div className="collection-hero__body">
-              <p className="eyebrow" style={{ color: "var(--sand)" }}>
-                {collection.tagline}
-              </p>
-              <h1 className="collection-hero__title">{collection.name}</h1>
-              <p className="collection-hero__sub">{collection.description}</p>
+              <p className="eyebrow" style={{ color: "var(--sand)" }}>{tagline}</p>
+              <h1 className="collection-hero__title">{name}</h1>
+              <p className="collection-hero__sub">{description}</p>
             </div>
           </div>
 
-          <div
-            style={{
-              marginTop: "3rem",
-              maxWidth: "44rem",
-              color: "var(--ink-2)",
-              lineHeight: "1.8",
-            }}
-          >
-            <p>{collection.story}</p>
-          </div>
+          {story && (
+            <div style={{ marginTop: "3rem", maxWidth: "44rem", color: "var(--ink-2)", lineHeight: "1.8" }}>
+              <p>{story}</p>
+            </div>
+          )}
         </div>
       </section>
 

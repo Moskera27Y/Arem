@@ -6,10 +6,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { Icon, type IconName } from "@/components/ui/icons";
 
-const NAV_ITEMS: { href: string; label: string; icon: IconName }[] = [
-  { href: "/admin", label: "Overview", icon: "grid" },
+const NAV_CATALOG: { href: string; label: string; icon: IconName }[] = [
   { href: "/admin/products", label: "Products", icon: "bag" },
   { href: "/admin/categories", label: "Categories", icon: "tag" },
+  { href: "/admin/collections", label: "Collections", icon: "grid" },
+];
+const NAV_CONTENT: { href: string; label: string; icon: IconName }[] = [
+  { href: "/admin/contact", label: "Contact", icon: "globe" },
   { href: "/admin/promotions", label: "Promotions", icon: "percent" },
   { href: "/admin/social-links", label: "Social links", icon: "link" },
   { href: "/admin/media", label: "Media library", icon: "image" },
@@ -18,33 +21,27 @@ const NAV_ITEMS: { href: string; label: string; icon: IconName }[] = [
 
 function AdminNav({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
+  const renderItem = (item: { href: string; label: string; icon: IconName }) => {
+    const active = item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
+    return (
+      <Link key={item.href} href={item.href} className="admin-nav__link" data-active={active} onClick={onNavigate}>
+        <Icon name={item.icon} size={16} />
+        {item.label}
+      </Link>
+    );
+  };
   return (
     <nav className="admin-nav" aria-label="Admin">
+      <Link href="/admin" className="admin-nav__link" data-active={pathname === "/admin"} onClick={onNavigate}>
+        <Icon name="grid" size={16} />
+        Overview
+      </Link>
+      <span className="admin-nav__label">Catalog</span>
+      {NAV_CATALOG.map(renderItem)}
       <span className="admin-nav__label">Content</span>
-      {NAV_ITEMS.map((item) => {
-        const active =
-          item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            className="admin-nav__link"
-            data-active={active}
-            onClick={onNavigate}
-          >
-            <Icon name={item.icon} size={16} />
-            {item.label}
-          </Link>
-        );
-      })}
+      {NAV_CONTENT.map(renderItem)}
       <span className="admin-nav__label">Storefront</span>
-      <a
-        href="/en"
-        className="admin-nav__link"
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={onNavigate}
-      >
+      <a href="/en" className="admin-nav__link" target="_blank" rel="noopener noreferrer" onClick={onNavigate}>
         <Icon name="external" size={16} />
         View storefront
       </a>
@@ -84,8 +81,8 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
   };
 
   const pageTitle =
-    NAV_ITEMS.find((item) => item.href !== "/admin" && pathname.startsWith(item.href))?.label ??
-    (pathname.startsWith("/admin/products") ? "Products" : "Overview");
+    [...NAV_CATALOG, ...NAV_CONTENT].find((item) => pathname.startsWith(item.href))?.label ??
+    (pathname === "/admin" ? "Overview" : "Admin");
 
   return (
     <div className="admin-shell">

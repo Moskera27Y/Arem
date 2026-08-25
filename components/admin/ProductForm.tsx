@@ -19,6 +19,7 @@ import type { Localized } from "@/lib/content/localized";
 import type { AdminProduct } from "@/lib/admin/types";
 import { useAdminStore } from "@/lib/admin/store";
 import { BiFields, ConfirmDialog, Field, PageHead, TagInput } from "@/components/admin/ui";
+import { CollectionPicker } from "@/components/admin/CollectionPicker";
 import { Icon } from "@/components/ui/icons";
 
 const PLACEHOLDER_IMAGES = [
@@ -367,6 +368,9 @@ export function ProductForm({ productId }: { productId?: string }) {
                   </option>
                 ))}
               </select>
+            </Field>
+            <Field label="Collections (multiple)">
+              <CollectionPicker productId={productId} />
             </Field>
             <Field label="Region">
               <select
