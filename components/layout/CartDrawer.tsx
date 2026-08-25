@@ -7,7 +7,7 @@ import { getProductById } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { useFreeShippingActive } from "@/lib/admin/storefront-hooks";
-import { formatMoneyCompact } from "@/lib/format";
+import { useCurrency } from "@/lib/currency/currency-context";
 import { Icon } from "@/components/ui/icons";
 
 export function CartDrawer() {
@@ -16,6 +16,7 @@ export function CartDrawer() {
   const localePrefix = `/${locale}`;
   const freeShipping = useFreeShippingActive();
   const { lines, isOpen, closeCart, subtotal, setQuantity, remove } = useCart();
+  const { format } = useCurrency();
 
   // Lock body scroll while the drawer is open.
   useEffect(() => {
@@ -106,7 +107,7 @@ export function CartDrawer() {
                       </div>
                     </div>
                     <div className="cart-line__right">
-                      <span className="cart-line__price">{formatMoneyCompact(variant.price)}</span>
+                      <span className="cart-line__price">{format(variant.price.amount)}</span>
                       <button type="button" className="cart-line__remove" onClick={() => remove(line.variantId)}>
                         {dict.a11y.remove}
                       </button>
@@ -119,7 +120,7 @@ export function CartDrawer() {
               <div className="cart-summary">
                 <div className="cart-summary__row">
                   <span>{dict.cart.subtotal}</span>
-                  <span>{formatMoneyCompact({ amount: subtotal, currency: "COP" })}</span>
+                  <span>{format(subtotal)}</span>
                 </div>
                 <div className="cart-summary__row">
                   <span>{dict.cart.shipping}</span>

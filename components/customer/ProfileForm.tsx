@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useCurrency } from "@/lib/currency/currency-context";
 import type { CustomerProfile } from "@/lib/server/customer-db";
 
 export function ProfileForm({ profile }: { profile: CustomerProfile }) {
@@ -15,6 +16,7 @@ export function ProfileForm({ profile }: { profile: CustomerProfile }) {
   const [lastName, setLastName] = useState(profile.last_name ?? "");
   const [phone, setPhone] = useState(profile.phone ?? "");
   const [lang, setLang] = useState(profile.preferred_language === "es" ? "es" : "en");
+  const { currency, setCurrency } = useCurrency();
   const [status, setStatus] = useState<{ ok: boolean; message: string } | null>(null);
   const [saving, setSaving] = useState(false);
 
@@ -77,6 +79,17 @@ export function ProfileForm({ profile }: { profile: CustomerProfile }) {
             <option value="en">{a.languageEn}</option>
             <option value="es">{a.languageEs}</option>
           </select>
+        </div>
+        <div className="acc-field">
+          <label htmlFor="pf-currency">{locale === "es" ? "Moneda" : "Currency"}</label>
+          <select id="pf-currency" className="acc-input" value={currency} onChange={(e) => setCurrency(e.target.value as never)}>
+            <option value="USD">USD</option>
+            <option value="COP">COP</option>
+            <option value="EUR">EUR</option>
+            <option value="GBP">GBP</option>
+            <option value="CAD">CAD</option>
+          </select>
+          <span className="acc-note">{locale === "es" ? "Solo cambia la visualización. El pago siempre se cobra en USD." : "Display only. Payment is always charged in USD."}</span>
         </div>
         <div className="acc-form__actions">
           <button type="submit" className="btn--primary" disabled={saving}>

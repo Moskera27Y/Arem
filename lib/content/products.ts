@@ -11,7 +11,10 @@ import { L, pick, pickImage, type Localized, type LocalizedImage } from "@/lib/c
  * locale in a later phase.
  */
 
-const cop = (amount: number): Money => ({ amount, currency: "COP" });
+// Base prices are USD only. Legacy COP-style placeholder values are
+// reinterpreted as USD main-unit amounts (÷1000) so the catalog starts with
+// sensible USD prices; Admin authors prices directly in USD.
+const usd = (amount: number): Money => ({ amount: amount / 1000, currency: "USD" });
 
 interface VariantSeed {
   id: string;
@@ -93,8 +96,8 @@ export const productSeeds: ProductSeed[] = [
         caption: L("Handwoven kanas detail", "Detalle del kanas tejido a mano"),
       },
     ],
-    price: cop(320000),
-    compareAtPrice: cop(380000),
+    price: usd(320000),
+    compareAtPrice: usd(380000),
     options: [
       { id: "color", name: L("Color", "Color"), values: [L("Cacao", "Cacao"), L("Arena", "Arena"), L("Charcoal", "Carbón")] },
     ],
@@ -150,7 +153,7 @@ export const productSeeds: ProductSeed[] = [
         caption: L("Honey-processed beans", "Granos de proceso honey"),
       },
     ],
-    price: cop(68000),
+    price: usd(68000),
     options: [
       { id: "formato", name: L("Format", "Presentación"), values: [L("Whole bean", "Grano"), L("Ground — filter", "Molido filtro"), L("Ground — espresso", "Molido espresso")] },
     ],
@@ -200,8 +203,8 @@ export const productSeeds: ProductSeed[] = [
         caption: L("Washed beans, medium roast", "Granos lavados, tueste medio"),
       },
     ],
-    price: cop(52000),
-    compareAtPrice: cop(62000),
+    price: usd(52000),
+    compareAtPrice: usd(62000),
     options: [
       { id: "formato", name: L("Format", "Presentación"), values: [L("Whole bean", "Grano"), L("Ground", "Molido")] },
     ],
@@ -254,7 +257,7 @@ export const productSeeds: ProductSeed[] = [
         caption: L("Burnished, unglazed surface", "Superficie bruñida, sin esmaltar"),
       },
     ],
-    price: cop(185000),
+    price: usd(185000),
     options: [
       { id: "tono", name: L("Tone", "Tono"), values: [L("Terra", "Terra"), L("Ash", "Ceniza")] },
     ],
@@ -302,7 +305,7 @@ export const productSeeds: ProductSeed[] = [
         caption: L("Moonlit glaze detail", "Detalle del esmalte de luna"),
       },
     ],
-    price: cop(240000),
+    price: usd(240000),
     options: [],
     variants: [{ id: "pla-lun-set4", sku: "PLA-LUN-SET4", title: L("Set of 4", "Set de 4"), values: {}, price: 240000, inventory: 5 }],
     categoryIds: ["cat-ceramics"],
@@ -350,7 +353,7 @@ export const productSeeds: ProductSeed[] = [
         caption: L("Looped weave and fringe", "Tejido de bucle y fleco"),
       },
     ],
-    price: cop(420000),
+    price: usd(420000),
     options: [
       { id: "color", name: L("Color", "Color"), values: [L("Páramo grey", "Gris páramo"), L("Coffee", "Café"), L("Moss green", "Verde musgo")] },
     ],
@@ -398,7 +401,7 @@ export const productSeeds: ProductSeed[] = [
         caption: L("Hand-stitched flowers", "Flores cosidas a mano"),
       },
     ],
-    price: cop(210000),
+    price: usd(210000),
     options: [],
     variants: [{ id: "cam-flo-180", sku: "CAM-FLO-180", title: L("180 × 40 cm", "180 × 40 cm"), values: {}, price: 210000, inventory: 7 }],
     categoryIds: ["cat-textiles", "cat-home"],
@@ -441,7 +444,7 @@ export const productSeeds: ProductSeed[] = [
         caption: L("Hand-painted edges", "Bordes pintados a mano"),
       },
     ],
-    price: cop(360000),
+    price: usd(360000),
     options: [
       { id: "color", name: L("Color", "Color"), values: [L("Tan", "Tabaco"), L("Black", "Negro"), L("Green", "Verde")] },
     ],
@@ -490,7 +493,7 @@ export const productSeeds: ProductSeed[] = [
         caption: L("Solid brass buckle", "Hebilla de latón macizo"),
       },
     ],
-    price: cop(140000),
+    price: usd(140000),
     options: [
       { id: "talla", name: L("Size", "Talla"), values: [L("S 80", "S 80"), L("M 90", "M 90"), L("L 100", "L 100"), L("XL 110", "XL 110")] },
     ],
@@ -541,8 +544,8 @@ export const productSeeds: ProductSeed[] = [
         caption: L("Hand-set emerald", "Esmeralda engastada a mano"),
       },
     ],
-    price: cop(890000),
-    compareAtPrice: cop(990000),
+    price: usd(890000),
+    compareAtPrice: usd(990000),
     options: [],
     variants: [{ id: "col-and-42", sku: "COL-AND-42", title: L("42 cm", "42 cm"), values: {}, price: 890000, compareAt: 990000, inventory: 3 }],
     categoryIds: ["cat-jewelry"],
@@ -585,7 +588,7 @@ export const productSeeds: ProductSeed[] = [
         caption: L("Hand-coiled weave", "Tejido enrollado a mano"),
       },
     ],
-    price: cop(130000),
+    price: usd(130000),
     options: [],
     variants: [{ id: "can-nor-34", sku: "CAN-NOR-34", title: L("34 cm", "34 cm"), values: {}, price: 130000, inventory: 9 }],
     categoryIds: ["cat-home"],
@@ -627,7 +630,7 @@ export const productSeeds: ProductSeed[] = [
         caption: L("Hand-knotted fringe", "Fleco anudado a mano"),
       },
     ],
-    price: cop(520000),
+    price: usd(520000),
     options: [
       { id: "color", name: L("Color", "Color"), values: [L("Natural", "Natural"), L("Indigo", "Índigo"), L("Sun", "Sol")] },
     ],
@@ -669,8 +672,8 @@ export function resolveProducts(seeds: ProductSeed[], locale: Locale): Product[]
       optionValues: Object.fromEntries(
         Object.entries(v.values).map(([key, value]) => [key, pick(value, locale)]),
       ),
-      price: cop(v.price),
-      compareAtPrice: v.compareAt ? cop(v.compareAt) : undefined,
+      price: usd(v.price),
+      compareAtPrice: v.compareAt ? usd(v.compareAt) : undefined,
       inventory: v.inventory,
       imageSrc: v.imageSrc,
     })),
@@ -719,3 +722,4 @@ export const getVariantById = (variantId: string) => {
   }
   return undefined;
 };
+

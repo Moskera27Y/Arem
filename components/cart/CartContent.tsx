@@ -6,7 +6,8 @@ import { getProductById } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { useFreeShippingActive } from "@/lib/admin/storefront-hooks";
-import { formatMoneyCompact } from "@/lib/format";
+import { useCurrency } from "@/lib/currency/currency-context";
+import { formatCurrency } from "@/lib/money";
 import { useCart } from "@/lib/store/cart-context";
 import { Icon } from "@/components/ui/icons";
 
@@ -16,6 +17,7 @@ export function CartContent() {
   const localePrefix = `/${locale}`;
   const freeShipping = useFreeShippingActive();
   const { lines, subtotal, setQuantity, remove, clear } = useCart();
+  const { format, isEstimate } = useCurrency();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -85,7 +87,7 @@ export function CartContent() {
                         </div>
                       </div>
                       <div style={{ textAlign: "right" }}>
-                        <div style={{ fontWeight: 600 }}>{formatMoneyCompact(variant.price)}</div>
+                        <div style={{ fontWeight: 600 }}>{format(variant.price.amount)}</div>
                         <button type="button" className="cart-line__remove" onClick={() => remove(line.variantId)}>
                           {dict.a11y.remove}
                         </button>
@@ -106,7 +108,7 @@ export function CartContent() {
               <div className="cart-summary">
                 <div className="cart-summary__row">
                   <span>{dict.cart.subtotal}</span>
-                  <span>{formatMoneyCompact({ amount: subtotal, currency: "COP" })}</span>
+                  <span>{format(subtotal)}</span>
                 </div>
                 <div className="cart-summary__row">
                   <span>{dict.cart.shipping}</span>
@@ -114,8 +116,19 @@ export function CartContent() {
                 </div>
                 <div className="cart-summary__row cart-summary__row--total">
                   <span>{dict.cart.total}</span>
-                  <span>{formatMoneyCompact({ amount: subtotal, currency: "COP" })}</span>
+                  <span>{format(subtotal)}</span>
                 </div>
+                {isEstimate && (
+                  <p className="currency-note">
+                    {locale === "es"
+                      ? "Conversión estimada. El pago final se cobra en USD."
+                      : "Estimated conversion. Final payment is charged in USD."}
+                  </p>
+                )}
+              </div>
+              <div className="cart-summary__row cart-summary__row--total" style={{ marginTop: "0.75rem" }}>
+                <span>{locale === "es" ? "Total final (USD)" : "Final total (USD)"}</span>
+                <span>{formatCurrency(subtotal, "USD")}</span>
               </div>
               <button type="button" className="btn btn--primary btn--block" style={{ marginTop: "1.5rem" }} disabled>
                 {dict.cart.checkoutBtn}

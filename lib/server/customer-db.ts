@@ -1,5 +1,6 @@
 import "server-only";
 import { q } from "./db";
+import { toCents } from "@/lib/money";
 
 // ---------------------------------------------------------------- types ----
 export interface CustomerProfile {
@@ -9,6 +10,7 @@ export interface CustomerProfile {
   last_name: string | null;
   phone: string | null;
   preferred_language: string;
+  display_currency: string;
   created_at: string;
   updated_at: string;
 }
@@ -98,11 +100,18 @@ export async function getProfile(id: string): Promise<CustomerProfile | null> {
 
 export async function updateProfile(
   id: string,
-  fields: { first_name?: string | null; last_name?: string | null; phone?: string | null; preferred_language?: string },
+  fields: {
+    first_name?: string | null;
+    last_name?: string | null;
+    phone?: string | null;
+    preferred_language?: string;
+    display_currency?: string;
+  },
 ): Promise<CustomerProfile | null> {
   const rows = await q<CustomerProfile>(
     `update public.customer_profiles
-       set first_name = $2, last_name = $3, phone = $4, preferred_language = $5, updated_at = now()
+       set first_name = $2, last_name = $3, phone = $4, preferred_language = $5,
+           display_currency = $6, updated_at = now()
        where id = $1 returning *`,
     [
       id,
@@ -110,6 +119,7 @@ export async function updateProfile(
       fields.last_name ?? null,
       fields.phone ?? null,
       fields.preferred_language ?? "en",
+      fields.display_currency ?? "USD",
     ],
   );
   return rows[0] ?? null;
@@ -266,4 +276,59 @@ export async function getOrder(profileId: string, orderId: string): Promise<{ or
     tracking.push(...ev);
   }
   return { order, items, shipments, tracking };
+}
+
+// ------------------------------------------------------ order foundation ----
+export interface CreateOrderInput {
+  customerProfileId: string;
+  items: { product_id: string; product_name: string; unit_price: number; quantity: number }[];
+  subtotal: number; // USD main unit
+  shipping_total: number; // USD
+  tax_total: number; // USD
+  total: number; // USD main unit (authoritative)
+  displayCurrency?: string; // customer-selected display currency
+  exchangeRate?: number; // units per 1 USD used for the display estimate
+  shippingAddress?: Record<string, unknown>;
+  billingAddress?: Record<string, unknown>;
+}
+
+/** Create an order capturing the authoritative USD amount in integer cents,
+ * plus the customer's display currency, the rate used and the converted
+ * display snapshot. The payment amount is always computed from USD cents,
+ * never from the converted customer-facing value. */
+export async function createOrder(input: CreateOrderInput): Promise<{ id: string; order_number: string; usdTotalCents: number }> {
+  const displayCurrency = input.displayCurrency ?? "USD";
+  const rate = Number.isFinite(input.exchangeRate) && input.exchangeRate! > 0 ? input.exchangeRate! : 1;
+  const usdTotalCents = toCents(input.total);
+  const convertedTotalCents = Math.round(toCents(input.total) * rate);
+  const orderNumber = `AREM-${Date.now().toString().slice(-8)}`;
+  const orderRows = await q<{ id: string }>(
+    `insert into public.orders
+       (order_number, customer_profile_id, status, payment_status, currency, subtotal, shipping_total, tax_total, total,
+        shipping_address, billing_address, display_currency, usd_total_cents, exchange_rate, converted_total_cents)
+     values ($1,$2,'pending_payment','pending','USD',$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) returning id`,
+    [
+      orderNumber,
+      input.customerProfileId,
+      input.subtotal,
+      input.shipping_total,
+      input.tax_total,
+      input.total,
+      input.shippingAddress ? JSON.stringify(input.shippingAddress) : null,
+      input.billingAddress ? JSON.stringify(input.billingAddress) : null,
+      displayCurrency,
+      usdTotalCents,
+      rate,
+      convertedTotalCents,
+    ],
+  );
+  const orderId = orderRows[0].id;
+  for (const it of input.items) {
+    const lineTotal = Math.round(it.unit_price * it.quantity * 100) / 100;
+    await q(
+      "insert into public.order_items (order_id, product_id, product_name, unit_price, quantity, line_total) values ($1,$2,$3,$4,$5,$6)",
+      [orderId, it.product_id, it.product_name, it.unit_price, it.quantity, lineTotal],
+    );
+  }
+  return { id: orderId, order_number: orderNumber, usdTotalCents };
 }

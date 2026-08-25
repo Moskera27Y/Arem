@@ -136,7 +136,7 @@ export function PromotionsManager() {
 
   const typeLabel = (t: PromotionType) => PROMOTION_TYPES.find((x) => x.id === t)?.label ?? t;
   const valueLabel = (p: Promotion) =>
-    p.type === "percentage" ? `${Math.round(p.value)}% off` : p.type === "fixed" ? formatMoney({ amount: p.value, currency: "COP" }) : "—";
+    p.type === "percentage" ? `${Math.round(p.value)}% off` : p.type === "fixed" ? formatMoney({ amount: p.value, currency: "USD" }) : "—";
 
   const toggleTarget = (list: string[], id: string, set: (v: string[]) => void) => {
     set(list.includes(id) ? list.filter((x) => x !== id) : [...list, id]);
@@ -199,7 +199,7 @@ export function PromotionsManager() {
                 </select>
               </Field>
               <Field
-                label={draft.type === "percentage" ? "Value (%)" : draft.type === "fixed" ? "Value (COP)" : "Value"}
+                label={draft.type === "percentage" ? "Value (%)" : draft.type === "fixed" ? "Value (USD)" : "Value"}
                 hint={draft.type === "percentage" ? "1–100" : draft.type === "fixed" ? "Amount subtracted from the price" : "Not used for this type"}
               >
                 <input

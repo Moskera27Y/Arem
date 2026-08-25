@@ -19,7 +19,8 @@ import type { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { useAdminProductBySlug, useDiscountFor, useMergedProduct } from "@/lib/admin/storefront-hooks";
-import { discountPercent, formatMoney } from "@/lib/format";
+import { discountPercent } from "@/lib/format";
+import { useCurrency } from "@/lib/currency/currency-context";
 import { ProductGallery } from "@/components/product/ProductGallery";
 import { AddToCart } from "@/components/product/AddToCart";
 import { Icon } from "@/components/ui/icons";
@@ -33,6 +34,7 @@ export function ProductView({ product: staticProduct, slug }: ProductViewProps) 
   const locale = useLocale();
   const dict = getDictionary(locale);
   const localePrefix = `/${locale}`;
+  const { format, isEstimate } = useCurrency();
 
   const merged = useMergedProduct(staticProduct, locale);
   const adminOnly = useAdminProductBySlug(slug, locale);
@@ -91,11 +93,14 @@ export function ProductView({ product: staticProduct, slug }: ProductViewProps) 
           </div>
 
           <div className="pdp__price">
-            <span>{formatMoney(displayPrice)}</span>
-            {comparePrice && <span className="price--was">{formatMoney(comparePrice)}</span>}
+            <span>{format(displayPrice.amount)}</span>
+            {comparePrice && <span className="price--was">{format(comparePrice.amount)}</span>}
             {discount?.badge && <span className="badge badge--sale">{discount.badge}</span>}
             {percent !== null && !discount && <span className="badge badge--dark">-{percent}%</span>}
             {product.badge && !discount && <span className="badge badge--dark">{product.badge}</span>}
+            {isEstimate && (
+              <p className="currency-note">{locale === "es" ? "Conversión estimada. El pago final se cobra en USD." : "Estimated conversion. Final payment is charged in USD."}</p>
+            )}
           </div>
 
           <p className="pdp__desc">{product.description}</p>

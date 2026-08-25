@@ -25,10 +25,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Ya existe una cuenta con este email" }, { status: 409 });
     }
     const hash = await bcrypt.hash(password, 10);
+    const currency = ["USD", "COP", "EUR", "GBP", "CAD"].includes(String(body.display_currency)) ? String(body.display_currency) : "USD";
     const rows = await q<{ id: string }>(
-      `insert into public.customer_profiles (email, password_hash, first_name, last_name, phone, preferred_language)
-       values ($1, $2, $3, $4, $5, $6) returning id`,
-      [email, hash, body.first_name || null, body.last_name || null, body.phone || null, body.preferred_language || "en"],
+      `insert into public.customer_profiles (email, password_hash, first_name, last_name, phone, preferred_language, display_currency)
+       values ($1, $2, $3, $4, $5, $6, $7) returning id`,
+      [email, hash, body.first_name || null, body.last_name || null, body.phone || null, body.preferred_language || "en", currency],
     );
     const id = rows[0].id;
     const wishlist = Array.isArray(body.wishlist) ? (body.wishlist as unknown[]).filter((x) => typeof x === "string") : [];

@@ -194,8 +194,8 @@ function buildSeed(values: FormValues, existing: AdminProduct | undefined): Admi
       src: src.trim(),
       alt: name,
     })),
-    price: { amount: price, currency: "COP" },
-    compareAtPrice: sale !== undefined ? { amount: sale, currency: "COP" } : undefined,
+    price: { amount: price, currency: "USD" },
+    compareAtPrice: sale !== undefined ? { amount: sale, currency: "USD" } : undefined,
     options,
     variants,
     categoryIds: values.categoryId ? [values.categoryId] : [],
@@ -402,7 +402,7 @@ export function ProductForm({ productId }: { productId?: string }) {
         <section className="admin-form__section">
           <h2 className="admin-form__section-title">Pricing & inventory</h2>
           <div className="admin-form__grid admin-form__grid--3">
-            <Field label="Price (COP)" required error={errors.price}>
+            <Field label="Price (USD)" required error={errors.price}>
               <input
                 className="input"
                 type="number"
@@ -413,7 +413,7 @@ export function ProductForm({ productId }: { productId?: string }) {
                 placeholder="320000"
               />
             </Field>
-            <Field label="Sale price (COP)" hint="Optional. Shown as the original price.">
+            <Field label="Sale price (USD)" hint="Optional. Shown as the original price.">
               <input
                 className="input"
                 type="number"

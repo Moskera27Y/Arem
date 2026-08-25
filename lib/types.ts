@@ -9,10 +9,11 @@
  * implementation would be swapped for that data source.
  */
 
-export type Currency = "COP" | "USD";
+export type Currency = "USD" | "COP" | "EUR" | "GBP" | "CAD";
 
 export interface Money {
-  /** Amount in the currency's main unit (e.g. 320000 = $320.000 COP). */
+  /** Base amount in USD main unit (e.g. 320 = $320.00 USD). All base prices
+   * are managed in USD; display currencies are estimates. */
   amount: number;
   currency: Currency;
 }

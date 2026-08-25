@@ -9,19 +9,21 @@ export async function PUT(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
   }
-  let body: { first_name?: string; last_name?: string; phone?: string; preferred_language?: string };
+  let body: { first_name?: string; last_name?: string; phone?: string; preferred_language?: string; display_currency?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Solicitud inválida" }, { status: 400 });
   }
   const lang = body.preferred_language === "es" ? "es" : "en";
+  const currency = ["USD", "COP", "EUR", "GBP", "CAD"].includes(String(body.display_currency)) ? String(body.display_currency) : "USD";
   try {
     const profile = await updateProfile(id, {
       first_name: body.first_name ?? null,
       last_name: body.last_name ?? null,
       phone: body.phone ?? null,
       preferred_language: lang,
+      display_currency: currency,
     });
     return NextResponse.json(profile);
   } catch (err) {

@@ -21,7 +21,7 @@ export interface Promotion {
   /** Internal description (Admin only). */
   description: string;
   type: PromotionType;
-  /** Percentage (0–100) for "percentage", COP amount for "fixed", else 0. */
+  /** Percentage (0–100) for "percentage", USD amount for "fixed", else 0. */
   value: number;
   /** ISO date `yyyy-mm-dd`. */
   startDate: string;
@@ -66,7 +66,7 @@ export const SOCIAL_NETWORKS: { id: SocialNetwork; label: string }[] = [
 
 export const PROMOTION_TYPES: { id: PromotionType; label: string }[] = [
   { id: "percentage", label: "Percentage discount" },
-  { id: "fixed", label: "Fixed discount (COP)" },
+  { id: "fixed", label: "Fixed discount (USD)" },
   { id: "free-shipping", label: "Free shipping" },
   { id: "announcement", label: "Announcement" },
 ];

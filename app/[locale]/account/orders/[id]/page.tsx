@@ -98,6 +98,9 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ lo
           <div className="meta">{dict.cart.subtotal}: {money(order.subtotal, order.currency)}</div>
           <div className="meta">{dict.cart.shipping}: {money(order.shipping_total, order.currency)}</div>
           <div className="meta" style={{ fontWeight: 600 }}>{a.total}: {money(order.total, order.currency)}</div>
+          <div className="meta" style={{ fontSize: "var(--text-2xs, 12px)" }}>
+            {locale === "es" ? "El pago final se cobra en USD." : "Final payment is charged in USD."}
+          </div>
         </div>
       </div>
 

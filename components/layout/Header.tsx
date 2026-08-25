@@ -11,6 +11,7 @@ import { useWishlist } from "@/lib/store/wishlist-context";
 import { Logo } from "@/components/ui/Logo";
 import { Icon } from "@/components/ui/icons";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { CurrencySwitcher } from "@/components/layout/CurrencySwitcher";
 
 export function Header() {
   const pathname = usePathname();
@@ -59,6 +60,7 @@ export function Header() {
 
           <div className="header-actions">
             <LanguageSwitcher />
+            <CurrencySwitcher />
             <Link href={`${localePrefix}/shop`} className="icon-btn" aria-label={dict.a11y.search} title={dict.a11y.search}>
               <Icon name="search" size={19} />
             </Link>
@@ -114,6 +116,7 @@ export function Header() {
           </div>
           <div className="mobile-menu__meta">
             <LanguageSwitcher />
+            <CurrencySwitcher />
             <span>hola@arem.world</span>
             <span>Bogotá · Colombia</span>
             <span>@arem.world</span>

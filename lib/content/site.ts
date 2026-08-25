@@ -19,7 +19,7 @@ export interface SiteSeed {
     socials: { label: string; href: string }[];
     bottom: Localized;
   };
-  currency: "COP";
+  currency: "USD";
 }
 
 /**
@@ -86,7 +86,7 @@ export const siteSeed: SiteSeed = {
       "© 2026 AREM WORLD. Hecho con amor en Colombia.",
     ),
   },
-  currency: "COP",
+  currency: "USD",
 };
 
 /** Resolve the bilingual seed to a plain site configuration for one locale. */

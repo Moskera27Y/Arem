@@ -1,4 +1,22 @@
 /* Customer account + auth area — professional, responsive. */
+.currency-switch {
+  appearance: none;
+  background: transparent;
+  border: 1px solid #d8d2c6;
+  border-radius: 8px;
+  padding: 0.25rem 0.4rem;
+  font-size: 12px;
+  font-weight: 600;
+  color: #3d3a33;
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+.currency-note {
+  font-size: var(--text-2xs, 12px);
+  color: #8a8175;
+  margin: 0.5rem 0 0;
+}
 .auth-wrap {
   display: flex;
   justify-content: center;

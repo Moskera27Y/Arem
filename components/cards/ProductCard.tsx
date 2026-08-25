@@ -5,7 +5,8 @@ import { getCategoryById, getRegionById, type Product } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { useMergedProduct, useDiscountFor } from "@/lib/admin/storefront-hooks";
-import { discountPercent, formatMoney } from "@/lib/format";
+import { discountPercent } from "@/lib/format";
+import { useCurrency } from "@/lib/currency/currency-context";
 import { useWishlist } from "@/lib/store/wishlist-context";
 import { useCart } from "@/lib/store/cart-context";
 import { ManagedImage } from "@/components/ui/ManagedImage";
@@ -26,6 +27,7 @@ export function ProductCard({ product, priority }: ProductCardProps) {
   const dict = getDictionary(locale);
   const { has, toggle } = useWishlist();
   const { add, openCart } = useCart();
+  const { format, isEstimate } = useCurrency();
 
   const merged = useMergedProduct(product, locale);
   const discount = useDiscountFor(merged ?? product);
@@ -82,9 +84,12 @@ export function ProductCard({ product, priority }: ProductCardProps) {
           <Link href={`/${locale}/products/${merged.slug}`}>{merged.name}</Link>
         </h3>
         <div className="product-card__price">
-          <span>{formatMoney(displayPrice)}</span>
-          {comparePrice && <span className="price--was">{formatMoney(comparePrice)}</span>}
+          <span>{format(displayPrice.amount)}</span>
+          {comparePrice && <span className="price--was">{format(comparePrice.amount)}</span>}
         </div>
+        {isEstimate && (
+          <p className="currency-note">{locale === "es" ? "Conversión estimada." : "Estimated conversion."}</p>
+        )}
         {region && (
           <span className="product-card__origin">
             <Icon name="star" size={11} strokeWidth={1.4} />

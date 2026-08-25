@@ -5,7 +5,7 @@ import type { Product } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { useCart } from "@/lib/store/cart-context";
-import { formatMoney } from "@/lib/format";
+import { useCurrency } from "@/lib/currency/currency-context";
 import { Icon } from "@/components/ui/icons";
 
 interface AddToCartProps {
@@ -20,6 +20,7 @@ export function AddToCart({ product }: AddToCartProps) {
   const locale = useLocale();
   const dict = getDictionary(locale);
   const { add, openCart } = useCart();
+  const { format } = useCurrency();
   const [selected, setSelected] = useState<Record<string, string>>(() => {
     const initial: Record<string, string> = {};
     for (const option of product.options) initial[option.id] = option.values[0] ?? "";
@@ -112,13 +113,13 @@ export function AddToCart({ product }: AddToCartProps) {
         >
           {soldOut
             ? dict.product.soldOut
-            : `${dict.product.addToCart} · ${variant ? formatMoney(variant.price) : ""}`}
+            : `${dict.product.addToCart} · ${variant ? format(variant.price.amount) : ""}`}
         </button>
       </div>
 
       {variant?.compareAtPrice && (
         <p className="muted" style={{ fontSize: "var(--text-xs)" }}>
-          {dict.product.originalPrice} {formatMoney(variant.compareAtPrice)}
+          {dict.product.originalPrice} {format(variant.compareAtPrice.amount)}
         </p>
       )}
     </div>
