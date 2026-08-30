@@ -93,7 +93,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       const found = getVariantById(line.variantId);
       if (!found) continue;
       count += line.quantity;
-      subtotal += found.variant.price * line.quantity;
+      subtotal += (found.variant.price / 1000) * line.quantity;
     }
     return { count, subtotal };
   }, [lines]);

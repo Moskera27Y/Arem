@@ -163,6 +163,30 @@ export function ProductView({ product: staticProduct, slug }: ProductViewProps) 
               </ul>
             </div>
           )}
+
+          {artisan && (
+            <div className="pdp-editorial pdp-maker">
+              <span className="eyebrow">{locale === "es" ? "Conoce al creador" : "Meet the maker"}</span>
+              <h3>{artisan.name}</h3>
+              <p className="pdp-maker__craft">{artisan.craft}</p>
+              <p>{artisan.bio}</p>
+              {region && <p className="muted">{region.name}</p>}
+              <Link href={`${localePrefix}/stories`} className="btn btn--secondary btn--sm">
+                {locale === "es" ? "Ver historias" : "Read their story"}
+              </Link>
+            </div>
+          )}
+
+          {region && (
+            <div className="pdp-editorial pdp-origin">
+              <span className="eyebrow">{locale === "es" ? "Origen" : "Origin"}</span>
+              <h3>{region.name.toUpperCase()} · {locale === "es" ? "COLOMBIA" : "COLOMBIA"}</h3>
+              <p>{region.description}</p>
+              <Link href={`${localePrefix}/regions/${region.slug}`} className="btn btn--secondary btn--sm">
+                {locale === "es" ? "Explorar la región" : "Explore the region"}
+              </Link>
+            </div>
+          )}
         </div>
       </div>
     </>

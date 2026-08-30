@@ -18,6 +18,7 @@ export function CartContent() {
   const freeShipping = useFreeShippingActive();
   const { lines, subtotal, setQuantity, remove, clear } = useCart();
   const { format, isEstimate } = useCurrency();
+  const es = locale === "es";
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -130,11 +131,11 @@ export function CartContent() {
                 <span>{locale === "es" ? "Total final (USD)" : "Final total (USD)"}</span>
                 <span>{formatCurrency(subtotal, "USD")}</span>
               </div>
-              <button type="button" className="btn btn--primary btn--block" style={{ marginTop: "1.5rem" }} disabled>
-                {dict.cart.checkoutBtn}
-              </button>
+              <Link href={`${localePrefix}/checkout`} className="btn btn--primary btn--block" style={{ marginTop: "1.5rem" }}>
+                {es ? "Finalizar compra" : "Checkout"}
+              </Link>
               <p className="muted" style={{ fontSize: "var(--text-xs)", textAlign: "center", marginTop: "0.9rem" }}>
-                {dict.cart.paymentsNote}
+                {es ? "El pago se cobra en USD." : "Payment is charged in USD."}
               </p>
               <Link href={`${localePrefix}/shop`} className="btn btn--secondary btn--block" style={{ marginTop: "0.75rem" }}>
                 {dict.cart.keepShopping}
