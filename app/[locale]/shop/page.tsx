@@ -63,7 +63,7 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
   const activeCategory = activeSlug ? getCategoryBySlug(locale, activeSlug) : null;
 
   return (
-    <>
+    <div className="shop-page">
       <section className="page-hero">
         <div className="container">
           <nav className="breadcrumbs" aria-label="Breadcrumbs">
@@ -96,6 +96,6 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

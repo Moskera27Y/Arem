@@ -53,7 +53,7 @@ export function ShopGrid({ products, locale, sort }: ShopGridProps) {
           {dict.shop.empty}
         </p>
       ) : (
-        <div className="grid grid--3">
+        <div className="shop-grid">
           {sorted.map((product, index) => (
             <Reveal key={product.id} delay={Math.min(index, 8) * 60}>
               <ProductCard product={product} />
