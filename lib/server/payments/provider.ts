@@ -25,7 +25,10 @@ export class ManualProvider implements PaymentProvider {
   }
 }
 
-export function getPaymentProvider(_method: PaymentMethod): PaymentProvider {
+import { SquareProvider, squareConfigured } from "./square";
+
+export function getPaymentProvider(method: PaymentMethod): PaymentProvider {
+  if (method === "card" && squareConfigured()) return new SquareProvider();
   // Stripe/PayPal/Wompi/MercadoPago providers plug in here when configured.
   return new ManualProvider();
 }
