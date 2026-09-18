@@ -62,7 +62,7 @@ export default async function CollectionsPage({ params }: { params: Promise<P> }
           {items.length === 0 ? (
             <p className="muted">{dict.collections.filling}</p>
           ) : (
-            <div className="grid grid--2">
+            <div className="grid grid--2 collections-grid">
               {items.map((collection, index) => (
                 <Reveal key={collection.id} delay={index * 80}>
                   <CollectionCard collection={collection} locale={locale} />
