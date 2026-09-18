@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-label="Sale up to 40 percent off">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.20 0 0 0 0 0.12 0 0 0 0 0.08 0 0 0 0.08 0"/>
+</filter>
+</defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="0">
+<stop offset="0" stop-color="#5C2A14"/><stop offset="0.45" stop-color="#8A3F22"/><stop offset="1" stop-color="#D9A441"/>
+</linearGradient>
+<rect width="1920" height="1080" fill="url(#bg)"/>
+<g fill="none" stroke="#F3E7CF" stroke-opacity="0.4" stroke-width="3">
+<path d="M120 120 L240 240 L120 360 L0 240 Z"/>
+<path d="M1800 120 L1920 240 L1800 360 L1680 240 Z"/>
+<path d="M120 720 L240 840 L120 960 L0 840 Z"/>
+<path d="M1800 720 L1920 840 L1800 960 L1680 840 Z"/>
+</g>
+<g transform="translate(1270 540) rotate(-6) scale(0.85)">
+<rect x="-400" y="-210" width="800" height="420" rx="36" fill="#F6EEDC"/>
+<circle cx="-280" cy="0" r="26" fill="none" stroke="#8A3F22" stroke-width="14"/>
+<text x="40" y="20" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="200" font-weight="bold" fill="#8A3F22">-40%</text>
+<text x="40" y="120" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-style="italic" font-size="64" fill="#5C3A24">sale · ofertas</text>
+</g>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.22"/>
+</radialGradient>
+<rect width="1920" height="1080" fill="url(#v)"/>
+<rect width="1920" height="1080" filter="url(#g)" opacity="0.9"/>
+</svg>

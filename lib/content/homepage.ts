@@ -126,17 +126,6 @@ const seed: HomepageSeed = {
       image: { src: "/images/hero-main.svg", alt: L("Andean highlands at dawn, coffee axis of Colombia", "Alturas andinas al amanecer, eje cafetero de Colombia") },
       slides: [
         {
-          eyebrow: L("New collection", "Nueva colección"),
-          title: L("The Andes,", "Los Andes,"),
-          titleAccent: L("woven to wear.", "tejidos para llevar."),
-          subtitle: L(
-            "Mochilas, textiles and jewels handmade by Colombian artisans.",
-            "Mochilas, textiles y joyas hechos a mano por artesanos colombianos.",
-          ),
-          primaryCta: { label: L("Shop new in", "Ver novedades"), href: "/shop" },
-          image: { src: "/images/hero-craft.svg", alt: L("Artisan hands working natural materials", "Manos de artesano trabajando materiales naturales") },
-        },
-        {
           eyebrow: L("Up to 40% off", "Hasta 40% off"),
           title: L("Sale,", "Ofertas,"),
           titleAccent: L("while they last.", "hasta agotar."),
@@ -145,7 +134,18 @@ const seed: HomepageSeed = {
             "Precios especiales en piezas hechas a mano.",
           ),
           primaryCta: { label: L("Shop the sale", "Ver ofertas"), href: "/shop?sale=1" },
-          image: { src: "/images/p-mochila-katsu-1.svg", alt: L("Wayuu mochila, handwoven", "Mochila wayuu, tejida a mano") },
+          image: { src: "/images/hero-sale.svg", alt: L("Sale tag, up to 40 percent off", "Etiqueta de oferta, hasta 40 por ciento off") },
+        },
+        {
+          eyebrow: L("From our Instagram", "De nuestro Instagram"),
+          title: L("Handmade,", "Hecho a mano,"),
+          titleAccent: L("with love.", "con amor."),
+          subtitle: L(
+            "Follow @arem.world for drops, behind-the-loom moments and new pieces.",
+            "Sigue @arem.world: lanzamientos, detrás del telar y piezas nuevas.",
+          ),
+          primaryCta: { label: L("Explore collections", "Explorar colecciones"), href: "/collections" },
+          image: { src: "/images/ig-1.svg", alt: L("Community craft photography", "Fotografía artesanal de la comunidad") },
         },
       ],
     },
