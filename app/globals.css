@@ -1352,8 +1352,16 @@ h4 {
 }
 
 .page-hero--dark {
-  background: transparent;
+  /* Scoped under .stories-page: beats the later base .page-hero rule. */
   border-bottom: 1px solid rgba(217, 164, 65, 0.18);
+}
+
+.stories-page .page-hero {
+  background: transparent;
+}
+
+.stories-page .story-card {
+  background: transparent;
 }
 
 .page-hero--dark .breadcrumbs {
