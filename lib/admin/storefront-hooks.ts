@@ -158,42 +158,62 @@ let mediaPromise: Promise<MediaMap> | null = null;
 function fetchMediaMap(): Promise<MediaMap> {
   if (mediaCache) return Promise.resolve(mediaCache);
   if (!mediaPromise) {
-    mediaPromise = fetch("/api/media")
-      .then((r) => (r.ok ? r.json() : []))
-      .then((rows: unknown[]) => {
-        const m: MediaMap = new Map();
-        for (const raw of rows) {
-          const row = raw as { key?: string; url?: string; alt_en?: string | null; alt_es?: string | null };
-          if (row.key && row.url) m.set(row.key, { src: row.url, alt: { en: row.alt_en ?? "", es: row.alt_es ?? "" } });
-        }
-        mediaCache = m;
-        return m;
-      })
-      .catch(() => {
-        const empty: MediaMap = new Map();
-        mediaCache = empty;
-        return empty;
-      });
+    // Defer to idle so /api/media never competes with LCP (hero/logo/fonts).
+    const startFetch = () =>
+      fetch("/api/media", { priority: "low" } as RequestInit)
+        .then((r) => (r.ok ? r.json() : []))
+        .then((rows: unknown[]) => {
+          const m: MediaMap = new Map();
+          for (const raw of rows) {
+            const row = raw as { key?: string; url?: string; alt_en?: string | null; alt_es?: string | null };
+            if (row.key && row.url) m.set(row.key, { src: row.url, alt: { en: row.alt_en ?? "", es: row.alt_es ?? "" } });
+          }
+          mediaCache = m;
+          return m;
+        })
+        .catch(() => {
+          const empty: MediaMap = new Map();
+          mediaCache = empty;
+          return empty;
+        });
+    // requestIdleCallback keeps the main thread free for hero paint.
+    mediaPromise =
+      typeof window !== "undefined" && "requestIdleCallback" in window
+        ? new Promise<MediaMap>((resolve) => {
+            (window as Window & { requestIdleCallback: (cb: () => void, opts?: { timeout: number }) => void }).requestIdleCallback(
+              () => resolve(startFetch()),
+              { timeout: 2500 },
+            );
+          }).then((inner) => inner)
+        : startFetch();
   }
   return mediaPromise;
 }
 
 export function useManagedMedia(key: string): { src: string; alt: { en: string; es: string } } | null {
-  const [map, setMap] = useState<MediaMap | null>(mediaCache);
+  const [override, setOverride] = useState<{ src: string; alt: { en: string; es: string } } | null>(
+    () => mediaCache?.get(key) ?? null,
+  );
   useEffect(() => {
-    if (mediaCache) {
-      setMap(mediaCache);
+    const cached = mediaCache?.get(key);
+    if (cached) {
+      setOverride(cached);
       return;
     }
     let alive = true;
     fetchMediaMap().then((m) => {
-      if (alive) setMap(m);
+      // Only re-render when this image actually has an Admin override.
+      // Otherwise keep the SSR src untouched (avoids LCP revalidation).
+      if (alive) {
+        const hit = m.get(key);
+        if (hit) setOverride(hit);
+      }
     });
     return () => {
       alive = false;
     };
-  }, []);
-  return useMemo(() => map?.get(key) ?? null, [map, key]);
+  }, [key]);
+  return useMemo(() => override ?? null, [override]);
 }
 
 /** The full media map (key -> { src, alt }) loaded from Neon, for components

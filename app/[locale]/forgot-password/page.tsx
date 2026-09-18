@@ -12,7 +12,7 @@ export default function ForgotPasswordPage() {
   const a = dict.account;
   const prefix = `/${locale}`;
   const [email, setEmail] = useState("");
-  const [status, setStatus] = useState<{ ok: boolean; message: string; resetUrl?: string } | null>(null);
+  const [status, setStatus] = useState<{ ok: boolean; message: string } | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function submit(e: React.FormEvent) {
@@ -25,12 +25,11 @@ export default function ForgotPasswordPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-      const data = (await res.json().catch(() => ({}))) as { ok?: boolean; resetUrl?: string };
+      const data = (await res.json().catch(() => ({}))) as { ok?: boolean };
       if (data.ok) {
         setStatus({
           ok: true,
-          message: locale === "es" ? "Revisa tu correo para restablecer la contraseña." : "Check your email to reset your password.",
-          resetUrl: data.resetUrl,
+          message: locale === "es" ? "Si existe una cuenta, recibirás un correo para restablecer la contraseña." : "If an account exists, you'll receive a password reset email.",
         });
       } else {
         setStatus({ ok: false, message: "Error" });
@@ -46,15 +45,7 @@ export default function ForgotPasswordPage() {
     <AuthCard title={a.forgotTitle} sub={a.forgotSub}>
       <form onSubmit={submit}>
         {status && (
-          <div className={`acc-status ${status.ok ? "acc-status--ok" : "acc-status--err"}`}>
-            {status.message}
-            {status.resetUrl && (
-              <>
-                {" "}
-                <Link href={status.resetUrl}>{a.resetTitle}</Link>
-              </>
-            )}
-          </div>
+          <div className={`acc-status ${status.ok ? "acc-status--ok" : "acc-status--err"}`}>{status.message}</div>
         )}
         <div className="acc-field">
           <label htmlFor="fg-email">{a.email}</label>

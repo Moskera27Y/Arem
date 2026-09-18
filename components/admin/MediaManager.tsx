@@ -49,10 +49,12 @@ const typeLabel = (t: string) => MEDIA_TYPES.find((x) => x.id === t)?.label ?? t
 function isValidSrc(value: string): boolean {
   const v = value.trim();
   if (!v) return false;
-  if (/^\/images\/[\w./-]+$/.test(v)) return true;
+  if (/^\/images\/[\w./-]+\.(png|jpe?g|webp|gif|avif|svg)$/i.test(v)) return true;
   try {
-    const u = new URL(v, "http://localhost");
-    return u.protocol === "http:" || u.protocol === "https:";
+    const u = new URL(v);
+    if (u.protocol !== "https:") return false;
+    if (u.hostname.endsWith(".public.blob.vercel-storage.com")) return true;
+    return false;
   } catch {
     return false;
   }
@@ -370,7 +372,7 @@ function MediaEditModal({
                 <input
                   ref={fileRef}
                   type="file"
-                  accept="image/png,image/jpeg,image/webp,image/svg+xml,image/gif,image/avif"
+                  accept="image/png,image/jpeg,image/webp,image/gif,image/avif"
                   className="input"
                   onChange={(e) => onFile(e.target.files?.[0])}
                 />

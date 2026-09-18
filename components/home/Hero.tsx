@@ -18,7 +18,14 @@ export function Hero({ section, locale }: HeroProps) {
   return (
     <section className="hero">
       <div className="hero__media">
-        <ManagedImage src={section.image.src} alt={section.image.alt} priority />
+        <ManagedImage
+          src={section.image.src}
+          alt={section.image.alt}
+          priority
+          sizes="100vw"
+          width={1920}
+          height={860}
+        />
       </div>
       <div className="hero__content">
         <p className="hero__eyebrow">{section.eyebrow}</p>

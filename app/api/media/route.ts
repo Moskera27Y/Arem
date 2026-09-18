@@ -35,14 +35,28 @@ export async function POST(req: NextRequest) {
 
   if (typeof body?.key !== "string" || !body.key) return NextResponse.json({ error: "key requerido" }, { status: 400 });
   if (typeof body?.url !== "string" || !body.url) return NextResponse.json({ error: "url requerida" }, { status: 400 });
+  if (body.key.length > 200 || body.url.length > 2000)
+    return NextResponse.json({ error: "key o url demasiado larga" }, { status: 400 });
+
+  // SSRF/XSS: only https Blob URLs or local /images/ paths. No javascript:/data:/http:.
+  const url = body.url.trim();
+  const isLocal = /^\/images\/[\w./-]+\.(png|jpe?g|webp|gif|avif|svg)$/i.test(url);
+  let isBlob = false;
+  try {
+    const u = new URL(url);
+    isBlob = u.protocol === "https:" && u.hostname.endsWith(".public.blob.vercel-storage.com");
+  } catch {
+    isBlob = false;
+  }
+  if (!isLocal && !isBlob) return NextResponse.json({ error: "URL no permitida (solo https Blob o /images/)" }, { status: 400 });
 
   const allowed: MediaType[] = ["hero", "product", "category", "story", "region", "social", "footer", "logo"];
   const type = allowed.includes(body.type) ? body.type : "product";
 
   try {
     const row = await upsertMedia({
-      key: body.key,
-      url: body.url,
+      key: body.key.trim(),
+      url,
       storage_path: body.storage_path ?? null,
       type,
       usage: body.usage ?? null,

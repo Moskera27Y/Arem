@@ -24,6 +24,11 @@ export function Logo({ variant = "dark", href = "/" }: LogoProps) {
         src="/brand/arem-world-logo.svg"
         alt="AREM WORLD — Colombian craftsmanship"
         className="logo__img"
+        width={760}
+        height={240}
+        loading="eager"
+        decoding="sync"
+        fetchPriority="high"
       />
     </Link>
   );

@@ -6,6 +6,7 @@ import type { HomeSection } from "@/lib/types";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { DragScroll } from "@/components/ui/DragScroll";
+import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/icons";
 
 interface FeaturedProductsProps {
@@ -29,12 +30,14 @@ export function FeaturedProducts({ section, locale }: FeaturedProductsProps) {
   return (
     <section className="section section--products">
       <div className="container">
-        <SectionHeading
-          eyebrow={section.eyebrow}
-          title={section.title}
-          subtitle={section.subtitle}
-          center
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow={section.eyebrow}
+            title={section.title}
+            subtitle={section.subtitle}
+            center
+          />
+        </Reveal>
       </div>
       <DragScroll className="products-row" aria-label={section.title}>
         {selected.map((product) => (

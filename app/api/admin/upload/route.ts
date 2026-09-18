@@ -2,8 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { put } from "@vercel/blob";
 import { requireAdmin } from "@/lib/server/auth";
 
-const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/svg+xml", "image/gif", "image/avif"];
-const MAX_BYTES = 10 * 1024 * 1024; // 10 MB
+const ALLOWED = ["image/png", "image/jpeg", "image/webp", "image/gif", "image/avif"];
+const MAX_BYTES = 5 * 1024 * 1024; // 5 MB
 
 /** Admin: upload a file to Vercel Blob, returning the public URL + path. */
 export async function POST(req: NextRequest) {

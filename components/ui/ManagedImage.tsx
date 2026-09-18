@@ -16,9 +16,11 @@ interface ManagedImageProps {
   className?: string;
   priority?: boolean;
   sizes?: string;
+  width?: number;
+  height?: number;
 }
 
-export function ManagedImage({ src, alt, className, priority, sizes }: ManagedImageProps) {
+export function ManagedImage({ src, alt, className, priority, sizes, width, height }: ManagedImageProps) {
   const locale = useLocale();
   const media = useManagedMedia(src);
   const effectiveSrc = media?.src ?? src;
@@ -31,8 +33,10 @@ export function ManagedImage({ src, alt, className, priority, sizes }: ManagedIm
       alt={effectiveAlt}
       className={className}
       sizes={sizes}
+      width={width}
+      height={height}
       loading={priority ? "eager" : "lazy"}
-      decoding="async"
+      decoding={priority ? "sync" : "async"}
       fetchPriority={priority ? "high" : "auto"}
     />
   );

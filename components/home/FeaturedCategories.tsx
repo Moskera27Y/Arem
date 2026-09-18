@@ -4,6 +4,7 @@ import type { HomeSection } from "@/lib/types";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { CategoryCard } from "@/components/cards/CategoryCard";
 import { DragScroll } from "@/components/ui/DragScroll";
+import { Reveal } from "@/components/ui/Reveal";
 
 interface FeaturedCategoriesProps {
   section: Extract<HomeSection, { kind: "featured-categories" }>;
@@ -22,16 +23,18 @@ export function FeaturedCategories({ section, locale }: FeaturedCategoriesProps)
   return (
     <section className="section section--categories">
       <div className="container">
-        <SectionHeading
-          eyebrow={section.eyebrow}
-          title={section.title}
-          subtitle={section.subtitle}
-          center
-        />
+        <Reveal>
+          <SectionHeading
+            eyebrow={section.eyebrow}
+            title={section.title}
+            subtitle={section.subtitle}
+            center
+          />
+        </Reveal>
       </div>
       <DragScroll className="cat-row" aria-label={section.title}>
-        {selected.map((category) => (
-          <CategoryCard key={category.id} category={category} locale={locale} />
+        {selected.map((category, index) => (
+          <CategoryCard key={category.id} category={category} locale={locale} priority={index < 4} />
         ))}
       </DragScroll>
     </section>
