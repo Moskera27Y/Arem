@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getHomepage } from "@/lib/content";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import { SectionRenderer } from "@/components/home/SectionRenderer";
-import { AnimatedBackdrop } from "@/components/home/AnimatedBackdrop";
+import { Ticker } from "@/components/home/Ticker";
 
 interface HomePageProps {
   params: Promise<{ locale: string }>;
@@ -13,6 +13,7 @@ export default async function HomePage({ params }: HomePageProps) {
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
   const homepage = getHomepage(locale);
+  const [first, ...rest] = homepage.sections;
   const productLd = {
     "@context": "https://schema.org",
     "@type": "Store",
@@ -24,9 +25,10 @@ export default async function HomePage({ params }: HomePageProps) {
   };
   return (
     <>
-      <AnimatedBackdrop />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(productLd) }} />
-      {homepage.sections.map((section) => (
+      {first && <SectionRenderer key={first.id} section={first} locale={locale} />}
+      <Ticker items={homepage.announcementItems} />
+      {rest.map((section) => (
         <SectionRenderer key={section.id} section={section} locale={locale} />
       ))}
     </>

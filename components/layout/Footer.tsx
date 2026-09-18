@@ -1,10 +1,10 @@
-import Link from "next/link";
 import { getSiteConfig } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import type { Locale } from "@/lib/i18n/config";
 import { Logo } from "@/components/ui/Logo";
 import { FooterSocials } from "@/components/layout/FooterSocials";
 import { FooterBackground } from "@/components/layout/FooterBackground";
+import { ViewTransitionLink } from "@/components/ui/ViewTransitionLink";
 
 export function Footer({ locale }: { locale: Locale }) {
   const site = getSiteConfig(locale);
@@ -38,9 +38,9 @@ export function Footer({ locale }: { locale: Locale }) {
               <ul className="footer__links">
                 {column.links.map((link) => (
                   <li key={link.href + link.label}>
-                    <Link href={`/${locale}${link.href}`} className="footer__link">
+                    <ViewTransitionLink href={`/${locale}${link.href}`} className="footer__link">
                       {link.label}
-                    </Link>
+                    </ViewTransitionLink>
                   </li>
                 ))}
               </ul>

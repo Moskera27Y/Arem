@@ -10,6 +10,7 @@ import { useCart } from "@/lib/store/cart-context";
 import { useWishlist } from "@/lib/store/wishlist-context";
 import { Logo } from "@/components/ui/Logo";
 import { Icon } from "@/components/ui/icons";
+import { ViewTransitionLink } from "@/components/ui/ViewTransitionLink";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
 import { CurrencySwitcher } from "@/components/layout/CurrencySwitcher";
 
@@ -55,14 +56,14 @@ export function Header() {
 
           <nav className="nav" aria-label="Principal">
             {site.nav.map((link) => (
-              <Link
+              <ViewTransitionLink
                 key={link.href}
                 href={`${localePrefix}${link.href}`}
                 className="nav-link"
                 aria-current={pathname === `${localePrefix}${link.href}` ? "page" : undefined}
               >
                 {link.label}
-              </Link>
+              </ViewTransitionLink>
             ))}
           </nav>
 
@@ -113,9 +114,9 @@ export function Header() {
           <Logo href={localePrefix} />
           <nav aria-label="Menú móvil">
             {site.nav.map((link) => (
-              <Link key={link.href} href={`${localePrefix}${link.href}`} className="mobile-menu__link">
+              <ViewTransitionLink key={link.href} href={`${localePrefix}${link.href}`} className="mobile-menu__link">
                 {link.label}
-              </Link>
+              </ViewTransitionLink>
             ))}
           </nav>
           <div className="mobile-menu__row">

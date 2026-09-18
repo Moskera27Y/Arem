@@ -2116,17 +2116,17 @@ h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  animation: gallery-fade 0.5s var(--ease);
+  animation: gallery-slide 0.45s var(--ease);
 }
 
-@keyframes gallery-fade {
+@keyframes gallery-slide {
   from {
     opacity: 0;
-    transform: scale(1.02);
+    transform: translateX(calc(var(--gdir, 1) * 28px)) scale(1.015);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: none;
   }
 }
 
@@ -3019,6 +3019,170 @@ body {
   }
 }
 
+/* ------------------------- Motion level 2 ------------------------- */
+/* Scroll-driven parallax, editorial ticker, button shine, Khoi-style
+   hover quick-add. All GPU-only (transform/opacity), all guarded by
+   prefers-reduced-motion. Zero dependencies. */
+
+/* Craft ticker strip (under the hero). */
+.ticker {
+  background: var(--ink);
+  color: var(--paper);
+  overflow: hidden;
+  padding: 0.7rem 0;
+  border-block: 1px solid rgba(217, 164, 65, 0.25);
+}
+
+.ticker__track {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  animation: ticker-scroll 32s linear infinite;
+  will-change: transform;
+}
+
+.ticker:hover .ticker__track {
+  animation-play-state: paused;
+}
+
+.ticker__row {
+  display: inline-flex;
+  align-items: center;
+}
+
+.ticker__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-right: 3rem;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.ticker__sep {
+  color: var(--gold-soft);
+}
+
+@keyframes ticker-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Gold shine sweep on primary buttons. */
+.btn--primary,
+.btn--gold-dark {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.btn--primary::after,
+.btn--gold-dark::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 45%;
+  left: -65%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transform: skewX(-18deg);
+  transition: left 0.65s var(--ease);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.btn--primary:hover::after,
+.btn--gold-dark:hover::after {
+  left: 135%;
+}
+
+/* Khoi-style hover quick-add (fine pointers only; always visible on touch). */
+@media (hover: hover) and (pointer: fine) {
+  .product-card__actions {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 0.3s var(--ease),
+      transform 0.3s var(--ease);
+  }
+
+  .product-card:hover .product-card__actions,
+  .product-card:focus-within .product-card__actions {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Scroll-driven motion (progressive enhancement; ignored elsewhere). */
+@supports (animation-timeline: view()) {
+  .hero__media {
+    animation: hero-drift linear both;
+    animation-timeline: view();
+    animation-range: 0% 100%;
+  }
+
+  .hero__content {
+    animation: hero-fade linear both;
+    animation-timeline: view();
+    animation-range: 0% 75%;
+  }
+
+  .collection-hero__media img {
+    animation: cover-drift linear both;
+    animation-timeline: view();
+    animation-range: entry 0% exit 100%;
+  }
+
+  .section-head .eyebrow::before,
+  .split__kicker::before {
+    transform-origin: left center;
+    animation: eyebrow-grow linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+}
+
+@keyframes hero-drift {
+  from {
+    transform: translateY(-5%) scale(1.1);
+  }
+  to {
+    transform: translateY(9%) scale(1.1);
+  }
+}
+
+@keyframes hero-fade {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-4rem);
+  }
+}
+
+@keyframes cover-drift {
+  from {
+    transform: translateY(-7%) scale(1.15);
+  }
+  to {
+    transform: translateY(7%) scale(1.15);
+  }
+}
+
+@keyframes eyebrow-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 /* --------------------------- Responsive --------------------------- */
 
 @media (max-width: 1080px) {
@@ -3259,8 +3423,27 @@ body {
   }
 
   .arem-ambient__blob,
-  .arem-ambient__weave {
-    animation: none;
+  .arem-ambient__weave,
+  .ticker__track,
+  .hero__media,
+  .hero__content,
+  .collection-hero__media img,
+  .gallery__main-img {
+    animation: none !important;
+  }
+
+  .hero__content {
+    opacity: 1;
+  }
+
+  .product-card__actions {
+    opacity: 1;
+    transform: none;
+  }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 0.01ms !important;
   }
 
   .product-card:hover,

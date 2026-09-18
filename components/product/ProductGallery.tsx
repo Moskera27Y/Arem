@@ -22,6 +22,7 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
   const locale = useLocale();
   const dict = getDictionary(locale);
   const [active, setActive] = useState(0);
+  const [dir, setDir] = useState(1);
   const touchStartX = useRef<number | null>(null);
 
   // Resolve any managed media replacements (persistent Neon media) keyed by
@@ -33,8 +34,22 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
   if (count === 0) return null;
 
   const wrap = useCallback((index: number) => (index + count) % count, [count]);
-  const goNext = useCallback(() => setActive((a) => wrap(a + 1)), [wrap]);
-  const goPrev = useCallback(() => setActive((a) => wrap(a - 1)), [wrap]);
+  const goTo = useCallback(
+    (index: number) => {
+      const next = wrap(index);
+      setDir(next === active ? 0 : next > active || (active === count - 1 && next === 0) ? 1 : -1);
+      setActive(next);
+    },
+    [wrap, count, active],
+  );
+  const goNext = useCallback(() => {
+    setDir(1);
+    setActive((a) => wrap(a + 1));
+  }, [wrap]);
+  const goPrev = useCallback(() => {
+    setDir(-1);
+    setActive((a) => wrap(a - 1));
+  }, [wrap]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -72,6 +87,7 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
           alt={current.alt}
           decoding="async"
           fetchPriority="high"
+          style={{ "--gdir": dir } as React.CSSProperties}
         />
         {count > 1 && (
           <>
@@ -111,7 +127,7 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
                 aria-selected={index === active}
                 data-active={index === active}
                 aria-label={`${dict.a11y.viewImage} ${index + 1}: ${image.caption ?? image.alt}`}
-                onClick={() => setActive(index)}
+                onClick={() => goTo(index)}
               >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={src} alt="" loading="lazy" />
