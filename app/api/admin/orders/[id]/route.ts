@@ -39,7 +39,7 @@ export async function PATCH(req: NextRequest, { params }: Ctx) {
     return NextResponse.json({ error: "Solicitud inválida" }, { status: 400 });
   }
   if (body.status) {
-    const allowed = ["pending", "paid", "processing", "shipped", "delivered", "cancelled", "refunded"];
+    const allowed = ["pending_payment", "paid", "processing", "shipped", "delivered", "cancelled", "refunded"];
     if (!allowed.includes(body.status)) return NextResponse.json({ error: "status no válido" }, { status: 400 });
     await q("update public.orders set status = $1, updated_at = now() where id = $2", [body.status, id]);
   }

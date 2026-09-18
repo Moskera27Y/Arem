@@ -16,7 +16,9 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: "Solicitud inválida" }, { status: 400 });
   }
-  const productIds = Array.isArray(body.productIds) ? body.productIds.filter((x) => typeof x === "string") : [];
+  const productIds = Array.isArray(body.productIds)
+    ? body.productIds.filter((x): x is string => typeof x === "string" && x.length <= 128).slice(0, 100)
+    : [];
   const ids = await mergeWishlist(id, productIds);
   return NextResponse.json({ ok: true, ids });
 }

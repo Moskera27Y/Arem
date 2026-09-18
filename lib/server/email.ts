@@ -28,7 +28,9 @@ export async function sendEmail({ to, subject, html, text }: SendArgs): Promise<
     return { sent: true, provider: "resend" };
   }
 
-  console.log(`[email:stub] to=${to} subject=${subject}`);
+  console.log("[email:stub] email provider not configured; message dropped (no PII logged)");
+  void to;
+  void subject;
   void html;
   void text;
   return { sent: false, provider: "log" };

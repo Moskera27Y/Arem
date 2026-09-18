@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireCustomer } from "@/lib/server/customer-auth";
 import { updateProfile } from "@/lib/server/customer-db";
+import { asString } from "@/lib/server/validate";
 
 export async function PUT(req: NextRequest) {
   let id: string;
@@ -19,9 +20,9 @@ export async function PUT(req: NextRequest) {
   const currency = ["USD", "COP", "EUR", "GBP", "CAD"].includes(String(body.display_currency)) ? String(body.display_currency) : "USD";
   try {
     const profile = await updateProfile(id, {
-      first_name: body.first_name ?? null,
-      last_name: body.last_name ?? null,
-      phone: body.phone ?? null,
+      first_name: asString(body.first_name, 100) || null,
+      last_name: asString(body.last_name, 100) || null,
+      phone: asString(body.phone, 30) || null,
       preferred_language: lang,
       display_currency: currency,
     });

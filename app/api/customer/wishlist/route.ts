@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: "Solicitud inválida" }, { status: 400 });
   }
-  const productId = String(body.productId || "");
+  const productId = String(body.productId || "").slice(0, 128);
   if (!productId) return NextResponse.json({ error: "productId requerido" }, { status: 400 });
   await addWishlist(id, productId);
   return NextResponse.json({ ok: true, ids: await getWishlistIds(id) });
@@ -44,7 +44,7 @@ export async function DELETE(req: NextRequest) {
     await clearWishlist(id);
     return NextResponse.json({ ok: true, ids: [] });
   }
-  const productId = url.searchParams.get("productId") ?? "";
+  const productId = String(url.searchParams.get("productId") ?? "").slice(0, 128);
   if (!productId) return NextResponse.json({ error: "productId requerido" }, { status: 400 });
   await removeWishlist(id, productId);
   return NextResponse.json({ ok: true, ids: await getWishlistIds(id) });

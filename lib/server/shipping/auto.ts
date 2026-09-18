@@ -5,14 +5,19 @@ import { getShippingProvider } from "./provider";
 /** Create the shipping guide automatically once an order is paid.
  * Idempotent: skips when a shipment already exists. Never throws. */
 export async function autoCreateShipment(orderId: string): Promise<{ skipped: boolean; trackingNumber?: string }> {
-  const existing = await q<{ id: string }>("select id from public.shipments where order_id = $1 limit 1", [orderId]);
-  if (existing.length > 0) return { skipped: true };
+  const existing = await q<{ id: string; tracking_number: string | null }>(
+    "select id, tracking_number from public.shipments where order_id = $1 limit 1",
+    [orderId],
+  );
+  if (existing.length > 0) return { skipped: true, trackingNumber: existing[0].tracking_number ?? undefined };
 
-  const orders = await q<{ id: string; shipping_address: unknown; shipping_method: string | null }>(
-    "select id, shipping_address, shipping_method from public.orders where id = $1",
+  const orders = await q<{ id: string; shipping_address: unknown; shipping_method: string | null; payment_status: string }>(
+    "select id, shipping_address, shipping_method, payment_status from public.orders where id = $1",
     [orderId],
   );
   if (orders.length === 0) return { skipped: true };
+  // Never buy a real carrier label for an unpaid order.
+  if (orders[0].payment_status !== "paid") return { skipped: true };
 
   try {
     const provider = getShippingProvider();

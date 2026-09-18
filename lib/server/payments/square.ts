@@ -16,7 +16,9 @@ function squareBase(): string {
 }
 
 function accessToken(): string | null {
-  return process.env.SQUARE_ACCESS_TOKEN ?? null;
+  const token = process.env.SQUARE_ACCESS_TOKEN ?? null;
+  if (!token || token === "PENDING") return null;
+  return token;
 }
 
 export function squareConfigured(): boolean {
@@ -74,8 +76,17 @@ export async function recordWebhookEvent(eventId: string, provider: string, type
   return res.length > 0;
 }
 
-/** Mark an order paid (idempotent by square payment id) and store payment. */
+/** Mark an order paid (idempotent by square payment id) and store payment.
+ * Defense in depth: the paid amount must match the order total. */
 export async function markOrderPaid(orderId: string, squarePaymentId: string | null, squareOrderId: string | null, amountCents: number, currency: string): Promise<void> {
+  const orders = await q<{ usd_total_cents: number | string; currency: string }>(
+    "select usd_total_cents, currency from public.orders where id = $1",
+    [orderId],
+  );
+  if (orders.length === 0) throw new Error("Order not found");
+  if (Number(orders[0].usd_total_cents) !== amountCents || String(orders[0].currency).toUpperCase() !== String(currency).toUpperCase()) {
+    throw new Error("Amount mismatch");
+  }
   await q(
     `update public.orders set payment_status = 'paid', status = 'processing', square_payment_id = $2, square_order_id = $3, paid_at = now(), updated_at = now()
      where id = $1 and payment_status <> 'paid'`,

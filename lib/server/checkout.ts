@@ -123,16 +123,21 @@ export async function createCheckoutOrder(raw: CheckoutInput): Promise<CheckoutR
   const shippingCents = toCents(shippingCost);
   const totalCents = toCents(total);
   const displayCurrency = input.displayCurrency ?? "USD";
-  const orderNumber = `AREM-${randomUUID().slice(0, 8).toUpperCase()}`;
 
   // Reserve stock + insert order atomically (SELECT FOR UPDATE prevents oversell).
-  const orderId = await withTransaction(async (client) => {
+  // orderNumber has 32 bits of entropy: retry on the rare unique collision.
+  let orderId = "";
+  let orderNumber = "";
+  for (let attempt = 0; attempt < 3; attempt++) {
+    orderNumber = `AREM-${randomUUID().slice(0, 8).toUpperCase()}`;
+    try {
+      orderId = await withTransaction(async (client) => {
     const orderRows = await client.query<{ id: string }>(
       `insert into public.orders
          (order_number, customer_profile_id, status, payment_status, currency, subtotal, shipping_total, tax_total, total,
           shipping_address, display_currency, usd_total_cents, exchange_rate, converted_total_cents,
           email, phone, first_name, last_name, shipping_method, payment_method, notes)
-       values ($1,null,'pending','pending','USD',$2,$3,0,$4,$5,$6,$7,1,$8,$9,$10,$11,$12,$13,$14,$15) returning id`,
+       values ($1,null,'pending_payment','pending','USD',$2,$3,0,$4,$5,$6,$7,1,$8,$9,$10,$11,$12,$13,$14,$15) returning id`,
       [
         orderNumber, subtotal, shippingCost, total,
         JSON.stringify({ recipient_name: `${input.firstName} ${input.lastName}`, line1: input.address, line2: input.apartment ?? null, city: input.city, state: input.state ?? null, postal_code: input.postalCode ?? null, country: input.country }),
@@ -165,7 +170,15 @@ export async function createCheckoutOrder(raw: CheckoutInput): Promise<CheckoutR
       if (res.rowCount !== 1) throw new Error(`Stock insuficiente para ${it.variantName}`);
     }
     return id;
-  });
+    });
+    break;
+  } catch (err) {
+    // Unique order_number collision: regenerate and retry; anything else aborts.
+    if ((err as { code?: string }).code === "23505" && attempt < 2) continue;
+    throw err;
+  }
+  }
+  if (!orderId) throw new Error("No se pudo crear el pedido, intenta de nuevo");
 
   // Payment provider call stays OUTSIDE the transaction (external I/O).
   const provider = getPaymentProvider(input.paymentMethod);

@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Tipo de archivo no permitido" }, { status: 400 });
   }
   if (file.size > MAX_BYTES) {
-    return NextResponse.json({ error: "El archivo supera 10 MB" }, { status: 400 });
+    return NextResponse.json({ error: "El archivo supera 5 MB" }, { status: 400 });
   }
 
   try {

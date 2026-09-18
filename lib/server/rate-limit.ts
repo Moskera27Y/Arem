@@ -28,6 +28,9 @@ export function checkRateLimit(key: string, limit: number, windowMs: number): { 
 }
 
 export function getClientKey(req: NextRequest, scope: string): string {
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "anon";
+  // Vercel appends the real client IP at the END of x-forwarded-for;
+  // entries before it are client-controlled. Take the last entry.
+  const forwarded = req.headers.get("x-forwarded-for")?.split(",").map((s) => s.trim()).filter(Boolean) ?? [];
+  const ip = forwarded.length > 0 ? forwarded[forwarded.length - 1].slice(0, 64) : "anon";
   return `${scope}:${ip}`;
 }

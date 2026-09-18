@@ -28,19 +28,23 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Solicitud inválida" }, { status: 400 });
   }
   const network = NETWORKS.includes(body.network as SocialNetwork) ? (body.network as SocialNetwork) : null;
-  const value = String(body.value || "").trim();
+  const value = String(body.value || "").trim().slice(0, 500);
   if (!network || !value) {
     return NextResponse.json({ error: "Network y URL/valor son requeridos" }, { status: 400 });
   }
+  const rawPost = String(body.postUrl || "").trim().slice(0, 500);
+  if (rawPost && !/^https:\/\//i.test(rawPost)) {
+    return NextResponse.json({ error: "postUrl debe ser https://" }, { status: 400 });
+  }
   try {
     const row = await upsertSocialLink({
-      id: body.id,
+      id: typeof body.id === "string" ? body.id.slice(0, 64) : undefined,
       network,
-      label: body.label?.trim() || null,
+      label: typeof body.label === "string" ? body.label.trim().slice(0, 120) || null : null,
       value,
       active: body.active ?? true,
-      displayOrder: body.displayOrder ?? 0,
-      postUrl: body.postUrl?.trim() || null,
+      displayOrder: Number.isFinite(body.displayOrder) ? Math.trunc(Number(body.displayOrder)) : 0,
+      postUrl: rawPost || null,
     });
     return NextResponse.json(row);
   } catch (err) {

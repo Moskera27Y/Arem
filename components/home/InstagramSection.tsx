@@ -21,8 +21,9 @@ export function InstagramSection({ section, locale }: InstagramSectionProps) {
   const es = locale === "es";
   const followLabel = es ? "Seguir en Instagram" : "Follow on Instagram";
   const ctaAria = es ? `Seguir a ${handle} en Instagram` : `Follow ${handle} on Instagram`;
-  // When a specific post URL is configured, tiles use it; otherwise the main URL.
-  const tileHref = insta?.post_url || instaUrl;
+  // When a specific post URL is configured, tiles use it (https-only, enforced
+  // server-side); otherwise the main URL.
+  const tileHref = insta?.post_url && /^https:\/\//i.test(insta.post_url) ? insta.post_url : instaUrl;
 
   return (
     <section className="section section--alt">

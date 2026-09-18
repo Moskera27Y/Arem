@@ -5,6 +5,21 @@ import { checkRateLimit, getClientKey } from "@/lib/server/rate-limit";
 import { asEmail } from "@/lib/server/validate";
 import { resetEmailHtml, sendEmail } from "@/lib/server/email";
 
+/** Base URL for emailed links. Prefers the configured site URL; the request
+ * origin is only accepted when its host matches the allowlist (prevents
+ * Host-header poisoning of reset links). */
+function siteBaseUrl(req: NextRequest): string {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, "");
+  if (configured) return configured;
+  const host = req.nextUrl.host.toLowerCase();
+  const allowed =
+    host === "localhost:3000" ||
+    host.endsWith(".vercel.app") ||
+    (process.env.ALLOWED_HOSTS ?? "").split(",").some((h) => h.trim().toLowerCase() === host);
+  if (allowed) return `${req.nextUrl.protocol}//${req.nextUrl.host}`;
+  throw new Error("Site URL not configured");
+}
+
 /** Request a password reset. Generates a single-use token (30 min).
  * Sends the link by email when configured. Response is identical
  * whether the account exists or not to avoid account enumeration. */
@@ -32,7 +47,7 @@ export async function POST(req: NextRequest) {
       rows[0].id,
     ]);
     const locale = String(body.locale === "es" ? "es" : "en");
-    const base = process.env.NEXT_PUBLIC_SITE_URL ?? req.nextUrl.origin;
+    const base = siteBaseUrl(req);
     const resetUrl = `${base}/${locale}/reset-password?token=${token}`;
     await sendEmail({
       to: email,
