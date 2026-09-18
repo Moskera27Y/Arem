@@ -6,6 +6,7 @@ import type { HomeSection } from "@/lib/types";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { DragScroll } from "@/components/ui/DragScroll";
+import { Reveal } from "@/components/ui/Reveal";
 import { Icon } from "@/components/ui/icons";
 
 interface SaleRailProps {
@@ -36,8 +37,10 @@ export function SaleRail({ section, locale }: SaleRailProps) {
         />
       </div>
       <DragScroll className="products-row" aria-label={section.title}>
-        {items.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {items.map((product, i) => (
+          <Reveal key={product.id} delay={Math.min(i, 5) * 70}>
+            <ProductCard product={product} />
+          </Reveal>
         ))}
         <div className="products-row__cta">
           <Link href={`/${locale}/shop?sale=1`} className="btn btn--secondary btn--sm">

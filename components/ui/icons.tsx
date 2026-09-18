@@ -12,6 +12,7 @@ export type IconName =
   | "heart"
   | "menu"
   | "close"
+  | "eye"
   | "arrow-right"
   | "arrow-up-right"
   | "search"
@@ -91,6 +92,12 @@ const PATHS: Record<IconName, React.ReactNode> = {
   ),
   minus: <path d="M5 12h14" />,
   check: <path d="M20 6 9 17l-5-5" />,
+  eye: (
+    <>
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+      <circle cx="12" cy="12" r="3" />
+    </>
+  ),
   "chevron-down": <path d="m6 9 6 6 6-6" />,
   star: (
     <path d="m12 3 2.7 5.7 6.3.8-4.6 4.3 1.2 6.2-5.6-3-5.6 3 1.2-6.2L3 9.5l6.3-.8L12 3Z" />

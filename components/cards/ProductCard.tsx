@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { getCategoryById, getRegionById, type Product } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
@@ -10,6 +11,8 @@ import { useCurrency } from "@/lib/currency/currency-context";
 import { useWishlist } from "@/lib/store/wishlist-context";
 import { useCart } from "@/lib/store/cart-context";
 import { ManagedImage } from "@/components/ui/ManagedImage";
+import { QuickView } from "@/components/cards/QuickView";
+import { toast } from "@/components/ui/Toaster";
 import { Icon } from "@/components/ui/icons";
 
 interface ProductCardProps {
@@ -26,8 +29,9 @@ export function ProductCard({ product, priority }: ProductCardProps) {
   const locale = useLocale();
   const dict = getDictionary(locale);
   const { has, toggle } = useWishlist();
-  const { add, openCart } = useCart();
+  const { add } = useCart();
   const { format, isEstimate } = useCurrency();
+  const [quickView, setQuickView] = useState(false);
 
   const merged = useMergedProduct(product, locale);
   const discount = useDiscountFor(merged ?? product);
@@ -51,7 +55,12 @@ export function ProductCard({ product, priority }: ProductCardProps) {
     const btn = e.currentTarget;
     btn.classList.add("is-added");
     setTimeout(() => btn.classList.remove("is-added"), 1200);
-    setTimeout(() => openCart(), 350);
+    toast({
+      title: locale === "es" ? "Agregado al carrito" : "Added to cart",
+      message: merged.name,
+      image: image?.src,
+      actionLabel: locale === "es" ? "Ver carrito" : "View cart",
+    });
   };
 
   return (
@@ -59,7 +68,12 @@ export function ProductCard({ product, priority }: ProductCardProps) {
       <div className="product-card__media">
         {image && (
           <Link href={`/${locale}/products/${merged.slug}`} aria-label={merged.name} tabIndex={-1}>
-            <ManagedImage src={image.src} alt={image.alt} priority={priority} />
+            <ManagedImage
+              src={image.src}
+              alt={image.alt}
+              priority={priority}
+              sizes="(max-width: 640px) 50vw, 280px"
+            />
           </Link>
         )}
         <div className="product-card__badges">
@@ -111,6 +125,14 @@ export function ProductCard({ product, priority }: ProductCardProps) {
           <button
             type="button"
             className="icon-action"
+            aria-label={locale === "es" ? "Vista rápida" : "Quick view"}
+            onClick={() => setQuickView(true)}
+          >
+            <Icon name="eye" size={15} />
+          </button>
+          <button
+            type="button"
+            className="icon-action"
             aria-label={dict.product.addToCart}
             onClick={quickAdd}
           >
@@ -118,6 +140,7 @@ export function ProductCard({ product, priority }: ProductCardProps) {
           </button>
         </div>
       </div>
+      <QuickView product={quickView ? merged : null} locale={locale} onClose={() => setQuickView(false)} />
     </article>
   );
 }

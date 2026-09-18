@@ -1,11 +1,12 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { useAdminStore } from "@/lib/admin/store";
+import { Icon } from "@/components/ui/icons";
 
 export interface ShopFilterCategory {
   slug: string;
@@ -27,6 +28,7 @@ export function ShopFilters({ categories, activeSlug, sort, query, saleOnly, loc
   const router = useRouter();
   const locale = useLocale();
   const dict = getDictionary(locale);
+  const [sheetOpen, setSheetOpen] = useState(false);
   const { categories: adminCategories, hydrated } = useAdminStore();
 
   // Merge Admin category edits (names, visibility, new categories) over the
@@ -61,7 +63,26 @@ export function ShopFilters({ categories, activeSlug, sort, query, saleOnly, loc
   };
 
   return (
-    <aside className="filters" aria-label={dict.shop.categories}>
+    <>
+      <button
+        type="button"
+        className="filters-fab"
+        aria-expanded={sheetOpen}
+        onClick={() => setSheetOpen((v) => !v)}
+      >
+        <Icon name="search" size={15} />
+        {locale === "es" ? "Filtros" : "Filters"}
+        {activeSlug && <span className="filters-fab__dot" aria-hidden="true" />}
+      </button>
+      {sheetOpen && (
+        <button
+          type="button"
+          className="filters-backdrop"
+          aria-label={locale === "es" ? "Cerrar filtros" : "Close filters"}
+          onClick={() => setSheetOpen(false)}
+        />
+      )}
+      <aside className="filters" aria-label={dict.shop.categories} data-open={sheetOpen}>
         <div className="filter-group">
           <form
             role="search"
@@ -120,6 +141,14 @@ export function ShopFilters({ categories, activeSlug, sort, query, saleOnly, loc
             ))}
           </ul>
         </div>
+        <button
+          type="button"
+          className="btn btn--primary btn--block filters-close"
+          onClick={() => setSheetOpen(false)}
+        >
+          {locale === "es" ? "Ver resultados" : "Show results"}
+        </button>
       </aside>
+    </>
   );
 }

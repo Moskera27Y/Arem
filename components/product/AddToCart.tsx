@@ -1,6 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { Product } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
@@ -27,6 +28,9 @@ export function AddToCart({ product }: AddToCartProps) {
     return initial;
   });
   const [quantity, setQuantity] = useState(1);
+  const [showBar, setShowBar] = useState(false);
+  const [added, setAdded] = useState(false);
+  const buyRowRef = useRef<HTMLDivElement>(null);
 
   const variant = useMemo(() => {
     return product.variants.find((v) =>
@@ -42,8 +46,21 @@ export function AddToCart({ product }: AddToCartProps) {
     add(product.id, variant.id, quantity);
     e.currentTarget.classList.add("is-added");
     setTimeout(() => e.currentTarget.classList.remove("is-added"), 1200);
-    setTimeout(() => openCart(), 350);
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+    openCart();
   };
+
+  // Sticky buy bar appears once the inline buy row scrolls out of view.
+  useEffect(() => {
+    const el = buyRowRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(([entry]) => setShowBar(!entry.isIntersecting), {
+      threshold: 0,
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   return (
     <div className="pdp__actions" style={{ flexDirection: "column", alignItems: "stretch" }}>
@@ -84,7 +101,7 @@ export function AddToCart({ product }: AddToCartProps) {
         </div>
       ))}
 
-      <div className="pdp__buyrow" style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
+      <div ref={buyRowRef} className="pdp__buyrow" style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
         <div className="cart-line__qty" style={{ padding: "0.7rem 0.4rem" }}>
           <button
             type="button"
@@ -124,6 +141,51 @@ export function AddToCart({ product }: AddToCartProps) {
           {dict.product.originalPrice} {format(variant.compareAtPrice.amount)}
         </p>
       )}
+      <div className="pdp-trust">
+        <span className="pdp-trust__item">
+          <Icon name="shield" size={14} />
+          {locale === "es" ? "Compra segura" : "Secure checkout"}
+        </span>
+        <span className="pdp-trust__item">
+          <Icon name="globe" size={14} />
+          {locale === "es" ? "Envío con rastreo" : "Tracked shipping"}
+        </span>
+        <span className="pdp-trust__item">
+          <Icon name="check" size={14} />
+          {locale === "es" ? "Hecho a mano" : "Handmade"}
+        </span>
+      </div>
+
+      <span className="sr-only" role="status" aria-live="polite">
+        {added ? (locale === "es" ? "Agregado al carrito" : "Added to cart") : ""}
+      </span>
+      {showBar &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div className="pdp-bar" data-visible={showBar}>
+            {product.images[0] && (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={product.images[0].src} alt="" aria-hidden="true" className="pdp-bar__img" />
+            )}
+            <div className="pdp-bar__info">
+              <p className="pdp-bar__name">{product.name}</p>
+              <p className="pdp-bar__price">
+                {variant ? format(variant.price.amount) : ""}
+                {variant && <span className="pdp-bar__variant">{variant.title}</span>}
+              </p>
+            </div>
+            <button
+              type="button"
+              className="btn btn--primary pdp-bar__cta"
+              disabled={soldOut}
+              onClick={handleAdd}
+              aria-label={`${dict.product.addToCart}: ${product.name}`}
+            >
+              {soldOut ? dict.product.soldOut : dict.product.addToCart}
+            </button>
+          </div>,
+          document.body,
+        )}
     </div>
   );
 }

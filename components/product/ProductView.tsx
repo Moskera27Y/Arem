@@ -87,6 +87,16 @@ export function ProductView({ product: staticProduct, slug }: ProductViewProps) 
         <div className="pdp__info">
           <div>
             <h1 className="pdp__title">{product.name}</h1>
+            <p className="pdp-rating" aria-label={locale === "es" ? "Sin reseñas todavía" : "No reviews yet"}>
+              <span className="pdp-rating__stars" aria-hidden="true">
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <Icon key={i} name="star" size={13} />
+                ))}
+              </span>
+              <span className="pdp-rating__text">
+                {locale === "es" ? "Nuevo · Sé la primera reseña" : "New · Be the first to review"}
+              </span>
+            </p>
             <p className="pdp__tagline" style={{ marginTop: "0.6rem" }}>
               {product.tagline}
             </p>
@@ -150,15 +160,33 @@ export function ProductView({ product: staticProduct, slug }: ProductViewProps) 
           )}
 
           {product.details.length > 0 && (
-            <div className="pdp__details">
-              <h3>{dict.product.detailsTitle}</h3>
-              <ul>
-                {product.details.map((detail) => (
-                  <li key={detail.slice(0, 24)}>{detail}</li>
-                ))}
-              </ul>
-            </div>
+            <details className="pdp-acc" name="pdp-info">
+              <summary>{dict.product.detailsTitle}</summary>
+              <div className="pdp-acc__body">
+                <ul>
+                  {product.details.map((detail) => (
+                    <li key={detail.slice(0, 24)}>{detail}</li>
+                  ))}
+                </ul>
+              </div>
+            </details>
           )}
+
+          <details className="pdp-acc" name="pdp-info">
+            <summary>{locale === "es" ? "Envíos y devoluciones" : "Shipping & returns"}</summary>
+            <div className="pdp-acc__body">
+              <p>
+                {locale === "es"
+                  ? "Enviamos a todo el mundo desde EE. UU. con guía rastreable. Tienes 30 días para devoluciones."
+                  : "We ship worldwide from the US with tracking. 30-day returns."}{" "}
+                <Link href={`${localePrefix}/tracking`}>
+                  {locale === "es" ? "Rastrear pedido" : "Track your order"}
+                </Link>
+                {" · "}
+                <Link href={`${localePrefix}/contact`}>{dict.nav.contact}</Link>
+              </p>
+            </div>
+          </details>
 
           {artisan && (
             <div className="pdp-editorial pdp-maker">

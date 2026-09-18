@@ -6,14 +6,12 @@ import "@/components/customer/customer.css";
 const fraunces = Fraunces({
   subsets: ["latin"],
   variable: "--arem-serif",
-  weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
 });
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--arem-sans",
-  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {

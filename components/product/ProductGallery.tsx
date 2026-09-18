@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { ImageRef } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
@@ -79,16 +80,29 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
   return (
     <div className="gallery">
       <div className="gallery__main" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          key={currentSrc}
-          className="gallery__main-img"
-          src={currentSrc}
-          alt={current.alt}
-          decoding="async"
-          fetchPriority="high"
-          style={{ "--gdir": dir } as React.CSSProperties}
-        />
+        {currentSrc.endsWith(".svg") ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            key={currentSrc}
+            className="gallery__main-img"
+            src={currentSrc}
+            alt={current.alt}
+            decoding="async"
+            fetchPriority="high"
+            style={{ "--gdir": dir } as React.CSSProperties}
+          />
+        ) : (
+          <Image
+            key={currentSrc}
+            className="gallery__main-img"
+            src={currentSrc}
+            alt={current.alt}
+            fill
+            sizes="(max-width: 900px) 100vw, 55vw"
+            priority
+            style={{ "--gdir": dir } as React.CSSProperties}
+          />
+        )}
         {count > 1 && (
           <>
             <button
@@ -115,6 +129,24 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
       </div>
 
       {count > 1 && (
+        <div className="gallery__dots" role="tablist" aria-label={dict.product.galleryNote}>
+          {images.map((image, index) => (
+            <button
+              key={`dot-${image.src}`}
+              type="button"
+              role="tab"
+              aria-selected={index === active}
+              className="gallery__dot"
+              data-active={index === active}
+              aria-label={`${dict.a11y.viewImage} ${index + 1}`}
+              onClick={() => goTo(index)}
+              tabIndex={-1}
+            />
+          ))}
+        </div>
+      )}
+
+      {count > 1 && (
         <div className="gallery__thumbs" role="tablist" aria-label={`${dict.product.galleryNote} — images`}>
           {images.map((image, index) => {
             const src = resolveSrc(image.src);
@@ -129,8 +161,12 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
                 aria-label={`${dict.a11y.viewImage} ${index + 1}: ${image.caption ?? image.alt}`}
                 onClick={() => goTo(index)}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={src} alt="" loading="lazy" />
+                {src.endsWith(".svg") ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={src} alt="" loading="lazy" />
+                ) : (
+                  <Image src={src} alt="" width={160} height={160} sizes="160px" loading="lazy" />
+                )}
               </button>
             );
           })}

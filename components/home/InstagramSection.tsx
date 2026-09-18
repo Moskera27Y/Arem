@@ -4,6 +4,7 @@ import type { Locale } from "@/lib/i18n/config";
 import type { HomeSection } from "@/lib/types";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { ManagedImage } from "@/components/ui/ManagedImage";
+import { Reveal } from "@/components/ui/Reveal";
 import { useSocialLinks, instagramOf, hrefFor } from "@/lib/social/use-social-links";
 import { Icon } from "@/components/ui/icons";
 
@@ -77,7 +78,7 @@ export function InstagramSection({ section, locale }: InstagramSectionProps) {
         <div className="insta-grid">
           {section.tileImages.map((src, index) => {
             const img = <ManagedImage src={src} alt={`Instagram ${handle} — post ${index + 1}`} />;
-            return instaUrl && tileHref ? (
+            const tile = instaUrl && tileHref ? (
               <a
                 key={src}
                 href={tileHref}
@@ -95,6 +96,11 @@ export function InstagramSection({ section, locale }: InstagramSectionProps) {
               <div key={src} className="insta-tile is-static">
                 {img}
               </div>
+            );
+            return (
+              <Reveal key={src} delay={Math.min(index, 5) * 60}>
+                {tile}
+              </Reveal>
             );
           })}
         </div>

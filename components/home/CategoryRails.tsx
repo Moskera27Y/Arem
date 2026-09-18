@@ -56,8 +56,10 @@ export function CategoryRails({ section, locale }: CategoryRailsProps) {
               </Link>
             </div>
             <DragScroll className="products-row" aria-label={category.shortName}>
-              {items.map((product) => (
-                <ProductCard key={product.id} product={product} />
+              {items.map((product, i) => (
+                <Reveal key={product.id} delay={Math.min(i, 5) * 70}>
+                  <ProductCard product={product} />
+                </Reveal>
               ))}
               <div className="products-row__cta">
                 <Link

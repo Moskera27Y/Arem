@@ -40,8 +40,10 @@ export function FeaturedProducts({ section, locale }: FeaturedProductsProps) {
         </Reveal>
       </div>
       <DragScroll className="products-row" aria-label={section.title}>
-        {selected.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {selected.map((product, i) => (
+          <Reveal key={product.id} delay={Math.min(i, 5) * 70}>
+            <ProductCard product={product} />
+          </Reveal>
         ))}
         <div className="products-row__cta">
           <Link href={`/${locale}/shop`} className="btn btn--secondary btn--sm">

@@ -32,7 +32,7 @@ export function AremImage({ src, alt, className, sizes, priority }: AremImagePro
       src={src}
       alt={alt}
       className={className}
-      sizes={sizes}
+      sizes={sizes ?? "(max-width: 640px) 100vw, 50vw"}
       priority={priority}
       fill
     />

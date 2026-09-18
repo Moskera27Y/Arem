@@ -9,6 +9,7 @@ import { useFreeShippingActive } from "@/lib/admin/storefront-hooks";
 import { useCurrency } from "@/lib/currency/currency-context";
 import { formatCurrency } from "@/lib/money";
 import { useCart } from "@/lib/store/cart-context";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Icon } from "@/components/ui/icons";
 
 export function CartContent() {
@@ -27,15 +28,13 @@ export function CartContent() {
     <section className="section">
       <div className="container">
         {!mounted ? null : lines.length === 0 ? (
-          <div className="cart-empty" style={{ padding: "4rem 0" }}>
-            <span className="cart-empty__icon">
-              <Icon name="bag" size={26} />
-            </span>
-            <p>{dict.cart.empty}</p>
-            <Link href={`${localePrefix}/shop`} className="btn btn--primary">
-              {dict.nav.shop}
-            </Link>
-          </div>
+          <EmptyState
+            icon="bag"
+            title={dict.cart.empty}
+            sub={es ? "Las piezas hechas a mano te están esperando." : "Handmade pieces are waiting for you."}
+            actionHref={`${localePrefix}/shop`}
+            actionLabel={dict.nav.shop}
+          />
         ) : (
           <div className="grid" style={{ gridTemplateColumns: "1.6fr 1fr", gap: "3rem" }}>
             <div>

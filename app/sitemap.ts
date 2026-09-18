@@ -13,7 +13,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       urls.push({ url: `${base}/${locale}${p}`, lastModified: now, changeFrequency: "weekly", priority: 0.8 });
     }
     for (const pr of getProducts(locale)) {
-      urls.push({ url: `${base}/${locale}/products/${pr.slug}`, lastModified: now, changeFrequency: "weekly", priority: 0.7 });
+      urls.push({
+        url: `${base}/${locale}/products/${pr.slug}`,
+        lastModified: now,
+        changeFrequency: "weekly",
+        priority: 0.7,
+        images: pr.images.slice(0, 3).map((img) => (img.src.startsWith("http") ? img.src : `${base}${img.src}`)),
+      });
     }
     for (const c of getCollections(locale)) {
       urls.push({ url: `${base}/${locale}/collections/${c.slug}`, lastModified: now, changeFrequency: "weekly", priority: 0.6 });

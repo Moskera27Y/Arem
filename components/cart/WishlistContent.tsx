@@ -7,6 +7,7 @@ import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { useWishlist } from "@/lib/store/wishlist-context";
 import { ProductCard } from "@/components/cards/ProductCard";
+import { EmptyState } from "@/components/ui/EmptyState";
 import { Icon } from "@/components/ui/icons";
 
 export function WishlistContent() {
@@ -26,15 +27,13 @@ export function WishlistContent() {
     <section className="section">
       <div className="container">
         {!mounted ? null : products.length === 0 ? (
-          <div className="cart-empty" style={{ padding: "4rem 0" }}>
-            <span className="cart-empty__icon">
-              <Icon name="heart" size={26} />
-            </span>
-            <p>{dict.wishlist.empty}</p>
-            <Link href={`${localePrefix}/shop`} className="btn btn--primary">
-              {dict.nav.shop}
-            </Link>
-          </div>
+          <EmptyState
+            icon="heart"
+            title={dict.wishlist.empty}
+            sub={locale === "es" ? "Toca el corazón en lo que ames." : "Tap the heart on what you love."}
+            actionHref={`${localePrefix}/shop`}
+            actionLabel={dict.nav.shop}
+          />
         ) : (
           <>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "2rem" }}>

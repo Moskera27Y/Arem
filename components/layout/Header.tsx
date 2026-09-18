@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { AnimatePresence, m, useReducedMotion } from "motion/react";
+import { usePathname, useRouter } from "next/navigation";
 import { getSiteConfig } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
@@ -16,6 +17,7 @@ import { CurrencySwitcher } from "@/components/layout/CurrencySwitcher";
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const locale = useLocale();
   const dict = getDictionary(locale);
   const { count, openCart } = useCart();
@@ -38,6 +40,9 @@ export function Header() {
 
   const wishlistCount = ids.length;
   const [cartBump, setCartBump] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const reduceMotion = useReducedMotion() ?? false;
 
   useEffect(() => {
     if (count === 0) return;
@@ -70,10 +75,19 @@ export function Header() {
           <div className="header-actions">
             <LanguageSwitcher />
             <CurrencySwitcher />
-            <Link href={`${localePrefix}/shop`} className="icon-btn" aria-label={dict.a11y.search} title={dict.a11y.search}>
+            <Link href={`${localePrefix}/shop`} className="icon-btn icon-btn--search" aria-label={dict.a11y.search} title={dict.a11y.search}>
               <Icon name="search" size={19} />
             </Link>
-            <Link href={`${localePrefix}/account`} className="icon-btn" aria-label={dict.account.myAccount} title={dict.account.myAccount}>
+            <button
+              type="button"
+              className="icon-btn icon-btn--search-mobile"
+              aria-label={dict.a11y.search}
+              aria-expanded={searchOpen}
+              onClick={() => setSearchOpen((v) => !v)}
+            >
+              <Icon name="search" size={19} />
+            </button>
+            <Link href={`${localePrefix}/account`} className="icon-btn icon-btn--account" aria-label={dict.account.myAccount} title={dict.account.myAccount}>
               <Icon name="user" size={19} />
             </Link>
             <Link
@@ -104,41 +118,79 @@ export function Header() {
             </button>
           </div>
         </div>
+        {searchOpen && (
+          <div className="container">
+            <form
+              role="search"
+              className="header-search"
+              onSubmit={(e) => {
+                e.preventDefault();
+                setSearchOpen(false);
+                router.push(`${localePrefix}/shop${searchValue.trim() ? `?q=${encodeURIComponent(searchValue.trim())}` : ""}`);
+              }}
+            >
+              <Icon name="search" size={17} />
+              <input
+                autoFocus
+                type="search"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                placeholder={locale === "es" ? "Buscar piezas…" : "Search pieces…"}
+                aria-label={dict.a11y.search}
+                className="header-search__input"
+              />
+              <button type="button" className="icon-action" aria-label={dict.a11y.closeMenu} onClick={() => setSearchOpen(false)}>
+                <Icon name="close" size={15} />
+              </button>
+            </form>
+          </div>
+        )}
       </header>
 
-      {menuOpen && (
-        <div className="mobile-menu" role="dialog" aria-modal="true" aria-label="Menú">
-          <button type="button" className="icon-btn mobile-menu__close" aria-label={dict.a11y.closeMenu} onClick={() => setMenuOpen(false)}>
-            <Icon name="close" size={22} />
-          </button>
-          <Logo href={localePrefix} />
-          <nav aria-label="Menú móvil">
-            {site.nav.map((link, i) => (
-              <ViewTransitionLink key={link.href} href={`${localePrefix}${link.href}`} className="mobile-menu__link">
-                <span className="mobile-menu__index" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-                {link.label}
-              </ViewTransitionLink>
-            ))}
-          </nav>
-          <div className="mobile-menu__row">
-            <Link href={`${localePrefix}/shop`} className="mobile-menu__row-link">
-              <Icon name="search" size={15} /> {dict.a11y.search}
-            </Link>
-            <Link href={`${localePrefix}/account`} className="mobile-menu__row-link">
-              <Icon name="user" size={15} /> {dict.account.myAccount}
-            </Link>
-          </div>
-          <div className="mobile-menu__meta">
-            <LanguageSwitcher />
-            <CurrencySwitcher />
-            <span>hola@arem.world</span>
-            <span>Bogotá · Colombia</span>
-            <span>@arem.world</span>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {menuOpen && (
+          <m.div
+            className="mobile-menu"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menú"
+            initial={reduceMotion ? false : { opacity: 0, y: -16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={reduceMotion ? undefined : { opacity: 0, y: -12, transition: { duration: 0.22 } }}
+            transition={{ type: "spring", stiffness: 380, damping: 34 }}
+          >
+            <button type="button" className="icon-btn mobile-menu__close" aria-label={dict.a11y.closeMenu} onClick={() => setMenuOpen(false)}>
+              <Icon name="close" size={22} />
+            </button>
+            <Logo href={localePrefix} />
+            <nav aria-label="Menú móvil">
+              {site.nav.map((link, i) => (
+                <ViewTransitionLink key={link.href} href={`${localePrefix}${link.href}`} className="mobile-menu__link">
+                  <span className="mobile-menu__index" aria-hidden="true">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  {link.label}
+                </ViewTransitionLink>
+              ))}
+            </nav>
+            <div className="mobile-menu__row">
+              <Link href={`${localePrefix}/shop`} className="mobile-menu__row-link">
+                <Icon name="search" size={15} /> {dict.a11y.search}
+              </Link>
+              <Link href={`${localePrefix}/account`} className="mobile-menu__row-link">
+                <Icon name="user" size={15} /> {dict.account.myAccount}
+              </Link>
+            </div>
+            <div className="mobile-menu__meta">
+              <LanguageSwitcher />
+              <CurrencySwitcher />
+              <span>hola@arem.world</span>
+              <span>Bogotá · Colombia</span>
+              <span>@arem.world</span>
+            </div>
+          </m.div>
+        )}
+      </AnimatePresence>
     </>
   );
 }

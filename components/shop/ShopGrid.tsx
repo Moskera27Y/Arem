@@ -16,6 +16,7 @@ import { useMergedProducts, usePromotions } from "@/lib/admin/storefront-hooks";
 import { getAppliedDiscount } from "@/lib/admin/promotions";
 import { ProductCard } from "@/components/cards/ProductCard";
 import { Reveal } from "@/components/ui/Reveal";
+import { EmptyState } from "@/components/ui/EmptyState";
 
 interface ShopGridProps {
   products: Product[];
@@ -92,9 +93,13 @@ export function ShopGrid({ products, locale, sort, activeSlug, query, saleOnly, 
         </div>
       </div>
       {sorted.length === 0 ? (
-        <p className="muted" style={{ padding: "3rem 0" }}>
-          {dict.shop.empty}
-        </p>
+        <EmptyState
+          icon="search"
+          title={dict.shop.empty}
+          sub={locale === "es" ? "Prueba con otra palabra o categoría." : "Try another word or category."}
+          actionHref={`${localePrefix}/shop`}
+          actionLabel={dict.shop.all}
+        />
       ) : (
         <div className="shop-grid">
           {sorted.map((product, index) => (

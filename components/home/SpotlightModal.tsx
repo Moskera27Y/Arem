@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, m, useReducedMotion } from "motion/react";
 import type { Product } from "@/lib/content";
 import type { Locale } from "@/lib/i18n/config";
 import { useCurrency } from "@/lib/currency/currency-context";
@@ -23,7 +24,7 @@ interface SpotlightModalProps {
 export function SpotlightModal({ product, locale }: SpotlightModalProps) {
   const { format } = useCurrency();
   const [open, setOpen] = useState(false);
-  const [leaving, setLeaving] = useState(false);
+  const reduceMotion = useReducedMotion() ?? false;
 
   useEffect(() => {
     let t: ReturnType<typeof setTimeout> | null = null;
@@ -40,15 +41,12 @@ export function SpotlightModal({ product, locale }: SpotlightModalProps) {
   }, [product]);
 
   const dismiss = useCallback(() => {
-    setLeaving(true);
-    setTimeout(() => {
-      setOpen(false);
-      try {
-        window.localStorage.setItem(SEEN_KEY, "1");
-      } catch {
-        /* ignore */
-      }
-    }, 220);
+    setOpen(false);
+    try {
+      window.localStorage.setItem(SEEN_KEY, "1");
+    } catch {
+      /* ignore */
+    }
   }, []);
 
   useEffect(() => {
@@ -64,22 +62,32 @@ export function SpotlightModal({ product, locale }: SpotlightModalProps) {
     };
   }, [open, dismiss]);
 
-  if (!open || !product) return null;
+  if (!product) return null;
   const image = product.images[0];
   const es = locale === "es";
 
   return (
-    <div
-      className="spot"
-      data-leaving={leaving || undefined}
-      role="dialog"
-      aria-modal="true"
-      aria-label={es ? "Producto estrella de la semana" : "Star product of the week"}
-      onClick={(e) => {
-        if (e.target === e.currentTarget) dismiss();
-      }}
-    >
-      <div className="spot__card">
+    <AnimatePresence>
+      {open && (
+        <m.div
+          className="spot"
+          role="dialog"
+          aria-modal="true"
+          aria-label={es ? "Producto estrella de la semana" : "Star product of the week"}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) dismiss();
+          }}
+          initial={reduceMotion ? false : { opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={reduceMotion ? undefined : { opacity: 0, transition: { duration: 0.22 } }}
+        >
+          <m.div
+            className="spot__card"
+            initial={reduceMotion ? false : { opacity: 0, y: 48, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={reduceMotion ? undefined : { opacity: 0, y: 24, scale: 0.98, transition: { duration: 0.2 } }}
+            transition={{ type: "spring", stiffness: 320, damping: 30 }}
+          >
         <button type="button" className="spot__close" aria-label={es ? "Cerrar" : "Close"} onClick={dismiss}>
           <Icon name="close" size={18} />
         </button>
@@ -118,7 +126,9 @@ export function SpotlightModal({ product, locale }: SpotlightModalProps) {
             </button>
           </div>
         </div>
-      </div>
-    </div>
+          </m.div>
+        </m.div>
+      )}
+    </AnimatePresence>
   );
 }
