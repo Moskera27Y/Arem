@@ -10,6 +10,7 @@ export function AnimatedBackdrop() {
       <span className="arem-ambient__blob arem-ambient__blob--gold" />
       <span className="arem-ambient__blob arem-ambient__blob--clay" />
       <span className="arem-ambient__blob arem-ambient__blob--olive" />
+      <span className="arem-ambient__blob arem-ambient__blob--sand" />
       <span className="arem-ambient__weave" />
       <span className="arem-ambient__grain" />
     </div>

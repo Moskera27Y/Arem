@@ -1,8 +1,10 @@
 import type { Locale } from "@/lib/i18n/config";
 import type { HomeSection } from "@/lib/types";
+import { getFeaturedProducts } from "@/lib/content";
 import { Hero } from "@/components/home/Hero";
 import { FeaturedCategories } from "@/components/home/FeaturedCategories";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
+import { BestSellers } from "@/components/home/BestSellers";
 import { SaleRail } from "@/components/home/SaleRail";
 import { CategoryRails } from "@/components/home/CategoryRails";
 import { Craftsmanship } from "@/components/home/Craftsmanship";
@@ -24,6 +26,10 @@ export function SectionRenderer({ section, locale }: { section: HomeSection; loc
       return <FeaturedCategories section={section} locale={locale} />;
     case "featured-products":
       return <FeaturedProducts section={section} locale={locale} />;
+    case "best-sellers": {
+      const items = getFeaturedProducts(locale).slice(0, 5);
+      return <BestSellers section={section} products={items} locale={locale} />;
+    }
     case "sale-rail":
       return <SaleRail section={section} locale={locale} />;
     case "category-rails":

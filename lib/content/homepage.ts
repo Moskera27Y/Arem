@@ -43,6 +43,13 @@ type HomeSectionSeed =
     }
   | {
       id: string;
+      kind: "best-sellers";
+      eyebrow: Localized;
+      title: Localized;
+      subtitle: Localized;
+    }
+  | {
+      id: string;
       kind: "featured-products";
       eyebrow: Localized;
       title: Localized;
@@ -119,6 +126,16 @@ const seed: HomepageSeed = {
         "Seis oficios, un solo país. Cada uno con su tierra, su técnica y su gente.",
       ),
       categoryIds: ["cat-coffee", "cat-textiles", "cat-ceramics", "cat-bags", "cat-jewelry", "cat-home"],
+    },
+    {
+      id: "best-sellers",
+      kind: "best-sellers",
+      eyebrow: L("Most loved", "Las favoritas"),
+      title: L("Best sellers", "Más vendidas"),
+      subtitle: L(
+        "The pieces our customers can't stop reordering — one by one.",
+        "Las piezas que no dejan de pedir — una por una.",
+      ),
     },
     {
       id: "featured-products",
@@ -288,6 +305,7 @@ const resolve = (locale: Locale): HomeSection[] =>
         };
       case "sale-rail":
       case "category-rails":
+      case "best-sellers":
         return {
           id: s.id,
           kind: s.kind,

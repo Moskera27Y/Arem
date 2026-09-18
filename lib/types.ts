@@ -168,6 +168,12 @@ export type HomeSection = { id: string } & (
       subtitle: string;
     }
   | {
+      kind: "best-sellers";
+      eyebrow: string;
+      title: string;
+      subtitle: string;
+    }
+  | {
       kind: "category-rails";
       eyebrow: string;
       title: string;
