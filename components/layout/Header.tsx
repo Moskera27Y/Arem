@@ -113,8 +113,11 @@ export function Header() {
           </button>
           <Logo href={localePrefix} />
           <nav aria-label="Menú móvil">
-            {site.nav.map((link) => (
+            {site.nav.map((link, i) => (
               <ViewTransitionLink key={link.href} href={`${localePrefix}${link.href}`} className="mobile-menu__link">
+                <span className="mobile-menu__index" aria-hidden="true">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 {link.label}
               </ViewTransitionLink>
             ))}

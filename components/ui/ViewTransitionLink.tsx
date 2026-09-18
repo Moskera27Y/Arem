@@ -30,10 +30,12 @@ export function ViewTransitionLink({ href, children, ...rest }: Props) {
     }
     if (url.origin !== window.location.origin) return;
     if (url.pathname === window.location.pathname && url.search === window.location.search) return;
-    const start = (document as VTDocument).startViewTransition;
-    if (start) {
+    const doc = document as VTDocument;
+    if (typeof doc.startViewTransition === "function") {
       e.preventDefault();
-      start(() => router.push(href));
+      doc.startViewTransition(() => {
+        router.push(href);
+      });
     }
   };
 
