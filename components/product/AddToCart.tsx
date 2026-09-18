@@ -37,10 +37,12 @@ export function AddToCart({ product }: AddToCartProps) {
   const soldOut = !variant || variant.inventory <= 0;
   const stockLeft = variant ? variant.inventory : 0;
 
-  const handleAdd = () => {
+  const handleAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!variant || soldOut) return;
     add(product.id, variant.id, quantity);
-    openCart();
+    e.currentTarget.classList.add("is-added");
+    setTimeout(() => e.currentTarget.classList.remove("is-added"), 1200);
+    setTimeout(() => openCart(), 350);
   };
 
   return (
@@ -82,7 +84,7 @@ export function AddToCart({ product }: AddToCartProps) {
         </div>
       ))}
 
-      <div style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
+      <div className="pdp__buyrow" style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
         <div className="cart-line__qty" style={{ padding: "0.7rem 0.4rem" }}>
           <button
             type="button"

@@ -30,6 +30,15 @@ export function AnnouncementBar({ items }: AnnouncementBarProps) {
             {message}
           </span>
         ))}
+        {/* Duplicate for a seamless marquee loop on mobile (hidden on desktop). */}
+        <span className="announce__dup" aria-hidden="true">
+          {all.map((message, index) => (
+            <span key={`dup-${message}-${index}`} className="announce__item">
+              <Icon name="heart" size={10} className="announce__sep" />
+              {message}
+            </span>
+          ))}
+        </span>
       </span>
     </div>
   );

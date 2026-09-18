@@ -1,4 +1,5 @@
 import "server-only";
+import { EasyPostProvider } from "./easypost";
 
 /** Carrier-agnostic shipping abstraction (Colombia-ready: Coordinadora,
  * Servientrega, Inter Rapidísimo, Envía, DHL…). Configure via env:
@@ -58,8 +59,7 @@ export class MockShippingProvider implements ShippingProvider {
 }
 
 /** Generic HTTP carrier: POST {apiUrl}/rates|shipments|tracking with Bearer key. */
-export class GenericHttpShippingProvider implements ShippingProvider {
-  id = "generic";
+export class GenericHttpShippingProvider implements ShippingProvider {  id = "generic";
   private url(): string {
     const u = process.env.SHIPPING_API_URL;
     if (!u) throw new Error("SHIPPING_API_URL no configurado");
@@ -105,6 +105,7 @@ export class GenericHttpShippingProvider implements ShippingProvider {
 
 export function getShippingProvider(carrier?: string): ShippingProvider {
   const id = (carrier ?? process.env.SHIPPING_PROVIDER ?? "mock").toLowerCase();
+  if (id === "easypost") return new EasyPostProvider();
   if (id === "generic") return new GenericHttpShippingProvider();
   if (id === "mock") return new MockShippingProvider();
   // Named Colombian/international carriers plug in here (same Generic HTTP
