@@ -30,9 +30,9 @@ export function buildMediaSeed(): MediaAsset[] {
   // Hero
   assets.push(
     asset(
-      "/images/hero-main.svg",
-      "/images/hero-main.svg",
-      { en: "Andean highlands at dawn, coffee axis of Colombia", es: "Alturas andinas al amanecer, eje cafetero de Colombia" },
+      "/images/hero-brand.svg",
+      "/images/hero-brand.svg",
+      { en: "Andean dawn with the AREM flower sun over coffee mountains", es: "Amanecer andino con el sol flor de AREM sobre montañas cafeteras" },
       "hero",
       "Hero · Homepage",
     ),

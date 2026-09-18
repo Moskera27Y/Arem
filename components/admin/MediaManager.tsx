@@ -27,6 +27,7 @@ interface MediaItem {
 }
 
 const PLACEHOLDERS = [
+  "/images/hero-brand.svg",
   "/images/hero-main.svg",
   "/images/hero-craft.svg",
   "/images/about-1.svg",

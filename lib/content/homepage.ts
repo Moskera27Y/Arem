@@ -123,7 +123,7 @@ const seed: HomepageSeed = {
       ),
       primaryCta: { label: L("Discover Colombia", "Descubre Colombia"), href: "/shop" },
       secondaryCta: { label: L("Read our story", "Nuestra historia"), href: "/about" },
-      image: { src: "/images/hero-main.svg", alt: L("Andean highlands at dawn, coffee axis of Colombia", "Alturas andinas al amanecer, eje cafetero de Colombia") },
+      image: { src: "/images/hero-brand.svg", alt: L("Andean highlands at dawn, coffee axis of Colombia", "Alturas andinas al amanecer, eje cafetero de Colombia") },
       slides: [
         {
           eyebrow: L("Up to 40% off", "Hasta 40% off"),

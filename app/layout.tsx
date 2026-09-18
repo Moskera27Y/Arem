@@ -43,7 +43,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={`${fraunces.variable} ${inter.variable}`}>
       <head>
         {/* LCP: hero + logo discovered immediately, no waiting for CSS/JS */}
-        <link rel="preload" href="/images/hero-main.svg" as="image" fetchPriority="high" />
+        <link rel="preload" href="/images/hero-brand.svg" as="image" fetchPriority="high" />
         <link rel="preload" href="/brand/arem-world-logo.svg" as="image" fetchPriority="high" />
         {/* Future remote photography (Vercel Blob) */}
         <link rel="preconnect" href="https://vercel-blob.com" crossOrigin="anonymous" />

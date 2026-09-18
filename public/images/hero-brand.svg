@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-label="Andean dawn with the AREM flower sun over coffee mountains">
+<defs>
+<filter id="g" x="0" y="0" width="100%" height="100%">
+<feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="2" stitchTiles="stitch"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.12 0 0 0 0 0.08 0 0 0 0 0.05 0 0 0 0.09 0"/>
+</filter>
+<linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0" stop-color="#241a10"/><stop offset="0.38" stop-color="#5c3a24"/><stop offset="0.62" stop-color="#b4552d"/><stop offset="0.78" stop-color="#d9a441"/><stop offset="1" stop-color="#f3e7cf"/>
+</linearGradient>
+<radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">
+<stop offset="0" stop-color="#f6d98a" stop-opacity="0.9"/><stop offset="0.55" stop-color="#e8b64c" stop-opacity="0.45"/><stop offset="1" stop-color="#e8b64c" stop-opacity="0"/>
+</radialGradient>
+<radialGradient id="v" cx="0.5" cy="0.42" r="0.85">
+<stop offset="0.55" stop-color="#000" stop-opacity="0"/>
+<stop offset="1" stop-color="#000" stop-opacity="0.24"/>
+</radialGradient>
+</defs>
+<rect width="1920" height="1080" fill="url(#sky)"/>
+
+<!-- sun halo + sun -->
+<circle cx="1400" cy="360" r="330" fill="url(#halo)"/>
+<circle cx="1400" cy="360" r="205" fill="#e8b64c"/>
+<circle cx="1400" cy="360" r="205" fill="none" stroke="#f6d98a" stroke-width="6" stroke-opacity="0.7"/>
+<circle cx="1400" cy="360" r="168" fill="none" stroke="#b4552d" stroke-width="3" stroke-opacity="0.55"/>
+
+<!-- brand flower emblem as the heart of the sun (from the AREM logo) -->
+<g transform="translate(1302 262) scale(1.96)" fill="#9b2d2c">
+<path d="M48 50C48 19 28 0 4 0c-5 29 10 51 36 55C15 56 0 75 0 100c28 4 50-13 55-38-1 27 18 48 45 48 5-27-14-48-39-53 26-3 42-26 36-54C73 2 53 20 48 50Z"/>
+<circle cx="49" cy="56" r="16" fill="#d69a3b"/>
+<circle cx="49" cy="56" r="7" fill="#1c1410"/>
+</g>
+
+<!-- birds -->
+<g fill="none" stroke="#2c1e12" stroke-width="5" stroke-linecap="round" stroke-opacity="0.6">
+<path d="M330 210 q26 -24 52 0 q26 -24 52 0"/>
+<path d="M470 160 q20 -18 40 0 q20 -18 40 0"/>
+<path d="M250 140 q16 -14 32 0 q16 -14 32 0"/>
+</g>
+
+<!-- scattered gold diamonds in the upper sky -->
+<g fill="#f6d98a" fill-opacity="0.8">
+<path d="M700 120 l22 30 -22 30 -22 -30 Z"/>
+<path d="M880 200 l14 19 -14 19 -14 -19 Z"/>
+<path d="M560 300 l12 16 -12 16 -12 -16 Z"/>
+<path d="M1050 140 l16 22 -16 22 -16 -22 Z"/>
+</g>
+
+<!-- far cordillera -->
+<path d="M0 640 L140 520 L260 600 L400 480 L540 590 L700 500 L860 610 L1020 520 L1180 620 L1340 540 L1500 630 L1660 550 L1780 610 L1920 560 L1920 1080 L0 1080 Z" fill="#6b4a2f" fill-opacity="0.85"/>
+
+<!-- mid mountains with coffee terraces -->
+<path d="M0 740 L180 640 L360 730 L560 620 L760 735 L960 640 L1160 740 L1360 650 L1560 745 L1740 660 L1920 730 L1920 1080 L0 1080 Z" fill="#4a2f1c"/>
+<g fill="none" stroke="#d9a441" stroke-opacity="0.4" stroke-width="4">
+<path d="M120 700 q180 -40 360 0 t360 0"/>
+<path d="M880 700 q180 -40 360 0 t360 0"/>
+<path d="M200 760 q180 -36 360 0 t360 0"/>
+<path d="M1040 755 q180 -36 360 0"/>
+</g>
+
+<!-- near hills -->
+<path d="M0 860 Q240 800 480 860 T960 860 T1440 860 T1920 860 L1920 1080 L0 1080 Z" fill="#2c1e12"/>
+<path d="M0 930 Q320 885 640 930 T1280 930 T1920 930 L1920 1080 L0 1080 Z" fill="#1c1410"/>
+
+<!-- Wayuu diamond lattice band across the valley -->
+<g fill="none" stroke="#d9a441" stroke-opacity="0.5" stroke-width="3">
+<path d="M0 880 L96 880 M240 880 L336 880 M480 880 L576 880 M720 880 L816 880 M960 880 L1056 880 M1200 880 L1296 880 M1440 880 L1536 880 M1680 880 L1776 880"/>
+<path d="M48 856 L96 880 L48 904 M288 856 L336 880 L288 904 M528 856 L576 880 L528 904 M768 856 L816 880 L768 904 M1008 856 L1056 880 L1008 904 M1248 856 L1296 880 L1248 904 M1488 856 L1536 880 L1488 904 M1728 856 L1776 880 L1728 904"/>
+</g>
+
+<!-- (foreground kept clean for headline legibility) -->
+
+<!-- coffee sprig, bottom right -->
+<g>
+<path d="M1700 1080 Q1720 960 1680 880 Q1660 840 1640 820" fill="none" stroke="#3d4a22" stroke-width="12" stroke-linecap="round"/>
+<g fill="#5a6136">
+<ellipse cx="1640" cy="900" rx="58" ry="26" transform="rotate(-24 1640 900)"/>
+<ellipse cx="1740" cy="950" rx="58" ry="26" transform="rotate(18 1740 950)"/>
+<ellipse cx="1650" cy="990" rx="52" ry="24" transform="rotate(-12 1650 990)"/>
+</g>
+<g fill="#9b2d2c">
+<circle cx="1700" cy="920" r="17"/><circle cx="1745" cy="975" r="17"/><circle cx="1675" cy="1020" r="17"/>
+</g>
+<g fill="#d9a441">
+<circle cx="1694" cy="914" r="5"/><circle cx="1739" cy="969" r="5"/><circle cx="1669" cy="1014" r="5"/>
+</g>
+</g>
+
+<rect width="1920" height="1080" fill="url(#v)"/>
+<rect width="1920" height="1080" filter="url(#g)" opacity="0.9"/>
+</svg>
