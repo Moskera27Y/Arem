@@ -14,7 +14,8 @@ interface SendArgs {
  * - Else logs to console (dev) so flows never crash for missing email config.
  */
 export async function sendEmail({ to, subject, html, text }: SendArgs): Promise<{ sent: boolean; provider: string }> {
-  const resendKey = process.env.RESEND_API_KEY;
+  const rawKey = process.env.RESEND_API_KEY;
+  const resendKey = rawKey && rawKey !== "PENDING" ? rawKey : undefined;
   const from = process.env.EMAIL_FROM ?? "AREM WORLD <hola@arem.world>";
 
   if (resendKey) {
