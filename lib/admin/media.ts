@@ -30,9 +30,9 @@ export function buildMediaSeed(): MediaAsset[] {
   // Hero
   assets.push(
     asset(
-      "/images/hero-brand.svg",
-      "/images/hero-brand.svg",
-      { en: "Andean dawn with the AREM flower sun over coffee mountains", es: "Amanecer andino con el sol flor de AREM sobre montañas cafeteras" },
+      "/images/hero-store-1.jpg",
+      "/images/hero-store-1.jpg",
+      { en: "AREM store with handmade Colombian pieces", es: "Tienda AREM con piezas artesanales colombianas" },
       "hero",
       "Hero · Homepage",
     ),

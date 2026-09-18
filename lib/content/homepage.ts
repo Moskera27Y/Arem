@@ -123,7 +123,7 @@ const seed: HomepageSeed = {
       ),
       primaryCta: { label: L("Discover Colombia", "Descubre Colombia"), href: "/shop" },
       secondaryCta: { label: L("Read our story", "Nuestra historia"), href: "/about" },
-      image: { src: "/images/hero-brand.svg", alt: L("Andean highlands at dawn, coffee axis of Colombia", "Alturas andinas al amanecer, eje cafetero de Colombia") },
+      image: { src: "/images/hero-store-1.jpg", alt: L("AREM store with handmade Colombian pieces", "Tienda AREM con piezas artesanales colombianas") },
       slides: [
         {
           eyebrow: L("Up to 40% off", "Hasta 40% off"),
@@ -134,7 +134,7 @@ const seed: HomepageSeed = {
             "Precios especiales en piezas hechas a mano.",
           ),
           primaryCta: { label: L("Shop the sale", "Ver ofertas"), href: "/shop?sale=1" },
-          image: { src: "/images/hero-sale.svg", alt: L("Sale tag, up to 40 percent off", "Etiqueta de oferta, hasta 40 por ciento off") },
+          image: { src: "/images/hero-store-2.jpg", alt: L("Wayuu mochilas and AREM sign in store", "Mochilas wayuu y aviso AREM en la tienda") },
         },
         {
           eyebrow: L("From our Instagram", "De nuestro Instagram"),
@@ -145,7 +145,7 @@ const seed: HomepageSeed = {
             "Sigue @arem.world: lanzamientos, detrás del telar y piezas nuevas.",
           ),
           primaryCta: { label: L("Explore collections", "Explorar colecciones"), href: "/collections" },
-          image: { src: "/images/ig-1.svg", alt: L("Community craft photography", "Fotografía artesanal de la comunidad") },
+          image: { src: "/images/hero-store-3.jpg", alt: L("Handwoven clutches and jewelry in store", "Clutches tejidos y joyería en la tienda") },
         },
       ],
     },
