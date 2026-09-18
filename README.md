@@ -12,8 +12,9 @@ category crops, dark photo-scrim story cards, and a dark newsletter + footer.
 No gradients except photo scrims, no glassmorphism, no neon.
 
 **Homepage order:** announcement bar → navigation → full-width photographic
-hero → shop by category (circular row) → stories that inspire → new / featured
-products (carousel) → why shop at AREM WORLD (trust) → Instagram →
+hero → shop by category (circular row) → new releases (carousel) →
+sale items (carousel) → signature craft rails (3 carousels) → why shop at
+AREM WORLD (trust) → craftsmanship (brand banner) → Instagram →
 dark newsletter → footer. All copy bilingual via the existing i18n system;
 all sections driven by the centralized data store.
 
@@ -38,9 +39,8 @@ npm run start          # serve the production build
 ## Routes
 
 Storefront (per locale `/en`, `/es`): `/`, `/shop`, `/products/[slug]`,
-`/collections`, `/collections/[slug]`, `/about`, `/stories`,
-`/stories/[slug]`, `/regions`, `/regions/[slug]`, `/contact`, `/cart`,
-`/wishlist`, `/_not-found`.
+`/collections`, `/collections/[slug]`, `/about`, `/contact`, `/cart`,
+`/tracking`, `/wishlist`, `/_not-found`.
 
 Admin: `/admin` (overview), `/admin/products`,
 `/admin/products/new`, `/admin/products/[id]`, `/admin/categories`,
@@ -108,7 +108,7 @@ components and types stay identical.
 ## Media library
 
 `/admin/media` manages every public-facing image (hero, categories, products
-+ galleries, stories, regions, Instagram tiles, footer/newsletter background)
++ galleries, Instagram tiles, footer/newsletter background)
 with a grid + large previews, search, type filters, an edit modal (URL /
 placeholder / local-file **preview-only**), bilingual alt text, preview-before-
 save, replace/remove confirmation and validation. Media URLs + metadata persist

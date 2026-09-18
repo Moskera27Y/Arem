@@ -28,19 +28,14 @@ interface MediaItem {
 
 const PLACEHOLDERS = [
   "/images/hero-main.svg",
+  "/images/hero-craft.svg",
+  "/images/about-1.svg",
   "/images/cat-coffee.svg",
   "/images/cat-textiles.svg",
   "/images/cat-ceramics.svg",
   "/images/cat-bags.svg",
   "/images/cat-jewelry.svg",
   "/images/cat-home.svg",
-  "/images/r-andes.svg",
-  "/images/r-guajira.svg",
-  "/images/r-caribe.svg",
-  "/images/r-bogota.svg",
-  "/images/s-tejer.svg",
-  "/images/s-cafe.svg",
-  "/images/s-barro.svg",
   "/images/brand-1.svg",
 ];
 

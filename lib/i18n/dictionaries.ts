@@ -13,8 +13,6 @@ export interface Dictionary {
   nav: {
     shop: string;
     collections: string;
-    stories: string;
-    regions: string;
     about: string;
     contact: string;
   };
@@ -38,10 +36,8 @@ export interface Dictionary {
     explore: string;
     viewAll: string;
     viewCollection: string;
-    readStory: string;
     pieces: (count: number) => string;
     products: (count: number) => string;
-    theirStories: string;
   };
   shop: {
     eyebrow: string;
@@ -63,7 +59,6 @@ export interface Dictionary {
     originalPrice: string;
     origin: string;
     artisan: string;
-    viewStories: string;
     collections: string;
     sku: string;
     inventoryNote: string;
@@ -129,22 +124,6 @@ export interface Dictionary {
     hoursValue: string;
     sendMessage: string;
   };
-  stories: {
-    eyebrow: string;
-    title: string;
-    sub: string;
-    featuredBadge: string;
-    readStory: string;
-    backToStories: string;
-    piecesBy: (name: string) => string;
-  };
-  regions: {
-    eyebrow: string;
-    title: string;
-    sub: string;
-    handsOf: (name: string) => string;
-    piecesOf: (name: string) => string;
-  };
   heroStats: {
     artisans: string;
     municipalities: string;
@@ -166,8 +145,6 @@ export interface Dictionary {
   meta: {
     notFoundProduct: string;
     notFoundCollection: string;
-    notFoundStory: string;
-    notFoundRegion: string;
   };
   footer: {
     explore: string;
@@ -282,8 +259,6 @@ const en: Dictionary = {
   nav: {
     shop: "Shop",
     collections: "Collections",
-    stories: "Stories",
-    regions: "Regions",
     about: "About",
     contact: "Contact",
   },
@@ -307,10 +282,8 @@ const en: Dictionary = {
     explore: "Explore",
     viewAll: "View all",
     viewCollection: "View collection",
-    readStory: "Read the story",
     pieces: (count) => `${count} ${count === 1 ? "piece" : "pieces"}`,
     products: (count) => `${count} ${count === 1 ? "product" : "products"}`,
-    theirStories: "Their stories",
   },
   shop: {
     eyebrow: "The shop",
@@ -332,7 +305,6 @@ const en: Dictionary = {
     originalPrice: "Original price:",
     origin: "Origin",
     artisan: "Artisan",
-    viewStories: "view stories",
     collections: "Collections",
     sku: "SKU",
     inventoryNote: "Inventory managed per variant",
@@ -398,22 +370,6 @@ const en: Dictionary = {
     hoursValue: "Mon – Fri · 9:00 – 18:00",
     sendMessage: "Send us a message",
   },
-  stories: {
-    eyebrow: "The craft journal",
-    title: "Stories",
-    sub: "Behind every piece there is a land, a technique and a person. These are their voices.",
-    featuredBadge: "Featured story",
-    readStory: "Read the story",
-    backToStories: "Back to stories",
-    piecesBy: (name) => `Pieces by ${name}`,
-  },
-  regions: {
-    eyebrow: "The map of craft",
-    title: "Regions",
-    sub: "Colombia fits in a single glance: the desert that weaves, the mountain that grows, the coast that rests. These are the lands of our artisans.",
-    handsOf: (name) => `Hands of ${name.split(" ")[0]}`,
-    piecesOf: (name) => `Pieces from ${name.split(" ")[0]}`,
-  },
   heroStats: {
     artisans: "artisans",
     municipalities: "municipalities",
@@ -435,8 +391,6 @@ const en: Dictionary = {
   meta: {
     notFoundProduct: "Product not found",
     notFoundCollection: "Collection not found",
-    notFoundStory: "Story not found",
-    notFoundRegion: "Region not found",
   },
   footer: {
     explore: "Explore",
@@ -551,8 +505,6 @@ const es: Dictionary = {
   nav: {
     shop: "Tienda",
     collections: "Colecciones",
-    stories: "Historias",
-    regions: "Regiones",
     about: "Nosotros",
     contact: "Contacto",
   },
@@ -576,10 +528,8 @@ const es: Dictionary = {
     explore: "Explorar",
     viewAll: "Ver todo",
     viewCollection: "Ver colección",
-    readStory: "Leer la historia",
     pieces: (count) => `${count} ${count === 1 ? "pieza" : "piezas"}`,
     products: (count) => `${count} ${count === 1 ? "producto" : "productos"}`,
-    theirStories: "Sus historias",
   },
   shop: {
     eyebrow: "La tienda",
@@ -601,7 +551,6 @@ const es: Dictionary = {
     originalPrice: "Precio original:",
     origin: "Origen",
     artisan: "Artesano",
-    viewStories: "ver historias",
     collections: "Colecciones",
     sku: "SKU",
     inventoryNote: "Inventario gestionado por variante",
@@ -667,22 +616,6 @@ const es: Dictionary = {
     hoursValue: "Lun – Vie · 9:00 – 18:00",
     sendMessage: "Envíanos un mensaje",
   },
-  stories: {
-    eyebrow: "El diario del oficio",
-    title: "Historias",
-    sub: "Detrás de cada pieza hay una tierra, una técnica y una persona. Estas son sus voces.",
-    featuredBadge: "Historia destacada",
-    readStory: "Leer la historia",
-    backToStories: "Volver a historias",
-    piecesBy: (name) => `Piezas de ${name.split(" ")[0]}`,
-  },
-  regions: {
-    eyebrow: "El mapa del oficio",
-    title: "Regiones",
-    sub: "Colombia cabe en una sola mirada: el desierto que teje, la montaña que cultiva, la costa que descansa. Estas son las tierras de nuestros artesanos.",
-    handsOf: (name) => `Manos de ${name.split(" ")[0]}`,
-    piecesOf: (name) => `Piezas de ${name.split(" ")[0]}`,
-  },
   heroStats: {
     artisans: "artesanos",
     municipalities: "municipios",
@@ -704,8 +637,6 @@ const es: Dictionary = {
   meta: {
     notFoundProduct: "Producto no encontrado",
     notFoundCollection: "Colección no encontrada",
-    notFoundStory: "Historia no encontrada",
-    notFoundRegion: "Región no encontrada",
   },
   footer: {
     explore: "Explorar",

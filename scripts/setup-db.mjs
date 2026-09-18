@@ -9,7 +9,7 @@ create table if not exists public.media (
   key text not null unique,
   url text not null,
   storage_path text,
-  type text not null check (type in ('hero','product','category','story','region','social','footer','logo')),
+  type text not null check (type in ('hero','product','category','social','footer','logo')),
   usage text,
   alt_en text,
   alt_es text,

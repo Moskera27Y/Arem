@@ -434,10 +434,6 @@ h4 {
   background: var(--bg-alt);
 }
 
-.section--stories {
-  background: var(--bg);
-}
-
 .section-head {
   display: flex;
   flex-direction: column;
@@ -993,114 +989,6 @@ h4 {
   color: var(--ink);
 }
 
-/* ------------------------ Stories that inspire -------------------- */
-
-.stories-inspire {
-  display: grid;
-  grid-template-columns: 0.8fr 2fr;
-  gap: clamp(2rem, 5vw, 4.5rem);
-  align-items: center;
-}
-
-.stories-inspire__intro {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  align-items: flex-start;
-}
-
-.stories-inspire__title {
-  margin-top: 0.4rem;
-}
-
-.stories-inspire__sub {
-  color: var(--text-muted);
-  line-height: 1.7;
-  max-width: 22rem;
-}
-
-.stories-inspire__grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.25rem;
-}
-
-.story-hero-card {
-  position: relative;
-  display: block;
-  border-radius: var(--r-md);
-  overflow: hidden;
-  background: var(--ink);
-  aspect-ratio: 3 / 4;
-}
-
-.story-hero-card__media {
-  position: absolute;
-  inset: 0;
-}
-
-.story-hero-card__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 1.1s var(--ease);
-}
-
-.story-hero-card:hover .story-hero-card__media img {
-  transform: scale(1.05);
-}
-
-.story-hero-card__media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(18, 13, 8, 0.9), rgba(18, 13, 8, 0.05) 60%);
-}
-
-.story-hero-card__body {
-  position: relative;
-  z-index: 1;
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 1.5rem;
-  color: var(--text-inverse);
-}
-
-.story-hero-card__region {
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gold-soft);
-  margin-bottom: 0.4rem;
-}
-
-.story-hero-card__title {
-  font-family: var(--font-serif);
-  font-size: 1.4rem;
-  line-height: 1.15;
-  color: var(--paper);
-  margin-bottom: 0.9rem;
-}
-
-.story-hero-card__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--gold-soft);
-}
-
-.story-hero-card:hover .story-hero-card__link {
-  color: var(--paper);
-}
-
 /* --------------------------- Product cards ------------------------ */
 
 .products-row {
@@ -1130,6 +1018,23 @@ h4 {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* Signature craft rails (Khoi-style stacked carousels). */
+.category-rail {
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+}
+
+.category-rail:first-of-type {
+  margin-top: clamp(2rem, 4vw, 3rem);
+}
+
+.category-rail__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .product-card {
@@ -1270,261 +1175,6 @@ h4 {
   color: var(--ink);
   border-color: var(--ink);
   background: var(--paper);
-}
-
-/* ------------------------- Story / Region cards ------------------- */
-
-.story-card {
-  display: block;
-  background: var(--bg);
-}
-
-.story-card__media {
-  border-radius: var(--r-md);
-  overflow: hidden;
-  aspect-ratio: 16 / 10;
-}
-
-.story-card__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 1.1s var(--ease);
-}
-
-.story-card:hover .story-card__media img {
-  transform: scale(1.04);
-}
-
-.story-card__body {
-  padding-top: 1.25rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.story-card__meta {
-  font-size: var(--text-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.story-card__title {
-  font-family: var(--font-serif);
-  font-size: 1.3rem;
-  line-height: 1.2;
-}
-
-.story-card__title a:hover {
-  color: var(--clay-deep);
-}
-
-.story-card__dek {
-  color: var(--text-muted);
-  font-size: var(--text-sm);
-  line-height: 1.6;
-}
-
-/* --------------------- Stories page: dark drama -------------------- */
-/* Full-page nocturnal editorial: ink backdrop, gold hairlines, numbered
-   index. Scoped to .stories-page so light story cards elsewhere survive. */
-
-.stories-page {
-  background: var(--bg-dark);
-  color: var(--text-inverse);
-  position: relative;
-  overflow: clip;
-}
-
-.stories-page::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(55% 40% at 85% 8%, rgba(185, 138, 62, 0.14), transparent 70%),
-    radial-gradient(45% 35% at 8% 55%, rgba(180, 85, 45, 0.1), transparent 70%);
-  pointer-events: none;
-}
-
-.stories-page .section {
-  position: relative;
-}
-
-.page-hero--dark {
-  /* Scoped under .stories-page: beats the later base .page-hero rule. */
-  border-bottom: 1px solid rgba(217, 164, 65, 0.18);
-}
-
-.stories-page .page-hero {
-  background: transparent;
-}
-
-.stories-page .story-card {
-  background: transparent;
-}
-
-.page-hero--dark .breadcrumbs {
-  color: rgba(239, 230, 211, 0.55);
-}
-
-.page-hero--dark .breadcrumbs a:hover {
-  color: var(--gold-soft);
-}
-
-.page-hero--dark .eyebrow {
-  color: var(--gold-soft);
-}
-
-.page-hero--dark .eyebrow::before {
-  background: var(--gold-soft);
-}
-
-.page-hero--dark .page-hero__title {
-  color: var(--paper);
-  font-size: clamp(2.6rem, 6vw, 4.6rem);
-}
-
-.page-hero--dark .page-hero__sub {
-  color: rgba(239, 230, 211, 0.72);
-}
-
-/* Featured cover: gold frame, taller, glowing. */
-.stories-featured {
-  border: 1px solid rgba(217, 164, 65, 0.28);
-  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.45);
-  min-height: clamp(28rem, 62vh, 40rem);
-}
-
-.stories-featured .collection-hero__media::after {
-  background: linear-gradient(
-    to top,
-    rgba(10, 7, 4, 0.88) 0%,
-    rgba(10, 7, 4, 0.35) 55%,
-    rgba(10, 7, 4, 0.08) 100%
-  );
-}
-
-.stories-featured__badge {
-  border: 1px solid rgba(217, 164, 65, 0.5);
-}
-
-/* Numbered index of stories. */
-.stories-index {
-  counter-reset: story;
-}
-
-.stories-index .story-card {
-  counter-increment: story;
-  border-top: 1px solid rgba(217, 164, 65, 0.22);
-  padding-top: 1.4rem;
-  position: relative;
-}
-
-.stories-index .story-card::before {
-  content: counter(story, decimal-leading-zero);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: 0.95rem;
-  letter-spacing: 0.12em;
-  color: var(--gold-soft);
-}
-
-.stories-page .story-card__media {
-  border: 1px solid rgba(239, 230, 211, 0.12);
-  margin-top: 1rem;
-}
-
-.stories-page .story-card:hover .story-card__media {
-  border-color: rgba(217, 164, 65, 0.45);
-}
-
-.stories-page .story-card:hover .story-card__media img {
-  transform: scale(1.06);
-}
-
-.stories-page .story-card__meta {
-  color: var(--gold-soft);
-}
-
-.stories-page .story-card__title {
-  color: var(--paper);
-}
-
-.stories-page .story-card__title a:hover {
-  color: var(--gold-soft);
-}
-
-.stories-page .story-card__dek {
-  color: rgba(239, 230, 211, 0.66);
-}
-
-@media (max-width: 640px) {
-  .stories-featured {
-    min-height: 26rem;
-  }
-
-  .stories-featured .collection-hero__body {
-    padding: 1.75rem;
-  }
-}
-
-.region-card {
-  position: relative;
-  display: block;
-  border-radius: var(--r-md);
-  overflow: hidden;
-  background: var(--ink);
-  color: var(--text-inverse);
-  aspect-ratio: 4 / 5;
-}
-
-.region-card__media {
-  position: absolute;
-  inset: 0;
-}
-
-.region-card__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 1.1s var(--ease);
-}
-
-.region-card:hover .region-card__media img {
-  transform: scale(1.05);
-}
-
-.region-card__media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(18, 13, 8, 0.78), rgba(18, 13, 8, 0.1) 60%);
-}
-
-.region-card__body {
-  position: relative;
-  z-index: 1;
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 1.75rem;
-}
-
-.region-card__name {
-  font-family: var(--font-serif);
-  font-size: 1.6rem;
-  color: var(--paper);
-}
-
-.region-card__dept {
-  font-size: var(--text-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--gold-soft);
-  margin-top: 0.4rem;
 }
 
 /* --------------------- Why shop (trust) section ------------------- */
@@ -2586,13 +2236,11 @@ h4 {
   box-shadow: 0 10px 24px rgba(28, 23, 18, 0.14);
 }
 
-.story-card,
 .product-card,
 .cat-chip {
   transition: transform 0.4s var(--ease);
 }
 
-.story-card:hover,
 .product-card:hover,
 .cat-chip:hover {
   transform: translateY(-3px);
@@ -2873,32 +2521,6 @@ h4 {
   color: rgba(239, 230, 211, 0.8);
 }
 
-/* ------------------------------ Region ---------------------------- */
-
-.region-facts {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0 2.5rem;
-  border-top: 1px solid var(--line);
-  padding-top: 1.75rem;
-}
-
-.region-facts li {
-  padding-block: 0.5rem;
-  display: flex;
-  gap: 0.75rem;
-  align-items: baseline;
-  color: var(--ink-2);
-  font-size: var(--text-sm);
-  border-bottom: 1px solid var(--line-soft);
-}
-
-.region-facts li::before {
-  content: "·";
-  color: var(--gold-dark);
-  font-weight: 700;
-}
-
 /* --------------------------- Contact page ------------------------- */
 
 .contact-grid {
@@ -2974,8 +2596,7 @@ h4 {
 
 /* Long grids: skip painting offscreen rows until near viewport */
 .shop-grid,
-.insta-grid,
-.stories-inspire__grid {
+.insta-grid {
   content-visibility: auto;
   contain-intrinsic-size: auto 800px;
 }
@@ -3042,9 +2663,7 @@ section[id],
 }
 
 /* Image hover: faster, GPU-hinted */
-.story-card__media img,
 .product-card__media img,
-.region-card__media img,
 .insta-tile img {
   will-change: transform;
   backface-visibility: hidden;
@@ -3423,15 +3042,6 @@ body {
     grid-template-columns: 1fr;
   }
 
-  .stories-inspire {
-    grid-template-columns: 1fr;
-    gap: 2rem;
-  }
-
-  .stories-inspire__sub {
-    max-width: 30rem;
-  }
-
   .trust-row {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -3572,10 +3182,6 @@ body {
     align-items: stretch;
   }
 
-  .region-facts {
-    grid-template-columns: 1fr;
-  }
-
   .collection-hero__body {
     padding: 1.75rem;
   }
@@ -3614,15 +3220,6 @@ body {
 
   .lang-switch__item {
     gap: 0.35rem;
-  }
-
-  .stories-inspire__grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .story-hero-card {
-    aspect-ratio: 16 / 10;
   }
 
   .trust-row {
@@ -3666,7 +3263,6 @@ body {
     animation: none;
   }
 
-  .story-card:hover,
   .product-card:hover,
   .cat-chip:hover,
   .btn:hover {

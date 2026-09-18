@@ -117,21 +117,6 @@ export interface Artisan {
   image: ImageRef;
 }
 
-export interface Story {
-  id: string;
-  slug: string;
-  title: string;
-  dek: string;
-  body: string[];
-  image: ImageRef;
-  category: string;
-  regionId?: string;
-  artisanId?: string;
-  date: string;
-  readTime: string;
-  featured?: boolean;
-}
-
 /* ------------------------------------------------------------------ */
 /* Homepage — sectioned, admin-controllable                            */
 /* ------------------------------------------------------------------ */
@@ -177,21 +162,16 @@ export type HomeSection = { id: string } & (
       cta: CtaLink;
     }
   | {
-      kind: "featured-region";
+      kind: "sale-rail";
       eyebrow: string;
       title: string;
-      body: string;
-      regionId: string;
-      cta: CtaLink;
+      subtitle: string;
     }
   | {
-      kind: "brand-story";
+      kind: "category-rails";
       eyebrow: string;
       title: string;
-      body: string[];
-      quote: string;
-      quoteAuthor: string;
-      image: ImageRef;
+      subtitle: string;
     }
   | {
       kind: "instagram";
@@ -205,14 +185,6 @@ export type HomeSection = { id: string } & (
       eyebrow: string;
       title: string;
       subtitle: string;
-    }
-  | {
-      kind: "stories-inspire";
-      eyebrow: string;
-      title: string;
-      sub: string;
-      cta: CtaLink;
-      storyIds: string[];
     }
   | {
       kind: "why-shop";

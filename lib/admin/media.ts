@@ -6,7 +6,7 @@
  */
 
 import type { MediaAsset, MediaType } from "@/lib/admin/types";
-import { categorySeeds, productSeeds, regionSeeds, storySeeds } from "@/lib/content";
+import { categorySeeds, productSeeds } from "@/lib/content";
 
 const INSTAGRAM_TILES = [
   "/images/ig-1.svg",
@@ -51,16 +51,6 @@ export function buildMediaSeed(): MediaAsset[] {
     });
   }
 
-  // Stories
-  for (const s of storySeeds) {
-    assets.push(asset(s.image.src, s.image.src, s.image.alt, "story", `Story · ${s.title.en}`));
-  }
-
-  // Regions
-  for (const r of regionSeeds) {
-    assets.push(asset(r.image.src, r.image.src, r.image.alt, "region", `Region · ${r.name.en}`));
-  }
-
   // Instagram / social tiles
   INSTAGRAM_TILES.forEach((src, index) => {
     assets.push(
@@ -91,7 +81,7 @@ export function buildMediaSeed(): MediaAsset[] {
       "/images/about-1.svg",
       "/images/about-1.svg",
       { en: "Loom in an artisan workshop", es: "Telar en un taller artesanal" },
-      "story",
+      "hero",
       "About · illustration",
     ),
   );
@@ -100,7 +90,7 @@ export function buildMediaSeed(): MediaAsset[] {
       "/images/hero-craft.svg",
       "/images/hero-craft.svg",
       { en: "Artisan hands working natural materials", es: "Manos de artesano trabajando materiales naturales" },
-      "story",
+      "hero",
       "Craftsmanship · illustration",
     ),
   );
@@ -122,15 +112,13 @@ export function buildMediaSeed(): MediaAsset[] {
   return uniq;
 }
 
-/** Stable ordering for the media grid (hero, product, category, story, region, social, footer). */
+/** Stable ordering for the media grid (hero, product, category, social, footer). */
 const TYPE_ORDER: Record<MediaType, number> = {
   hero: 0,
   product: 1,
   category: 2,
-  story: 3,
-  region: 4,
-  social: 5,
-  footer: 6,
+  social: 3,
+  footer: 4,
 };
 
 export function sortMedia(assets: MediaAsset[]): MediaAsset[] {

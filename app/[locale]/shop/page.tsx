@@ -9,7 +9,7 @@ import { ShopGrid } from "@/components/shop/ShopGrid";
 
 interface ShopPageProps {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ category?: string; sort?: string; q?: string }>;
+  searchParams: Promise<{ category?: string; sort?: string; q?: string; sale?: string }>;
 }
 
 export async function generateMetadata({ params }: ShopPageProps): Promise<Metadata> {
@@ -32,7 +32,7 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
   const { locale: raw } = await params;
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
-  const { category: categorySlug, sort: sortParam, q: qParam } = await searchParams;
+  const { category: categorySlug, sort: sortParam, q: qParam, sale: saleParam } = await searchParams;
 
   const dict = getDictionary(locale);
   const localePrefix = `/${locale}`;
@@ -40,15 +40,19 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
   const activeSlug = categorySlug && getCategoryBySlug(locale, categorySlug) ? categorySlug : null;
   const sort = sortParam ?? "featured";
   const query = (qParam ?? "").trim().slice(0, 80);
+  const saleOnly = saleParam === "1";
 
   const all = getActiveProducts(locale);
   const byCategory = activeSlug
     ? all.filter((p) => p.categoryIds.includes(getCategoryBySlug(locale, activeSlug)?.id ?? ""))
     : all;
   const nq = norm(query);
-  const visible = nq
+  const byQuery = nq
     ? byCategory.filter((p) => norm(`${p.name} ${p.slug} ${p.categoryIds.join(" ")}`).includes(nq))
     : byCategory;
+  const visible = saleOnly
+    ? byQuery.filter((p) => p.compareAtPrice && p.compareAtPrice.amount > p.price.amount)
+    : byQuery;
 
   const sorted = [...visible];
   switch (sort) {
@@ -100,6 +104,7 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
               activeSlug={activeSlug}
               sort={sort}
               query={query}
+              saleOnly={saleOnly}
               localePrefix={localePrefix}
             />
             <div className="shop-main">
@@ -109,6 +114,7 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
                 sort={sort}
                 activeSlug={activeSlug}
                 query={query}
+                saleOnly={saleOnly}
                 localePrefix={localePrefix}
               />
             </div>

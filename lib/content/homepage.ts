@@ -29,12 +29,17 @@ type HomeSectionSeed =
     }
   | {
       id: string;
-      kind: "stories-inspire";
+      kind: "sale-rail";
       eyebrow: Localized;
       title: Localized;
-      sub: Localized;
-      cta: CtaSeed;
-      storyIds: string[];
+      subtitle: Localized;
+    }
+  | {
+      id: string;
+      kind: "category-rails";
+      eyebrow: Localized;
+      title: Localized;
+      subtitle: Localized;
     }
   | {
       id: string;
@@ -76,25 +81,6 @@ type HomeSectionSeed =
       statLabel: Localized;
       statValue: string;
       cta: CtaSeed;
-    }
-  | {
-      id: string;
-      kind: "featured-region";
-      eyebrow: Localized;
-      title: Localized;
-      body: Localized;
-      regionId: string;
-      cta: CtaSeed;
-    }
-  | {
-      id: string;
-      kind: "brand-story";
-      eyebrow: Localized;
-      title: Localized;
-      body: Localized[];
-      quote: Localized;
-      quoteAuthor: Localized;
-      image: LocalizedImage;
     };
 
 /**
@@ -135,25 +121,13 @@ const seed: HomepageSeed = {
       categoryIds: ["cat-coffee", "cat-textiles", "cat-ceramics", "cat-bags", "cat-jewelry", "cat-home"],
     },
     {
-      id: "stories",
-      kind: "stories-inspire",
-      eyebrow: L("Stories that inspire", "Historias que inspiran"),
-      title: L("The origin of every piece", "El origen de cada pieza"),
-      sub: L(
-        "Every product carries a land, a technique and a person. Meet the artisans and regions that make AREM WORLD possible.",
-        "Cada producto lleva una tierra, una técnica y una persona. Conoce a los artesanos y regiones que hacen posible AREM WORLD.",
-      ),
-      cta: { label: L("Discover more stories", "Conoce más historias"), href: "/stories" },
-      storyIds: ["st-tejer", "st-cafe", "st-barro"],
-    },
-    {
       id: "featured-products",
       kind: "featured-products",
-      eyebrow: L("New & featured", "Nuevo y destacado"),
-      title: L("New products", "Nuevos productos"),
+      eyebrow: L("New releases", "Novedades"),
+      title: L("New releases", "Novedades"),
       subtitle: L(
-        "What our curators cannot stop recommending this week.",
-        "Lo que nuestros curadores no pueden dejar de recomendar esta semana.",
+        "The latest pieces from our artisans — fresh this week.",
+        "Las piezas más recientes de nuestros artesanos — frescas esta semana.",
       ),
       productIds: [
         "pr-mochila-katsu",
@@ -163,6 +137,26 @@ const seed: HomepageSeed = {
         "pr-ruana-paramo",
         "pr-collar-andino",
       ],
+    },
+    {
+      id: "sale",
+      kind: "sale-rail",
+      eyebrow: L("Up to 40% off select styles", "Hasta 40% off en estilos seleccionados"),
+      title: L("Sale items", "Ofertas"),
+      subtitle: L(
+        "Special prices on beloved pieces — while they last.",
+        "Precios especiales en piezas queridas — hasta agotar.",
+      ),
+    },
+    {
+      id: "category-rails",
+      kind: "category-rails",
+      eyebrow: L("Shop by craft", "Compra por oficio"),
+      title: L("Our crafts", "Nuestros oficios"),
+      subtitle: L(
+        "Three signature crafts, curated for you.",
+        "Tres oficios insignia, seleccionados para ti.",
+      ),
     },
     {
       id: "why-shop",
@@ -256,7 +250,7 @@ const seed: HomepageSeed = {
       image: { src: "/images/hero-craft.svg", alt: L("Artisan hands working natural materials", "Manos de artesano trabajando materiales naturales") },
       statLabel: L("partner artisans", "artesanos aliados"),
       statValue: "120+",
-      cta: { label: L("Meet the artisans", "Conocer a los artesanos"), href: "/stories" },
+      cta: { label: L("About AREM WORLD", "Conoce AREM WORLD"), href: "/about" },
     },
   ],
 };
@@ -292,15 +286,14 @@ const resolve = (locale: Locale): HomeSection[] =>
           subtitle: pick(s.subtitle, locale),
           categoryIds: s.categoryIds,
         };
-      case "stories-inspire":
+      case "sale-rail":
+      case "category-rails":
         return {
           id: s.id,
           kind: s.kind,
           eyebrow: pick(s.eyebrow, locale),
           title: pick(s.title, locale),
-          sub: pick(s.sub, locale),
-          cta: cta(s.cta, locale),
-          storyIds: s.storyIds,
+          subtitle: pick(s.subtitle, locale),
         };
       case "featured-products":
         return {
@@ -351,27 +344,6 @@ const resolve = (locale: Locale): HomeSection[] =>
           statLabel: pick(s.statLabel, locale),
           statValue: s.statValue,
           cta: cta(s.cta, locale),
-        };
-      case "featured-region":
-        return {
-          id: s.id,
-          kind: s.kind,
-          eyebrow: pick(s.eyebrow, locale),
-          title: pick(s.title, locale),
-          body: pick(s.body, locale),
-          regionId: s.regionId,
-          cta: cta(s.cta, locale),
-        };
-      case "brand-story":
-        return {
-          id: s.id,
-          kind: s.kind,
-          eyebrow: pick(s.eyebrow, locale),
-          title: pick(s.title, locale),
-          body: s.body.map((b) => pick(b, locale)),
-          quote: pick(s.quote, locale),
-          quoteAuthor: pick(s.quoteAuthor, locale),
-          image: pickImage(s.image, locale),
         };
     }
   });

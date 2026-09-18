@@ -65,14 +65,6 @@ export {
   getArtisansByRegion,
 } from "@/lib/content/artisans";
 
-export {
-  getStories,
-  getStoryBySlug,
-  getFeaturedStories,
-  getStorySlugs,
-  storySeeds,
-} from "@/lib/content/stories";
-
 export type {
   Artisan,
   CartLine,
@@ -92,5 +84,4 @@ export type {
   Region,
   SiteConfig,
   SiteNavLink,
-  Story,
 } from "@/lib/types";

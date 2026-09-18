@@ -110,16 +110,12 @@ export function ProductView({ product: staticProduct, slug }: ProductViewProps) 
           <div className="pdp__meta">
             {region && (
               <span>
-                {dict.product.origin}:{" "}
-                <Link href={`${localePrefix}/regions/${region.slug}`}>
-                  {region.name} <Icon name="arrow-up-right" size={12} />
-                </Link>
+                {dict.product.origin}: {region.name}
               </span>
             )}
             {artisan && (
               <span>
-                {dict.product.artisan}: <strong>{artisan.name}</strong> ·{" "}
-                <Link href={`${localePrefix}/stories`}>{dict.product.viewStories}</Link>
+                {dict.product.artisan}: <strong>{artisan.name}</strong>
               </span>
             )}
             {product.collectionIds.length > 0 && (
@@ -171,20 +167,6 @@ export function ProductView({ product: staticProduct, slug }: ProductViewProps) 
               <p className="pdp-maker__craft">{artisan.craft}</p>
               <p>{artisan.bio}</p>
               {region && <p className="muted">{region.name}</p>}
-              <Link href={`${localePrefix}/stories`} className="btn btn--secondary btn--sm">
-                {locale === "es" ? "Ver historias" : "Read their story"}
-              </Link>
-            </div>
-          )}
-
-          {region && (
-            <div className="pdp-editorial pdp-origin">
-              <span className="eyebrow">{locale === "es" ? "Origen" : "Origin"}</span>
-              <h3>{region.name.toUpperCase()} · {locale === "es" ? "COLOMBIA" : "COLOMBIA"}</h3>
-              <p>{region.description}</p>
-              <Link href={`${localePrefix}/regions/${region.slug}`} className="btn btn--secondary btn--sm">
-                {locale === "es" ? "Explorar la región" : "Explore the region"}
-              </Link>
             </div>
           )}
         </div>

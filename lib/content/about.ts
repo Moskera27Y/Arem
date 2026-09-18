@@ -11,7 +11,7 @@ export interface AboutContent {
     quoteAuthor: Localized;
   };
   values: { title: Localized; values: { num: string; title: Localized; text: Localized }[] };
-  cta: { title: Localized; sub: Localized; stories: Localized; shop: Localized };
+  cta: { title: Localized; sub: Localized; collections: Localized; shop: Localized };
 }
 
 const content: AboutContent = {
@@ -82,10 +82,10 @@ const content: AboutContent = {
   cta: {
     title: L("Want to meet the hands?", "¿Quieres conocer a las manos?"),
     sub: L(
-      "Read the stories of our artisans, or explore the shop to see their work.",
-      "Lee las historias de nuestros artesanos o explora la tienda para ver su trabajo.",
+      "Explore the collections, or the shop to see their work.",
+      "Explora las colecciones o la tienda para ver su trabajo.",
     ),
-    stories: L("Read stories", "Leer historias"),
+    collections: L("Explore collections", "Explorar colecciones"),
     shop: L("Explore the shop", "Explorar la tienda"),
   },
 };
@@ -94,7 +94,7 @@ export function getAboutContent(locale: Locale): {
   hero: { eyebrow: string; title: string; sub: string };
   origin: { eyebrow: string; title: string; body: string[]; quote: string; quoteAuthor: string };
   values: { title: string; values: { num: string; title: string; text: string }[] };
-  cta: { title: string; sub: string; stories: string; shop: string };
+  cta: { title: string; sub: string; collections: string; shop: string };
 } {
   return {
     hero: {
@@ -120,7 +120,7 @@ export function getAboutContent(locale: Locale): {
     cta: {
       title: pick(content.cta.title, locale),
       sub: pick(content.cta.sub, locale),
-      stories: pick(content.cta.stories, locale),
+      collections: pick(content.cta.collections, locale),
       shop: pick(content.cta.shop, locale),
     },
   };

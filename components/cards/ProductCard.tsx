@@ -64,7 +64,7 @@ export function ProductCard({ product, priority }: ProductCardProps) {
         )}
         <div className="product-card__badges">
           {saleBadge && <span className="badge badge--sale">{saleBadge}</span>}
-          {percent !== null && discount === null && <span className="badge badge--dark">-{percent}%</span>}
+          {!saleBadge && percent !== null && discount === null && <span className="badge badge--dark">-{percent}%</span>}
           {!saleBadge && !(percent !== null && discount === null) && (
             <span className="badge badge--new">{dict.product.newBadge}</span>
           )}

@@ -91,8 +91,6 @@ export type MediaType =
   | "hero"
   | "product"
   | "category"
-  | "story"
-  | "region"
   | "social"
   | "footer";
 
@@ -100,8 +98,6 @@ export const MEDIA_TYPES: { id: MediaType; label: string }[] = [
   { id: "hero", label: "Hero" },
   { id: "product", label: "Product" },
   { id: "category", label: "Category" },
-  { id: "story", label: "Story" },
-  { id: "region", label: "Region" },
   { id: "social", label: "Social" },
   { id: "footer", label: "Footer" },
 ];

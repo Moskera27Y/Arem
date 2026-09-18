@@ -97,8 +97,8 @@ export default async function AboutPage({ params }: AboutPageProps) {
             {content.cta.sub}
           </p>
           <div style={{ display: "flex", gap: "1rem", justifyContent: "center", flexWrap: "wrap" }}>
-            <Link href={`${localePrefix}/stories`} className="btn btn--primary">
-              {content.cta.stories}
+            <Link href={`${localePrefix}/collections`} className="btn btn--primary">
+              {content.cta.collections}
             </Link>
             <Link href={`${localePrefix}/shop`} className="btn btn--secondary">
               {content.cta.shop}

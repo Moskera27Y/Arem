@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
   }
   if (!isLocal && !isBlob) return NextResponse.json({ error: "URL no permitida (solo https Blob o /images/)" }, { status: 400 });
 
-  const allowed: MediaType[] = ["hero", "product", "category", "story", "region", "social", "footer", "logo"];
+  const allowed: MediaType[] = ["hero", "product", "category", "social", "footer", "logo"];
   const type = allowed.includes(body.type) ? body.type : "product";
 
   try {

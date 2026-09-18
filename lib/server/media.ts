@@ -1,7 +1,7 @@
 import "server-only";
 import { q } from "./db";
 
-export type MediaType = "hero" | "product" | "category" | "story" | "region" | "social" | "footer" | "logo";
+export type MediaType = "hero" | "product" | "category" | "social" | "footer" | "logo";
 
 export interface MediaRecord {
   id: string;

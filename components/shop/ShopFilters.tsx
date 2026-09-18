@@ -18,11 +18,12 @@ interface ShopFiltersProps {
   activeSlug: string | null;
   sort: string;
   query: string;
+  saleOnly: boolean;
   localePrefix: string;
 }
 
 /** Filter sidebar + search + sort. All state lives in the URL (shareable). */
-export function ShopFilters({ categories, activeSlug, sort, query, localePrefix }: ShopFiltersProps) {
+export function ShopFilters({ categories, activeSlug, sort, query, saleOnly, localePrefix }: ShopFiltersProps) {
   const router = useRouter();
   const locale = useLocale();
   const dict = getDictionary(locale);
@@ -54,6 +55,7 @@ export function ShopFilters({ categories, activeSlug, sort, query, localePrefix 
     if (slug) params.set("category", slug);
     if (nextSort !== "featured") params.set("sort", nextSort);
     if (nextQuery.trim()) params.set("q", nextQuery.trim());
+    if (saleOnly) params.set("sale", "1");
     const qs = params.toString();
     return `${localePrefix}/shop${qs ? `?${qs}` : ""}`;
   };

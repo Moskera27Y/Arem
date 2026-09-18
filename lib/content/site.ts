@@ -32,8 +32,6 @@ export const siteSeed: SiteSeed = {
   nav: [
     { label: L("Shop", "Tienda"), href: "/shop" },
     { label: L("Collections", "Colecciones"), href: "/collections" },
-    { label: L("Stories", "Historias"), href: "/stories" },
-    { label: L("Regions", "Regiones"), href: "/regions" },
     { label: L("About", "Nosotros"), href: "/about" },
     { label: L("Contact", "Contacto"), href: "/contact" },
   ],
@@ -48,8 +46,7 @@ export const siteSeed: SiteSeed = {
         links: [
           { label: L("Shop all", "Tienda completa"), href: "/shop" },
           { label: L("Collections", "Colecciones"), href: "/collections" },
-          { label: L("Stories", "Historias"), href: "/stories" },
-          { label: L("Regions", "Regiones"), href: "/regions" },
+          { label: L("Sale", "Ofertas"), href: "/shop?sale=1" },
         ],
       },
       {
@@ -65,7 +62,7 @@ export const siteSeed: SiteSeed = {
         title: L("Help", "Ayuda"),
         links: [
           { label: L("Shipping & returns", "Envíos y devoluciones"), href: "/contact" },
-          { label: L("Care guide", "Guía de cuidados"), href: "/stories" },
+          { label: L("Track your order", "Rastrea tu pedido"), href: "/tracking" },
           { label: L("FAQ", "Preguntas frecuentes"), href: "/contact" },
           { label: L("Privacy", "Privacidad"), href: "/about" },
         ],

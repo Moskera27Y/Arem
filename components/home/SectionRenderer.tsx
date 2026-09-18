@@ -3,12 +3,11 @@ import type { HomeSection } from "@/lib/types";
 import { Hero } from "@/components/home/Hero";
 import { FeaturedCategories } from "@/components/home/FeaturedCategories";
 import { FeaturedProducts } from "@/components/home/FeaturedProducts";
+import { SaleRail } from "@/components/home/SaleRail";
+import { CategoryRails } from "@/components/home/CategoryRails";
 import { Craftsmanship } from "@/components/home/Craftsmanship";
-import { FeaturedRegion } from "@/components/home/FeaturedRegion";
-import { BrandStory } from "@/components/home/BrandStory";
 import { InstagramSection } from "@/components/home/InstagramSection";
 import { Newsletter } from "@/components/home/Newsletter";
-import { StoriesInspire } from "@/components/home/StoriesInspire";
 import { WhyShop } from "@/components/home/WhyShop";
 
 /**
@@ -23,18 +22,16 @@ export function SectionRenderer({ section, locale }: { section: HomeSection; loc
       return <Hero section={section} locale={locale} />;
     case "featured-categories":
       return <FeaturedCategories section={section} locale={locale} />;
-    case "stories-inspire":
-      return <StoriesInspire section={section} locale={locale} />;
     case "featured-products":
       return <FeaturedProducts section={section} locale={locale} />;
+    case "sale-rail":
+      return <SaleRail section={section} locale={locale} />;
+    case "category-rails":
+      return <CategoryRails section={section} locale={locale} />;
     case "why-shop":
       return <WhyShop section={section} />;
     case "craftsmanship":
       return <Craftsmanship section={section} />;
-    case "featured-region":
-      return <FeaturedRegion section={section} locale={locale} />;
-    case "brand-story":
-      return <BrandStory section={section} />;
     case "instagram":
       return <InstagramSection section={section} locale={locale} />;
     case "newsletter":
