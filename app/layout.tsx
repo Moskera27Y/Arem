@@ -17,6 +17,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://arem-mu.vercel.app"),
   title: {
     default: "AREM WORLD — Colombian craft, curated for the world",
     template: "%s · AREM WORLD",
@@ -29,6 +30,13 @@ export const metadata: Metadata = {
     description: "Colombian craft, curated for the world.",
     type: "website",
     locale: "en_US",
+    images: [{ url: "/images/hero-main.svg", width: 1920, height: 860, alt: "AREM WORLD — Colombian craftsmanship" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AREM WORLD",
+    description: "Colombian craft, curated for the world.",
+    images: ["/images/hero-main.svg"],
   },
 };
 

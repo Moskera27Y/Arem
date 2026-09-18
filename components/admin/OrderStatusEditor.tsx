@@ -55,6 +55,27 @@ export function OrderStatusEditor({ orderId, initialStatus, initialPayment }: { 
         <button type="button" className="btn btn--primary btn--sm" onClick={save} disabled={saving}>
           {saving ? "Saving…" : "Save"}
         </button>
+        <button
+          type="button"
+          className="btn btn--secondary btn--sm"
+          disabled={saving}
+          onClick={async () => {
+            setSaving(true);
+            setMsg("");
+            try {
+              const res = await fetch(`/api/admin/orders/${orderId}/shipment`, { method: "POST" });
+              const d = await res.json();
+              setMsg(res.ok ? (d.trackingNumber ? `Guía ${d.trackingNumber}` : "Sin cambios (ya existe)") : d.error || "Error");
+              if (res.ok) window.location.reload();
+            } catch {
+              setMsg("Error");
+            } finally {
+              setSaving(false);
+            }
+          }}
+        >
+          Generar guía
+        </button>
         {msg && <span className="muted">{msg}</span>}
       </div>
     </div>

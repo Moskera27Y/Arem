@@ -2886,6 +2886,12 @@ section[id],
   transform: scale(0.98);
 }
 
+.icon-action.is-added {
+  background: var(--green, #2f7d4f);
+  border-color: var(--green, #2f7d4f);
+  color: #fff;
+}
+
 /* Image hover: faster, GPU-hinted */
 .story-card__media img,
 .product-card__media img,
@@ -2900,6 +2906,178 @@ section[id],
 ::view-transition-new(root) {
   animation-duration: 0.35s;
   animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Route skeletons */
+.shimmer {  background: linear-gradient(100deg, var(--cream) 30%, var(--paper) 50%, var(--cream) 70%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s linear infinite;
+}
+
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.sk-hero {
+  height: clamp(560px, 88vh, 860px);
+}
+
+.sk-row {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem 0;
+}
+
+.sk-chip {
+  width: 9rem;
+  height: 9rem;
+  border-radius: 50%;
+  flex: 0 0 auto;
+}
+
+.sk-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  padding-bottom: 3rem;
+}
+
+.sk-card {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--r-md);
+}
+
+@media (max-width: 900px) {
+  .sk-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ------------------- Animated homepage backdrop ------------------- */
+/* Warm editorial ambience: drifting clay/gold/olive light + Wayuu weave.
+   Fixed behind content, GPU-only, pointer-events none. */
+.arem-ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  background: var(--bg);
+}
+
+.arem-ambient__blob {
+  position: absolute;
+  width: 46vmax;
+  height: 46vmax;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.14;
+  will-change: transform;
+}
+
+.arem-ambient__blob--gold {
+  background: #d9a441;
+  top: -12vmax;
+  right: -10vmax;
+  animation: ambient-drift-a 32s ease-in-out infinite alternate;
+}
+
+.arem-ambient__blob--clay {
+  background: #b4552d;
+  top: 22vh;
+  left: -14vmax;
+  opacity: 0.1;
+  animation: ambient-drift-b 40s ease-in-out infinite alternate;
+}
+
+.arem-ambient__blob--olive {
+  background: #7a8450;
+  bottom: -16vmax;
+  right: 12vw;
+  opacity: 0.1;
+  animation: ambient-drift-a 44s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes ambient-drift-a {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-6vmax, 5vmax, 0) scale(1.12);
+  }
+}
+
+@keyframes ambient-drift-b {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  to {
+    transform: translate3d(7vmax, -4vmax, 0) scale(0.95);
+  }
+}
+
+/* Wayuu-inspired diamond weave, barely visible, slow pan */
+.arem-ambient__weave {
+  position: absolute;
+  inset: -20%;
+  opacity: 0.05;
+  background-image:
+    repeating-linear-gradient(45deg, var(--ink) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(-45deg, var(--ink) 0 1px, transparent 1px 26px);
+  animation: ambient-weave 60s linear infinite;
+  will-change: transform;
+}
+
+@keyframes ambient-weave {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(52px, 26px, 0);
+  }
+}
+
+/* Film grain for craft texture */
+.arem-ambient__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+/* Visible focus for keyboard users */
+:focus-visible {
+  outline: 2px solid var(--gold-soft, #d9a441);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Announcement marquee on small screens */
+@media (max-width: 900px) {
+  .announce {
+    overflow: hidden;
+    flex-wrap: nowrap;
+  }
+  .announce__track {
+    display: inline-flex;
+    gap: 2.5rem;
+    white-space: nowrap;
+    animation: announce-scroll 22s linear infinite;
+    will-change: transform;
+  }
+  @keyframes announce-scroll {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
 }
 
 /* --------------------------- Responsive --------------------------- */
@@ -3112,6 +3290,11 @@ section[id],
   .hero__media img {
     animation: none;
     transform: none;
+  }
+
+  .arem-ambient__blob,
+  .arem-ambient__weave {
+    animation: none;
   }
 
   .story-card:hover,

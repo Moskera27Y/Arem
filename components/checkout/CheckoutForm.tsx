@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { getVariantById } from "@/lib/content";
@@ -9,7 +9,7 @@ import { useCart } from "@/lib/store/cart-context";
 import { useCurrency } from "@/lib/currency/currency-context";
 import { Icon } from "@/components/ui/icons";
 
-const SHIP_OPTIONS = [
+const FALLBACK_SHIP = [
   { id: "standard", price: 12, en: "Standard Shipping · 5–8 business days", es: "Envío estándar · 5–8 días hábiles" },
   { id: "express", price: 28, en: "Express Shipping · 1–3 business days", es: "Envío express · 1–3 días hábiles" },
 ];
@@ -33,15 +33,47 @@ export function CheckoutForm() {
   const [pay, setPay] = useState("card");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [done, setDone] = useState<{ orderNumber: string } | null>(null);
+  const [done, setDone] = useState<{ orderNumber: string; orderId: string } | null>(null);
+  const [rates, setRates] = useState(FALLBACK_SHIP);
+  const [ratesMeta, setRatesMeta] = useState("");
 
   const items = useMemo(
     () => lines.map((l) => ({ ...l, variant: getVariantById(l.variantId) })).filter((l) => l.variant),
     [lines],
   );
-  const shippingCost = SHIP_OPTIONS.find((s) => s.id === ship)?.price ?? 0;
+  const SHIP_OPTIONS = rates;
+  const shippingCost = SHIP_OPTIONS.find((s) => s.id === ship)?.price ?? SHIP_OPTIONS[0]?.price ?? 0;
   const total = subtotal + shippingCost;
   const set = (k: string, v: string) => setF((s) => ({ ...s, [k]: v }));
+
+  // Live shipping quote (carrier API with flat fallback).
+  useEffect(() => {
+    const t = setTimeout(async () => {
+      try {
+        const res = await fetch("/api/shipping/quote", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ city: f.city, country: f.country, postalCode: f.postalCode, weightKg: 1 }),
+        });
+        const d = await res.json();
+        if (Array.isArray(d.rates) && d.rates.length > 0) {
+          setRates(
+            d.rates.map((r: { service: string; priceUsd: number; estimatedDays: number; carrier: string }) => ({
+              id: String(r.service),
+              price: Number(r.priceUsd),
+              en: `${String(r.carrier)} ${String(r.service)} · ~${Number(r.estimatedDays)} days`,
+              es: `${String(r.carrier)} ${String(r.service)} · ~${Number(r.estimatedDays)} días`,
+            })),
+          );
+          setRatesMeta(d.provider === "fallback" ? "" : `${d.provider}`);
+        }
+      } catch {
+        /* keep fallback rates */
+      }
+    }, 500);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [f.city, f.country, f.postalCode]);
 
   if (done) {
     return (
@@ -51,7 +83,8 @@ export function CheckoutForm() {
             <span className="cart-empty__icon"><Icon name="check" size={26} /></span>
             <h1 className="h2">{es ? "¡Pedido creado!" : "Order created!"}</h1>
             <p>{es ? `Tu número de pedido es ${done.orderNumber}.` : `Your order number is ${done.orderNumber}.`}</p>
-            <p className="muted">{es ? "El pago quedó pendiente de confirmación. Te enviaremos un correo cuando esté confirmado." : "Payment is pending confirmation. We'll email you once it's confirmed."}</p>
+            <p className="muted">{es ? "El pago quedó pendiente de confirmación. Cuando se confirme, generamos tu guía de envío automáticamente y podrás rastrearla." : "Payment is pending confirmation. Once confirmed, we auto-generate your shipping guide for tracking."}</p>
+            <TrackBox orderId={done.orderId} es={es} />
             <Link href={`${prefix}/signup`} className="btn btn--primary" style={{ marginTop: "1rem" }}>
               {es ? "Crea una cuenta para seguir tu pedido" : "Create an account to track your order"}
             </Link>
@@ -92,7 +125,7 @@ export function CheckoutForm() {
       const d = await res.json();
       if (res.ok && d.orderNumber) {
         clear();
-        setDone({ orderNumber: d.orderNumber });
+        setDone({ orderNumber: d.orderNumber, orderId: d.orderId });
         router.refresh();
       } else {
         setError(d.error || "Error");
@@ -135,6 +168,7 @@ export function CheckoutForm() {
             </div>
 
             <h2 className="checkout-title">3 · {es ? "Método de envío" : "Shipping method"}</h2>
+            {ratesMeta && <p className="acc-note">{es ? `Tarifas en vivo vía ${ratesMeta}.` : `Live rates via ${ratesMeta}.`}</p>}
             {SHIP_OPTIONS.map((s) => (
               <label key={s.id} className="checkout-opt">
                 <input type="radio" name="ship" checked={ship === s.id} onChange={() => setShip(s.id)} />
@@ -168,5 +202,49 @@ export function CheckoutForm() {
         </form>
       </div>
     </section>
+  );
+}
+
+function TrackBox({ orderId, es }: { orderId: string; es: boolean }) {
+  const [tracking, setTracking] = useState("");
+  const [result, setResult] = useState("");
+  return (
+    <div className="acc-field" style={{ marginTop: "1rem" }}>
+      <label htmlFor="track-input">{es ? "Rastrea tu guía" : "Track your shipment"}</label>
+      <div style={{ display: "flex", gap: "0.5rem" }}>
+        <input
+          id="track-input"
+          className="acc-input"
+          placeholder="AREM-XXXXXXXX"
+          value={tracking}
+          onChange={(e) => setTracking(e.target.value)}
+        />
+        <button
+          type="button"
+          className="btn btn--secondary"
+          onClick={async () => {
+            setResult(es ? "Buscando…" : "Searching…");
+            try {
+              const res = await fetch(`/api/shipping/track?tracking=${encodeURIComponent(tracking.trim())}`);
+              const d = await res.json();
+              if (res.ok) {
+                const ev = Array.isArray(d.events) ? d.events.length : 0;
+                setResult(`${d.shipment?.status ?? ""} · ${ev} eventos`);
+              } else {
+                setResult(d.error || "Error");
+              }
+            } catch {
+              setResult("Error");
+            }
+          }}
+        >
+          {es ? "Rastrear" : "Track"}
+        </button>
+      </div>
+      {result && <p className="acc-note">{result}</p>}
+      <p className="acc-note">
+        {es ? `ID de pedido: ${orderId}. La guía se genera al confirmarse el pago.` : `Order ID: ${orderId}. Guide is generated on payment confirmation.`}
+      </p>
+    </div>
   );
 }

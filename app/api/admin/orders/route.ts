@@ -12,7 +12,7 @@ export async function GET() {
     `select o.*, cp.email as customer_email,
             (select coalesce(sum(oi.quantity),0) from public.order_items oi where oi.order_id = o.id) as item_count
        from public.orders o
-       join public.customer_profiles cp on cp.id = o.customer_profile_id
+       left join public.customer_profiles cp on cp.id = o.customer_profile_id
        order by o.created_at desc`,
   );
   return NextResponse.json({ orders });

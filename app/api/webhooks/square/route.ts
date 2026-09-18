@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { q } from "@/lib/server/db";
 import { markOrderFailed, markOrderPaid, recordWebhookEvent, verifySquareWebhook } from "@/lib/server/payments/square";
+import { autoCreateShipment } from "@/lib/server/shipping/auto";
 
 export const dynamic = "force-dynamic";
 
@@ -11,7 +12,7 @@ export const dynamic = "force-dynamic";
 export async function POST(req: NextRequest) {
   const raw = await req.text();
   const signature = req.headers.get("x-square-hmacsha256-signature");
-  if (!verifySquareWebhook(raw, signature)) {
+  if (!verifySquareWebhook(raw, signature, req.url)) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
   let body: Record<string, unknown>;
@@ -20,7 +21,8 @@ export async function POST(req: NextRequest) {
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
-  const eventId = String(body.event_id ?? body.merchant_id ?? Date.now());
+  const eventId = typeof body.event_id === "string" && body.event_id ? body.event_id : null;
+  if (!eventId) return NextResponse.json({ error: "Missing event_id" }, { status: 400 });
   const type = String(body.type ?? "");
   const fresh = await recordWebhookEvent(eventId, "square", type, body);
   if (!fresh) return NextResponse.json({ ok: true, duplicate: true });
@@ -35,14 +37,18 @@ export async function POST(req: NextRequest) {
       const currency = String(amountMoney?.currency ?? "USD");
       const squarePaymentId = String(payment?.id ?? "");
       const squareOrderId = String(payment?.order_id ?? "");
-      // Find our order via the stored Square payment/order id or transaction id.
-      const rows = await q<{ id: string }>(
-        "select id from public.orders where square_payment_id = $1 or square_order_id = $2 or transaction_id = $3 limit 1",
-        [squarePaymentId, squareOrderId, squarePaymentId],
-      );
-      if (rows[0]) {
-        if (status === "COMPLETED") await markOrderPaid(rows[0].id, squarePaymentId, squareOrderId, amountCents, currency);
-        else if (status === "FAILED" || status === "CANCELED") await markOrderFailed(rows[0].id, squarePaymentId);
+      if (squarePaymentId || squareOrderId) {
+        const rows = await q<{ id: string }>(
+          "select id from public.orders where square_payment_id = $1 or square_order_id = $2 or transaction_id = $3 limit 1",
+          [squarePaymentId, squareOrderId, squarePaymentId],
+        );
+        if (rows[0]) {
+          if (status === "COMPLETED") {
+            await markOrderPaid(rows[0].id, squarePaymentId, squareOrderId, amountCents, currency);
+            // Auto-generate shipping guide once paid (never blocks payment).
+            await autoCreateShipment(rows[0].id).catch((e) => console.error("auto shipment error", e));
+          } else if (status === "FAILED" || status === "CANCELED") await markOrderFailed(rows[0].id, squarePaymentId);
+        }
       }
     }
     return NextResponse.json({ ok: true });

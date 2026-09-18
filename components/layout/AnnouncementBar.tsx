@@ -23,12 +23,14 @@ export function AnnouncementBar({ items }: AnnouncementBarProps) {
 
   return (
     <div className="announce" role="region" aria-label="Announcement">
-      {all.map((message, index) => (
-        <span key={message} className="announce__item">
-          {index > 0 && <Icon name="heart" size={10} className="announce__sep" />}
-          {message}
-        </span>
-      ))}
+      <span className="announce__track">
+        {all.map((message, index) => (
+          <span key={`${message}-${index}`} className="announce__item">
+            {index > 0 && <Icon name="heart" size={10} className="announce__sep" />}
+            {message}
+          </span>
+        ))}
+      </span>
     </div>
   );
 }

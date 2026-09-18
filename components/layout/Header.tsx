@@ -36,6 +36,14 @@ export function Header() {
   }, [menuOpen]);
 
   const wishlistCount = ids.length;
+  const [cartBump, setCartBump] = useState(false);
+
+  useEffect(() => {
+    if (count === 0) return;
+    setCartBump(true);
+    const t = setTimeout(() => setCartBump(false), 400);
+    return () => clearTimeout(t);
+  }, [count]);
 
   return (
     <>
@@ -84,7 +92,11 @@ export function Header() {
               onClick={openCart}
             >
               <Icon name="bag" size={19} />
-              {count > 0 && <span className="icon-btn__count">{count}</span>}
+              {count > 0 && (
+                <span key={count} className="icon-btn__count" data-bump={cartBump}>
+                  {count}
+                </span>
+              )}
             </button>
             <button type="button" className="icon-btn menu-btn" aria-label={dict.a11y.openMenu} onClick={() => setMenuOpen(true)}>
               <Icon name="menu" size={20} />

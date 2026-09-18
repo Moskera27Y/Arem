@@ -1,14 +1,16 @@
 import "server-only";
-import { createHmac, timingSafeEqual } from "node:crypto";
+import { createHmac, randomUUID, timingSafeEqual } from "node:crypto";
 import { cookies } from "next/headers";
 import { q } from "./db";
 
 export const SESSION_COOKIE = "arem_admin_session";
 export const SESSION_MAX_AGE = 60 * 60 * 24 * 14; // 14 days
+const AUD = "arem-admin";
 
 function secret(): string {
-  const s = process.env.SESSION_SECRET;
+  const s = process.env.ADMIN_SESSION_SECRET ?? process.env.SESSION_SECRET;
   if (!s) throw new Error("SESSION_SECRET is not set");
+  if (s.length < 32) throw new Error("SESSION_SECRET too short (min 32 chars)");
   return s;
 }
 
@@ -17,8 +19,10 @@ function hmac(payload: string): string {
 }
 
 export function signSession(email: string): string {
-  const exp = Math.floor(Date.now() / 1000) + SESSION_MAX_AGE;
-  const payload = Buffer.from(JSON.stringify({ e: email, exp })).toString("base64url");
+  const now = Math.floor(Date.now() / 1000);
+  const payload = Buffer.from(
+    JSON.stringify({ e: email, exp: now + SESSION_MAX_AGE, iat: now, aud: AUD, jti: randomUUID() }),
+  ).toString("base64url");
   return `${payload}.${hmac(payload)}`;
 }
 
@@ -37,6 +41,8 @@ export function verifySession(token: string | undefined | null): string | null {
   try {
     const data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
     if (typeof data.exp !== "number" || data.exp < Math.floor(Date.now() / 1000)) return null;
+    if (data.aud !== AUD) return null;
+    if (typeof data.jti !== "string" || !data.jti) return null;
     return typeof data.e === "string" ? data.e : null;
   } catch {
     return null;

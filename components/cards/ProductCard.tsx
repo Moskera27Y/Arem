@@ -44,11 +44,14 @@ export function ProductCard({ product, priority }: ProductCardProps) {
   const comparePrice = discount ? merged.price : merged.compareAtPrice;
   const saleBadge = discount?.badge ?? (merged.badge ?? null);
 
-  const quickAdd = () => {
+  const quickAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
     const variant = merged.variants[0];
     if (!variant || variant.inventory <= 0) return;
     add(merged.id, variant.id, 1);
-    openCart();
+    const btn = e.currentTarget;
+    btn.classList.add("is-added");
+    setTimeout(() => btn.classList.remove("is-added"), 1200);
+    setTimeout(() => openCart(), 350);
   };
 
   return (

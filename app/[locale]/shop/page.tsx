@@ -9,7 +9,7 @@ import { ShopGrid } from "@/components/shop/ShopGrid";
 
 interface ShopPageProps {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ category?: string; sort?: string }>;
+  searchParams: Promise<{ category?: string; sort?: string; q?: string }>;
 }
 
 export async function generateMetadata({ params }: ShopPageProps): Promise<Metadata> {
@@ -22,22 +22,33 @@ export async function generateMetadata({ params }: ShopPageProps): Promise<Metad
   };
 }
 
+const norm = (s: string) =>
+  s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
 export default async function ShopPage({ params, searchParams }: ShopPageProps) {
   const { locale: raw } = await params;
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
-  const { category: categorySlug, sort: sortParam } = await searchParams;
+  const { category: categorySlug, sort: sortParam, q: qParam } = await searchParams;
 
   const dict = getDictionary(locale);
   const localePrefix = `/${locale}`;
 
   const activeSlug = categorySlug && getCategoryBySlug(locale, categorySlug) ? categorySlug : null;
   const sort = sortParam ?? "featured";
+  const query = (qParam ?? "").trim().slice(0, 80);
 
   const all = getActiveProducts(locale);
-  const visible = activeSlug
+  const byCategory = activeSlug
     ? all.filter((p) => p.categoryIds.includes(getCategoryBySlug(locale, activeSlug)?.id ?? ""))
     : all;
+  const nq = norm(query);
+  const visible = nq
+    ? byCategory.filter((p) => norm(`${p.name} ${p.slug} ${p.categoryIds.join(" ")}`).includes(nq))
+    : byCategory;
 
   const sorted = [...visible];
   switch (sort) {
@@ -88,6 +99,7 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
               categories={filterCategories}
               activeSlug={activeSlug}
               sort={sort}
+              query={query}
               localePrefix={localePrefix}
             />
             <div>

@@ -50,11 +50,12 @@ export class SquareProvider implements PaymentProvider {
   }
 }
 
-/** Verify a Square webhook signature (HMAC-SHA256 over the raw body). */
-export function verifySquareWebhook(rawBody: string, signature: string | null): boolean {
+/** Verify a Square webhook signature (HMAC-SHA256 over notification URL + raw body). */
+export function verifySquareWebhook(rawBody: string, signature: string | null, notificationUrl?: string): boolean {
   const key = process.env.SQUARE_WEBHOOK_SIGNATURE_KEY;
   if (!key || !signature) return false;
-  const expected = createHmac("sha256", key).update(rawBody).digest("base64");
+  const payload = `${notificationUrl ?? ""}${rawBody}`;
+  const expected = createHmac("sha256", key).update(payload).digest("base64");
   const a = Buffer.from(signature);
   const b = Buffer.from(expected);
   try {

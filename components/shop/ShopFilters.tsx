@@ -17,11 +17,12 @@ interface ShopFiltersProps {
   categories: ShopFilterCategory[];
   activeSlug: string | null;
   sort: string;
+  query: string;
   localePrefix: string;
 }
 
-/** Filter sidebar + sort control. Both keep state in the URL (query params). */
-export function ShopFilters({ categories, activeSlug, sort, localePrefix }: ShopFiltersProps) {
+/** Filter sidebar + search + sort. All state lives in the URL (shareable). */
+export function ShopFilters({ categories, activeSlug, sort, query, localePrefix }: ShopFiltersProps) {
   const router = useRouter();
   const locale = useLocale();
   const dict = getDictionary(locale);
@@ -55,10 +56,11 @@ export function ShopFilters({ categories, activeSlug, sort, localePrefix }: Shop
     { value: "name", label: dict.shop.sortName },
   ];
 
-  const hrefFor = (slug: string | null, nextSort: string) => {
+  const hrefFor = (slug: string | null, nextSort: string, nextQuery: string = query) => {
     const params = new URLSearchParams();
     if (slug) params.set("category", slug);
     if (nextSort !== "featured") params.set("sort", nextSort);
+    if (nextQuery.trim()) params.set("q", nextQuery.trim());
     const qs = params.toString();
     return `${localePrefix}/shop${qs ? `?${qs}` : ""}`;
   };
@@ -66,6 +68,35 @@ export function ShopFilters({ categories, activeSlug, sort, localePrefix }: Shop
   return (
     <>
       <aside className="filters" aria-label={dict.shop.categories}>
+        <div className="filter-group">
+          <form
+            role="search"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const v = (e.currentTarget.querySelector("input") as HTMLInputElement)?.value ?? "";
+              router.push(hrefFor(activeSlug, sort, v));
+            }}
+          >
+            <label htmlFor="shop-q" className="filter-group__title">
+              {locale === "es" ? "Buscar" : "Search"}
+            </label>
+            <input
+              id="shop-q"
+              name="q"
+              type="search"
+              defaultValue={query}
+              placeholder={locale === "es" ? "café, mochila, barro…" : "coffee, mochila, clay…"}
+              className="acc-input"
+              onChange={(e) => {
+                const v = e.target.value;
+                window.clearTimeout((window as unknown as { __shopT?: number }).__shopT);
+                (window as unknown as { __shopT?: number }).__shopT = window.setTimeout(() => {
+                  router.push(hrefFor(activeSlug, sort, v));
+                }, 450);
+              }}
+            />
+          </form>
+        </div>
         <div className="filter-group">
           <h2 className="filter-group__title">{dict.shop.categories}</h2>
           <ul className="filter-list">

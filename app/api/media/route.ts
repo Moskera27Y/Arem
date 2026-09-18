@@ -1,18 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { del } from "@vercel/blob";
-import { deleteMedia, listMedia, seedMediaDefaults, upsertMedia, type MediaType } from "@/lib/server/media";
+import { deleteMedia, listMedia, upsertMedia, type MediaType } from "@/lib/server/media";
 import { requireAdmin } from "@/lib/server/auth";
 
 /** Public storefront media list (used by ManagedImage to resolve images). */
 export async function GET() {
   try {
-    let rows = await listMedia();
-    // First visit: seed Neon with the storefront's default assets.
-    if (rows.length === 0) {
-      await seedMediaDefaults();
-      rows = await listMedia();
-    }
-    return NextResponse.json(rows);
+    const rows = await listMedia();
+    return NextResponse.json(rows, {
+      headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" },
+    });
   } catch (err) {
     console.error("list media error", err);
     return NextResponse.json({ error: "Error de servidor" }, { status: 500 });

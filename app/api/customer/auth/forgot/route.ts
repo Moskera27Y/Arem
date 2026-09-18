@@ -1,20 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createHash, randomBytes } from "node:crypto";
 import { q } from "@/lib/server/db";
+import { checkRateLimit, getClientKey } from "@/lib/server/rate-limit";
+import { asEmail } from "@/lib/server/validate";
+import { resetEmailHtml, sendEmail } from "@/lib/server/email";
 
 /** Request a password reset. Generates a single-use token (30 min).
- * Never returns the reset link — it must be emailed. Response is identical
+ * Sends the link by email when configured. Response is identical
  * whether the account exists or not to avoid account enumeration. */
 export async function POST(req: NextRequest) {
-  let body: { email?: string };
+  const rl = checkRateLimit(getClientKey(req, "forgot"), 5, 60 * 60 * 1000);
+  if (!rl.ok) return NextResponse.json({ ok: true });
+  let body: { email?: string; locale?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Solicitud inválida" }, { status: 400 });
   }
-  const email = String(body.email || "").trim().toLowerCase();
-  if (!email || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-    return NextResponse.json({ ok: true });
+  const email = asEmail(body.email);
+  if (!email) return NextResponse.json({ ok: true });
   try {
     const rows = await q<{ id: string }>("select id from public.customer_profiles where email = $1", [email]);
     // Always respond ok to avoid account enumeration.
@@ -27,7 +31,15 @@ export async function POST(req: NextRequest) {
       expires,
       rows[0].id,
     ]);
-    // TODO: send reset link by email. Do NOT return token/resetUrl to the caller.
+    const locale = String(body.locale === "es" ? "es" : "en");
+    const base = process.env.NEXT_PUBLIC_SITE_URL ?? req.nextUrl.origin;
+    const resetUrl = `${base}/${locale}/reset-password?token=${token}`;
+    await sendEmail({
+      to: email,
+      subject: locale === "es" ? "Restablece tu contraseña — AREM WORLD" : "Reset your password — AREM WORLD",
+      html: resetEmailHtml(resetUrl, locale),
+      text: resetUrl,
+    }).catch((e) => console.error("reset email error", e));
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("forgot error", err);

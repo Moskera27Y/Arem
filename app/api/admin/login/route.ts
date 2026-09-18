@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { q } from "@/lib/server/db";
 import { SESSION_COOKIE, SESSION_MAX_AGE, signSession } from "@/lib/server/auth";
+import { checkRateLimit, getClientKey } from "@/lib/server/rate-limit";
+import { asEmail } from "@/lib/server/validate";
 
 interface AdminRow {
   email: string;
@@ -9,14 +11,23 @@ interface AdminRow {
 }
 
 export async function POST(req: NextRequest) {
+  const rl = checkRateLimit(getClientKey(req, "admin-login"), 5, 10 * 60 * 1000);
+  if (!rl.ok) {
+    const res = NextResponse.json({ error: "Demasiados intentos, intenta más tarde" }, { status: 429 });
+    res.headers.set("Retry-After", String(rl.retryAfter));
+    return res;
+  }
   let body: { email?: string; password?: string };
   try {
     body = await req.json();
   } catch {
     return NextResponse.json({ error: "Solicitud inválida" }, { status: 400 });
   }
-  const email = String(body.email || "").trim().toLowerCase();
+  const email = asEmail(body.email);
   const password = String(body.password || "");
+  if (!email || !password || password.length > 72) {
+    return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
+  }
 
   try {
     const rows = await q<AdminRow>("select email, password_hash from public.admin_users where email = $1", [email]);
