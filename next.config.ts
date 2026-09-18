@@ -23,7 +23,14 @@ const nextConfig: NextConfig = {
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-          { key: "X-Frame-Options", value: "SAMEORIGIN" },
+          // No X-Frame-Options: it would override the CSP allowlist below
+          // and re-block the portfolio preview. frame-ancestors is the
+          // modern, more precise control (self + CM Studio portfolio only).
+          {
+            key: "Content-Security-Policy",
+            value:
+              "frame-ancestors 'self' https://cm-portfolio-beige.vercel.app https://cm-portfolio-cristians-projects-5a37e367.vercel.app",
+          },
           {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=(), payment=()",
