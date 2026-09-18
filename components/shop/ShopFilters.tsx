@@ -49,13 +49,6 @@ export function ShopFilters({ categories, activeSlug, sort, query, localePrefix 
     return merged;
   }, [categories, adminCategories, hydrated, locale]);
 
-  const sortOptions = [
-    { value: "featured", label: dict.shop.sortFeatured },
-    { value: "price-asc", label: dict.shop.sortPriceAsc },
-    { value: "price-desc", label: dict.shop.sortPriceDesc },
-    { value: "name", label: dict.shop.sortName },
-  ];
-
   const hrefFor = (slug: string | null, nextSort: string, nextQuery: string = query) => {
     const params = new URLSearchParams();
     if (slug) params.set("category", slug);
@@ -66,8 +59,7 @@ export function ShopFilters({ categories, activeSlug, sort, query, localePrefix 
   };
 
   return (
-    <>
-      <aside className="filters" aria-label={dict.shop.categories}>
+    <aside className="filters" aria-label={dict.shop.categories}>
         <div className="filter-group">
           <form
             role="search"
@@ -127,21 +119,5 @@ export function ShopFilters({ categories, activeSlug, sort, query, localePrefix 
           </ul>
         </div>
       </aside>
-
-      <div className="shop-sort">
-        <label htmlFor="shop-sort">{dict.shop.sort}</label>
-        <select
-          id="shop-sort"
-          value={sort}
-          onChange={(event) => router.push(hrefFor(activeSlug, event.target.value))}
-        >
-          {sortOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
-    </>
   );
 }

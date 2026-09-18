@@ -102,8 +102,15 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
               query={query}
               localePrefix={localePrefix}
             />
-            <div>
-              <ShopGrid products={sorted} locale={locale} sort={sort} />
+            <div className="shop-main">
+              <ShopGrid
+                products={sorted}
+                locale={locale}
+                sort={sort}
+                activeSlug={activeSlug}
+                query={query}
+                localePrefix={localePrefix}
+              />
             </div>
           </div>
         </div>
