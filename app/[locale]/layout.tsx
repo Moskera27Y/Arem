@@ -6,7 +6,6 @@ import { getHomepage } from "@/lib/content";
 import { StoreProvider } from "@/lib/store/store-provider";
 import { AdminProvider } from "@/lib/admin/store";
 import { SetDocumentLang } from "@/components/layout/SetDocumentLang";
-import { AnimatedBackdrop } from "@/components/home/AnimatedBackdrop";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -64,7 +63,6 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
   return (
     <LocaleProvider locale={locale}>
       <SetDocumentLang locale={locale} />
-      <AnimatedBackdrop />
       <StoreProvider>
         <AdminProvider>
           <AnnouncementBar items={homepage.announcementItems} />

@@ -919,7 +919,8 @@ h4 {
   height: 3px;
   width: 100%;
   border-radius: var(--r-pill);
-  background: rgba(239, 230, 211, 0.35);
+  background: rgba(239, 230, 211, 0.55);
+  box-shadow: 0 1px 8px rgba(10, 7, 4, 0.5);
   overflow: hidden;
   position: relative;
 }
@@ -959,7 +960,10 @@ h4 {
   align-items: center;
   justify-content: center;
   border-radius: var(--r-pill);
-  border: 1px solid rgba(239, 230, 211, 0.4);
+  border: 1px solid rgba(239, 230, 211, 0.65);
+  background: rgba(12, 8, 5, 0.28);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   color: var(--paper);
   transition:
     background-color 0.25s var(--ease),
@@ -981,12 +985,15 @@ h4 {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to right,
-    rgba(18, 13, 8, 0.82) 0%,
-    rgba(18, 13, 8, 0.45) 46%,
-    rgba(18, 13, 8, 0.12) 100%
-  );
+  background:
+    linear-gradient(to top, rgba(12, 8, 5, 0.74) 0%, rgba(12, 8, 5, 0) 44%),
+    linear-gradient(
+      to right,
+      rgba(12, 8, 5, 0.88) 0%,
+      rgba(12, 8, 5, 0.58) 42%,
+      rgba(12, 8, 5, 0.2) 74%,
+      rgba(12, 8, 5, 0.32) 100%
+    );
 }
 
 .hero__content {
@@ -1009,6 +1016,7 @@ h4 {
   text-transform: uppercase;
   color: var(--gold-soft);
   margin-bottom: 1.5rem;
+  text-shadow: 0 1px 14px rgba(10, 7, 4, 0.75);
 }
 
 .hero__eyebrow::before {
@@ -1026,6 +1034,9 @@ h4 {
   font-weight: 520;
   max-width: 15ch;
   color: var(--paper);
+  text-shadow:
+    0 2px 26px rgba(10, 7, 4, 0.6),
+    0 1px 4px rgba(10, 7, 4, 0.65);
 }
 
 .hero__title em {
@@ -1037,9 +1048,14 @@ h4 {
 .hero__sub {
   margin-top: 1.5rem;
   max-width: 30rem;
-  color: rgba(239, 230, 211, 0.86);
+  color: rgba(239, 230, 211, 0.92);
   font-size: clamp(1rem, 1.5vw, 1.15rem);
   line-height: 1.7;
+  text-shadow: 0 1px 14px rgba(10, 7, 4, 0.7);
+}
+
+.hero__actions .text-link {
+  text-shadow: 0 1px 12px rgba(10, 7, 4, 0.7);
 }
 
 .hero__actions {
@@ -2847,164 +2863,41 @@ section[id],
   }
 }
 
-/* ------------------- Animated homepage backdrop ------------------- */
-/* Warm editorial ambience: drifting clay/gold/olive light + Wayuu weave.
-   Fixed behind content, GPU-only, pointer-events none. */
-.arem-ambient {
-  position: fixed;
+/* ------------------- Living textile backdrop -------------------- */
+/* Wayuu kanaas diamonds woven into every section: visible at the edges,
+   clean behind text, drifting slowly. GPU transform only. Sections keep
+   their solid backgrounds, so the fixed-layer invisibility problem is gone:
+   the pattern lives in the sections themselves. */
+.section {
+  position: relative;
+}
+
+.section::before {
+  content: "";
+  position: absolute;
   inset: 0;
-  z-index: -1;
-  overflow: hidden;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg fill='none' stroke='%23b4552d' stroke-width='2.5'%3E%3Cpath d='M110 16 L204 110 L110 204 L16 110 Z'/%3E%3Cpath d='M110 50 L170 110 L110 170 L50 110 Z'/%3E%3Ccircle cx='110' cy='110' r='7' fill='%23b4552d' stroke='none'/%3E%3Cpath d='M0 0 L24 24 M220 0 L196 24 M0 220 L24 196 M220 220 L196 196'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  opacity: 0.3;
+  -webkit-mask-image: radial-gradient(120% 95% at 50% 45%, transparent 52%, black 92%);
+  mask-image: radial-gradient(120% 95% at 50% 45%, transparent 52%, black 92%);
+  animation: section-pan 55s ease-in-out infinite alternate;
+  will-change: transform;
   pointer-events: none;
-  background: var(--bg);
 }
 
-.arem-ambient__blob {
-  position: absolute;
-  width: 46vmax;
-  height: 46vmax;
-  border-radius: 50%;
-  filter: blur(90px);
-  opacity: 0.15;
-  will-change: transform;
+.section > * {
+  position: relative;
+  z-index: 1;
 }
 
-.arem-ambient__blob--gold {
-  background: #d9a441;
-  top: -12vmax;
-  right: -10vmax;
-  animation: ambient-drift-a 32s ease-in-out infinite alternate;
-}
-
-.arem-ambient__blob--clay {
-  background: #b4552d;
-  top: 22vh;
-  left: -14vmax;
-  opacity: 0.1;
-  animation: ambient-drift-b 40s ease-in-out infinite alternate;
-}
-
-.arem-ambient__blob--olive {
-  background: #7a8450;
-  bottom: -16vmax;
-  right: 12vw;
-  opacity: 0.11;
-  animation: ambient-drift-a 44s ease-in-out infinite alternate-reverse;
-}
-
-.arem-ambient__blob--sand {
-  background: #e4c98f;
-  top: 44vh;
-  left: 38vw;
-  width: 30vmax;
-  height: 30vmax;
-  opacity: 0.12;
-  animation: ambient-drift-c 52s ease-in-out infinite alternate;
-}
-
-@keyframes ambient-drift-c {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  to {
-    transform: translate3d(-5vmax, -6vmax, 0) scale(1.18);
-  }
-}
-
-@keyframes ambient-drift-a {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  to {
-    transform: translate3d(-6vmax, 5vmax, 0) scale(1.12);
-  }
-}
-
-@keyframes ambient-drift-b {
-  from {
-    transform: translate3d(0, 0, 0) scale(1.05);
-  }
-  to {
-    transform: translate3d(7vmax, -4vmax, 0) scale(0.95);
-  }
-}
-
-/* Weaving threads — slow continuous draw in brand hues. */
-.arem-ambient__threads {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  opacity: 0.16;
-}
-
-.arem-ambient__threads path {
-  fill: none;
-  stroke-width: 2;
-  stroke-dasharray: 100;
-  stroke-dashoffset: 100;
-  animation: thread-draw 18s ease-in-out infinite alternate;
-  will-change: stroke-dashoffset;
-}
-
-.arem-ambient__threads path:nth-child(2) {
-  animation-duration: 24s;
-  animation-delay: -7s;
-}
-
-.arem-ambient__threads path:nth-child(3) {
-  animation-duration: 28s;
-  animation-delay: -13s;
-}
-
-@keyframes thread-draw {
-  to {
-    stroke-dashoffset: 0;
-  }
-}
-
-@supports (animation-timeline: view()) {
-  .arem-ambient {
-    animation: ambient-scroll linear both;
-    animation-timeline: view();
-    animation-range: 0% 100%;
-  }
-}
-
-@keyframes ambient-scroll {
-  from {
-    transform: translateY(2%);
-  }
-  to {
-    transform: translateY(-6%);
-  }
-}
-.arem-ambient__weave {
-  position: absolute;
-  inset: -20%;
-  opacity: 0.05;
-  background-image:
-    repeating-linear-gradient(45deg, var(--ink) 0 1px, transparent 1px 26px),
-    repeating-linear-gradient(-45deg, var(--ink) 0 1px, transparent 1px 26px);
-  animation: ambient-weave 60s linear infinite;
-  will-change: transform;
-}
-
-@keyframes ambient-weave {
+@keyframes section-pan {
   from {
     transform: translate3d(0, 0, 0);
   }
   to {
-    transform: translate3d(52px, 26px, 0);
+    transform: translate3d(-70px, -46px, 0);
   }
-}
-
-/* Film grain for craft texture */
-.arem-ambient__grain {
-  position: absolute;
-  inset: 0;
-  opacity: 0.05;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
 }
 
 /* Visible focus for keyboard users */
@@ -4022,10 +3915,7 @@ body {
     transform: none;
   }
 
-  .arem-ambient__blob,
-  .arem-ambient__weave,
-  .arem-ambient__threads path,
-  .arem-ambient,
+  .section::before,
   .ticker__track,
   .hero__media,
   .hero__content,
