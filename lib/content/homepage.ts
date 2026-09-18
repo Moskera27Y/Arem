@@ -18,6 +18,15 @@ type HomeSectionSeed =
       primaryCta: CtaSeed;
       secondaryCta: CtaSeed;
       image: LocalizedImage;
+      slides: {
+        eyebrow: Localized;
+        title: Localized;
+        titleAccent: Localized;
+        subtitle: Localized;
+        primaryCta: CtaSeed;
+        secondaryCta?: CtaSeed;
+        image: LocalizedImage;
+      }[];
     }
   | {
       id: string;
@@ -115,6 +124,30 @@ const seed: HomepageSeed = {
       primaryCta: { label: L("Discover Colombia", "Descubre Colombia"), href: "/shop" },
       secondaryCta: { label: L("Read our story", "Nuestra historia"), href: "/about" },
       image: { src: "/images/hero-main.svg", alt: L("Andean highlands at dawn, coffee axis of Colombia", "Alturas andinas al amanecer, eje cafetero de Colombia") },
+      slides: [
+        {
+          eyebrow: L("New collection", "Nueva colección"),
+          title: L("The Andes,", "Los Andes,"),
+          titleAccent: L("woven to wear.", "tejidos para llevar."),
+          subtitle: L(
+            "Mochilas, textiles and jewels handmade by Colombian artisans.",
+            "Mochilas, textiles y joyas hechos a mano por artesanos colombianos.",
+          ),
+          primaryCta: { label: L("Shop new in", "Ver novedades"), href: "/shop" },
+          image: { src: "/images/hero-craft.svg", alt: L("Artisan hands working natural materials", "Manos de artesano trabajando materiales naturales") },
+        },
+        {
+          eyebrow: L("Up to 40% off", "Hasta 40% off"),
+          title: L("Sale,", "Ofertas,"),
+          titleAccent: L("while they last.", "hasta agotar."),
+          subtitle: L(
+            "Special prices on beloved handmade pieces.",
+            "Precios especiales en piezas hechas a mano.",
+          ),
+          primaryCta: { label: L("Shop the sale", "Ver ofertas"), href: "/shop?sale=1" },
+          image: { src: "/images/p-mochila-katsu-1.svg", alt: L("Wayuu mochila, handwoven", "Mochila wayuu, tejida a mano") },
+        },
+      ],
     },
     {
       id: "categories",
@@ -293,6 +326,15 @@ const resolve = (locale: Locale): HomeSection[] =>
           primaryCta: cta(s.primaryCta, locale),
           secondaryCta: cta(s.secondaryCta, locale),
           image: pickImage(s.image, locale),
+          slides: s.slides.map((slide) => ({
+            eyebrow: pick(slide.eyebrow, locale),
+            title: pick(slide.title, locale),
+            titleAccent: pick(slide.titleAccent, locale),
+            subtitle: pick(slide.subtitle, locale),
+            primaryCta: cta(slide.primaryCta, locale),
+            secondaryCta: slide.secondaryCta ? cta(slide.secondaryCta, locale) : undefined,
+            image: pickImage(slide.image, locale),
+          })),
         };
       case "featured-categories":
         return {

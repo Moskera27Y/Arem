@@ -837,7 +837,8 @@ h4 {
   inset: 0;
 }
 
-.hero__media img {
+.hero__media img,
+.hero__slide img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -853,6 +854,126 @@ h4 {
   }
   to {
     transform: scale(1);
+  }
+}
+
+/* Campaign slides: stacked crossfade, active breathes slowly. */
+.hero__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.9s var(--ease);
+}
+
+.hero__slide[data-active="true"] {
+  opacity: 1;
+  z-index: 1;
+}
+
+.hero__slide[data-active="true"] img {
+  animation:
+    hero-media-in 1.8s var(--ease) forwards,
+    hero-breathe 9s var(--ease) 1.8s infinite alternate;
+}
+
+@keyframes hero-breathe {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+/* Hero campaign nav: dots with progress + arrows. */
+.hero__nav {
+  position: absolute;
+  z-index: 2;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  max-width: var(--container);
+  margin-inline: auto;
+}
+
+.hero__dots {
+  display: flex;
+  gap: 0.6rem;
+}
+
+.hero__dot {
+  width: 2.6rem;
+  height: 1.75rem;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  cursor: pointer;
+}
+
+.hero__dot > span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  border-radius: var(--r-pill);
+  background: rgba(239, 230, 211, 0.35);
+  overflow: hidden;
+  position: relative;
+}
+
+.hero__dot[data-active="true"] > span::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--gold-soft);
+  border-radius: inherit;
+  transform-origin: left center;
+  animation: hero-fill 6.5s linear forwards;
+}
+
+.hero[data-paused] .hero__dot > span::after {
+  animation-play-state: paused;
+}
+
+@keyframes hero-fill {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.hero__arrows {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.hero__arrow {
+  width: 2.6rem;
+  height: 2.6rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-pill);
+  border: 1px solid rgba(239, 230, 211, 0.4);
+  color: var(--paper);
+  transition:
+    background-color 0.25s var(--ease),
+    border-color 0.25s var(--ease);
+}
+
+.hero__arrow:hover {
+  background: rgba(239, 230, 211, 0.16);
+  border-color: var(--paper);
+}
+
+@media (max-width: 640px) {
+  .hero__arrows {
+    display: none;
   }
 }
 
@@ -2808,7 +2929,56 @@ section[id],
   }
 }
 
-/* Wayuu-inspired diamond weave, barely visible, slow pan */
+/* Weaving threads — slow continuous draw in brand hues. */
+.arem-ambient__threads {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.16;
+}
+
+.arem-ambient__threads path {
+  fill: none;
+  stroke-width: 2;
+  stroke-dasharray: 100;
+  stroke-dashoffset: 100;
+  animation: thread-draw 18s ease-in-out infinite alternate;
+  will-change: stroke-dashoffset;
+}
+
+.arem-ambient__threads path:nth-child(2) {
+  animation-duration: 24s;
+  animation-delay: -7s;
+}
+
+.arem-ambient__threads path:nth-child(3) {
+  animation-duration: 28s;
+  animation-delay: -13s;
+}
+
+@keyframes thread-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@supports (animation-timeline: view()) {
+  .arem-ambient {
+    animation: ambient-scroll linear both;
+    animation-timeline: view();
+    animation-range: 0% 100%;
+  }
+}
+
+@keyframes ambient-scroll {
+  from {
+    transform: translateY(2%);
+  }
+  to {
+    transform: translateY(-6%);
+  }
+}
 .arem-ambient__weave {
   position: absolute;
   inset: -20%;
@@ -3310,6 +3480,145 @@ body {
   }
 }
 
+/* ------------------- Star product spotlight --------------------- */
+/* First-visit mini window: bottom sheet on mobile, card on desktop. */
+
+.spot {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgba(18, 13, 8, 0.55);
+  animation: spot-fade 0.35s var(--ease);
+}
+
+.spot[data-leaving] {
+  opacity: 0;
+  transition: opacity 0.22s var(--ease);
+}
+
+@keyframes spot-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+.spot__card {
+  position: relative;
+  width: min(26rem, 100vw);
+  max-height: 92dvh;
+  overflow-y: auto;
+  background: var(--paper);
+  border-radius: var(--r-md) var(--r-md) 0 0;
+  padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
+  animation: spot-up 0.45s var(--ease);
+}
+
+@keyframes spot-up {
+  from {
+    opacity: 0;
+    transform: translateY(3rem) scale(0.97);
+  }
+}
+
+.spot__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 2;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--r-pill);
+  background: rgba(255, 253, 248, 0.92);
+  color: var(--ink);
+}
+
+.spot__media {
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--cream);
+}
+
+.spot__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.spot__body {
+  padding: 1.4rem 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.spot__name {
+  font-size: 1.7rem;
+  line-height: 1.05;
+}
+
+.spot__price {
+  display: flex;
+  align-items: baseline;
+  gap: 0.7rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.spot__ctas {
+  margin-top: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.spot__later {
+  font-size: var(--text-sm);
+  color: var(--muted);
+  text-decoration: underline;
+  padding: 0.5rem;
+}
+
+@media (min-width: 641px) {
+  .spot {
+    align-items: center;
+    padding: 1.5rem;
+  }
+
+  .spot__card {
+    display: grid;
+    grid-template-columns: 19rem 1fr;
+    width: min(44rem, 100%);
+    border-radius: var(--r-md);
+    padding-bottom: 0;
+    animation-name: spot-pop;
+  }
+
+  @keyframes spot-pop {
+    from {
+      opacity: 0;
+      transform: translateY(1.5rem) scale(0.94);
+    }
+  }
+
+  .spot__media {
+    aspect-ratio: auto;
+    height: 100%;
+    min-height: 24rem;
+  }
+
+  .spot__body {
+    padding: 2rem;
+    justify-content: center;
+  }
+}
+
 /* ------------------------- Motion level 2 ------------------------- */
 /* Scroll-driven parallax, editorial ticker, button shine, Khoi-style
    hover quick-add. All GPU-only (transform/opacity), all guarded by
@@ -3715,14 +4024,20 @@ body {
 
   .arem-ambient__blob,
   .arem-ambient__weave,
+  .arem-ambient__threads path,
+  .arem-ambient,
   .ticker__track,
   .hero__media,
   .hero__content,
+  .hero__slide img,
+  .hero__dot > span::after,
   .collection-hero__media img,
   .gallery__main-img,
   .best__img,
   .best__body > *,
-  .best__seg[data-active="true"] .best__fill::after {
+  .best__seg[data-active="true"] .best__fill::after,
+  .spot,
+  .spot__card {
     animation: none !important;
   }
 

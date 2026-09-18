@@ -126,6 +126,16 @@ export interface CtaLink {
   href: string;
 }
 
+export interface HeroSlide {
+  eyebrow: string;
+  title: string;
+  titleAccent: string;
+  subtitle: string;
+  primaryCta: CtaLink;
+  secondaryCta?: CtaLink;
+  image: ImageRef;
+}
+
 export type HomeSection = { id: string } & (
   | {
       kind: "hero";
@@ -136,6 +146,7 @@ export type HomeSection = { id: string } & (
       primaryCta: CtaLink;
       secondaryCta: CtaLink;
       image: ImageRef;
+      slides: HeroSlide[];
     }
   | {
       kind: "featured-categories";
