@@ -29,8 +29,8 @@ export default async function StoriesPage({ params }: StoriesPageProps) {
   const [featured, ...rest] = items;
 
   return (
-    <>
-      <section className="page-hero">
+    <div className="stories-page">
+      <section className="page-hero page-hero--dark">
         <div className="container">
           <nav className="breadcrumbs" aria-label="Breadcrumbs">
             <Link href={localePrefix}>{dict.common.home}</Link>
@@ -48,21 +48,29 @@ export default async function StoriesPage({ params }: StoriesPageProps) {
           {featured && (
             <Reveal>
               <article
-                className="collection-hero"
+                className="collection-hero stories-featured"
                 style={{ marginBottom: "clamp(2.5rem, 5vw, 4rem)" }}
               >
                 <div className="collection-hero__media">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={featured.image.src} alt={featured.image.alt} loading="lazy" />
+                  <img
+                    src={featured.image.src}
+                    alt={featured.image.alt}
+                    loading="eager"
+                    decoding="sync"
+                    fetchPriority="high"
+                    width={1920}
+                    height={800}
+                  />
                 </div>
                 <div className="collection-hero__body">
-                  <span className="badge badge--light" style={{ marginBottom: "0.9rem" }}>
+                  <span className="badge badge--light stories-featured__badge" style={{ marginBottom: "0.9rem" }}>
                     {dict.stories.featuredBadge}
                   </span>
                   <h2 className="collection-hero__title">{featured.title}</h2>
                   <p className="collection-hero__sub">{featured.dek}</p>
                   <div style={{ marginTop: "1.5rem" }}>
-                    <Link href={`${localePrefix}/stories/${featured.slug}`} className="btn btn--light">
+                    <Link href={`${localePrefix}/stories/${featured.slug}`} className="btn btn--gold-dark">
                       {dict.stories.readStory}
                     </Link>
                   </div>
@@ -71,15 +79,15 @@ export default async function StoriesPage({ params }: StoriesPageProps) {
             </Reveal>
           )}
 
-          <div className="grid grid--3">
+          <div className="grid grid--3 stories-index">
             {rest.map((story, index) => (
-              <Reveal key={story.id} delay={index * 70}>
+              <Reveal key={story.id} delay={Math.min(index, 8) * 70}>
                 <StoryCard story={story} locale={locale} />
               </Reveal>
             ))}
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

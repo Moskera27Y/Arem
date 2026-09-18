@@ -1326,6 +1326,141 @@ h4 {
   line-height: 1.6;
 }
 
+/* --------------------- Stories page: dark drama -------------------- */
+/* Full-page nocturnal editorial: ink backdrop, gold hairlines, numbered
+   index. Scoped to .stories-page so light story cards elsewhere survive. */
+
+.stories-page {
+  background: var(--bg-dark);
+  color: var(--text-inverse);
+  position: relative;
+  overflow: clip;
+}
+
+.stories-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(55% 40% at 85% 8%, rgba(185, 138, 62, 0.14), transparent 70%),
+    radial-gradient(45% 35% at 8% 55%, rgba(180, 85, 45, 0.1), transparent 70%);
+  pointer-events: none;
+}
+
+.stories-page .section {
+  position: relative;
+}
+
+.page-hero--dark {
+  background: transparent;
+  border-bottom: 1px solid rgba(217, 164, 65, 0.18);
+}
+
+.page-hero--dark .breadcrumbs {
+  color: rgba(239, 230, 211, 0.55);
+}
+
+.page-hero--dark .breadcrumbs a:hover {
+  color: var(--gold-soft);
+}
+
+.page-hero--dark .eyebrow {
+  color: var(--gold-soft);
+}
+
+.page-hero--dark .eyebrow::before {
+  background: var(--gold-soft);
+}
+
+.page-hero--dark .page-hero__title {
+  color: var(--paper);
+  font-size: clamp(2.6rem, 6vw, 4.6rem);
+}
+
+.page-hero--dark .page-hero__sub {
+  color: rgba(239, 230, 211, 0.72);
+}
+
+/* Featured cover: gold frame, taller, glowing. */
+.stories-featured {
+  border: 1px solid rgba(217, 164, 65, 0.28);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.45);
+  min-height: clamp(28rem, 62vh, 40rem);
+}
+
+.stories-featured .collection-hero__media::after {
+  background: linear-gradient(
+    to top,
+    rgba(10, 7, 4, 0.88) 0%,
+    rgba(10, 7, 4, 0.35) 55%,
+    rgba(10, 7, 4, 0.08) 100%
+  );
+}
+
+.stories-featured__badge {
+  border: 1px solid rgba(217, 164, 65, 0.5);
+}
+
+/* Numbered index of stories. */
+.stories-index {
+  counter-reset: story;
+}
+
+.stories-index .story-card {
+  counter-increment: story;
+  border-top: 1px solid rgba(217, 164, 65, 0.22);
+  padding-top: 1.4rem;
+  position: relative;
+}
+
+.stories-index .story-card::before {
+  content: counter(story, decimal-leading-zero);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.95rem;
+  letter-spacing: 0.12em;
+  color: var(--gold-soft);
+}
+
+.stories-page .story-card__media {
+  border: 1px solid rgba(239, 230, 211, 0.12);
+  margin-top: 1rem;
+}
+
+.stories-page .story-card:hover .story-card__media {
+  border-color: rgba(217, 164, 65, 0.45);
+}
+
+.stories-page .story-card:hover .story-card__media img {
+  transform: scale(1.06);
+}
+
+.stories-page .story-card__meta {
+  color: var(--gold-soft);
+}
+
+.stories-page .story-card__title {
+  color: var(--paper);
+}
+
+.stories-page .story-card__title a:hover {
+  color: var(--gold-soft);
+}
+
+.stories-page .story-card__dek {
+  color: rgba(239, 230, 211, 0.66);
+}
+
+@media (max-width: 640px) {
+  .stories-featured {
+    min-height: 26rem;
+  }
+
+  .stories-featured .collection-hero__body {
+    padding: 1.75rem;
+  }
+}
+
 .region-card {
   position: relative;
   display: block;
