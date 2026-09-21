@@ -123,7 +123,7 @@ const seed: HomepageSeed = {
       ),
       primaryCta: { label: L("Discover the crafts", "Descubre los oficios"), href: "/shop" },
       secondaryCta: { label: L("Our story", "Nuestra historia"), href: "/about" },
-      image: { src: "/images/hero-store-1.webp", alt: L("The AREM store with handmade Colombian pieces", "La tienda AREM con piezas artesanales colombianas") },
+      image: { src: "/images/hero-dedicado-1.webp", alt: L("AREM hero: handmade Colombian objects against warm workshop canvas", "AREM héroe: objetos artesanales colombianos sobre lienzo de taller cálido") },
       slides: [
         {
           eyebrow: L("Up to 40% off", "Hasta 40% off"),
@@ -134,7 +134,7 @@ const seed: HomepageSeed = {
             "Diez piezas tejidas, frescas del taller.",
           ),
           primaryCta: { label: L("View the sale", "Ver ofertas"), href: "/shop?sale=1" },
-          image: { src: "/images/hero-store-2.webp", alt: L("Wayuu mochilas and the AREM sign in store", "Mochilas wayuu y el letrero AREM en la tienda") },
+          image: { src: "/images/hero-dedicado-2.webp", alt: L("AREM hero: sale collection against warm workshop canvas", "AREM héroe: colección en oferta sobre lienzo de taller cálido") },
         },
         {
           eyebrow: L("From our Instagram", "De nuestro Instagram"),
@@ -145,7 +145,7 @@ const seed: HomepageSeed = {
             "Momentos de taller y piezas nuevas, en vivo.",
           ),
           primaryCta: { label: L("See the collections", "Ver colecciones"), href: "/collections" },
-          image: { src: "/images/hero-store-3.webp", alt: L("Handwoven clutches and jewellery in store", "Clutches tejidos y joyería en la tienda") },
+          image: { src: "/images/hero-dedicado-3.webp", alt: L("AREM hero: workshop moments against warm artisan canvas", "AREM héroe: momentos de taller sobre lienzo de artesano cálido") },
         },
       ],
     },
