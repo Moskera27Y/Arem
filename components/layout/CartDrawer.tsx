@@ -44,7 +44,7 @@ export function CartDrawer() {
         onClick={closeCart}
         aria-hidden="true"
       />
-      <aside className="drawer" data-open={isOpen} role="dialog" aria-modal="true" aria-label={dict.cart.title}>
+      <aside className="drawer drawer--glass" data-open={isOpen} role="dialog" aria-modal="true" aria-label={dict.cart.title}>
         <div className="drawer__head">
           <h2 className="drawer__title">{dict.cart.title}</h2>
           <button type="button" className="icon-btn" aria-label={dict.a11y.closeCart} onClick={closeCart}>

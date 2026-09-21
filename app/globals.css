@@ -773,7 +773,10 @@ h4 {
   position: fixed;
   inset: 0;
   z-index: 90;
-  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-left: 1px solid rgba(239, 230, 211, 0.12);
   padding: calc(var(--header-h) + 1rem) var(--gutter) 2rem;
   overflow-y: auto;
   animation: fade-in 0.3s var(--ease);
@@ -2408,6 +2411,133 @@ h4 {
   font-variant-numeric: tabular-nums;
 }
 
+/* --------------------------- Recomendations rail -------------------------- */
+
+.recs__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+.recs__card {
+  display: block;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--bg);
+  border: 1px solid var(--line-soft);
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+}
+.recs__link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+}
+.recs__media {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  background: var(--cream);
+}
+.recs__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease);
+}
+.recs__card:hover .recs__img {
+  transform: scale(1.02);
+}
+.recs__body {
+  padding: 1.25rem 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.recs__name {
+  font-family: var(--font-serif);
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  line-height: 1.1;
+  margin: 0;
+  text-wrap: balance;
+}
+.recs__tagline {
+  font-size: var(--text-xs);
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 0;
+}
+.recs__price {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-variant-numeric: tabular-nums;
+}
+.price--current { font-weight: 600; }
+.price--was {
+  font-size: 0.85em;
+  text-decoration: line-through;
+  color: var(--muted);
+}
+.recs__badge {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+}
+.recs__kicker {
+  margin-bottom: 1.25rem;
+}
+.recs__skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.recs__skeleton-media {
+  aspect-ratio: 3 / 4;
+  border-radius: var(--r-md);
+}
+.recs__skeleton-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.recs__skeleton-line {
+  height: 1rem;
+  background: var(--line-soft);
+  border-radius: 2px;
+}
+
+/* Glassmorphism for recommendation cards on hover */
+@media (prefers-reduced-motion: no-preference) {
+  .recs__card {
+    transition:
+      transform 0.3s var(--ease),
+      box-shadow 0.3s var(--ease),
+      border-color 0.3s var(--ease);
+  }
+  .recs__card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 40px rgba(28, 23, 18, 0.12);
+    border-color: rgba(217, 164, 65, 0.35);
+  }
+}
+
+/* Glass panel variant for modals that use RecommendedProducts */
+.recs__card--glass {
+  background: rgba(255, 253, 248, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(217, 164, 65, 0.18);
+}
+
+@media (max-width: 640px) {
+  .recs__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
 .gallery__main {
   position: relative;
   overflow: hidden;
@@ -2601,7 +2731,10 @@ h4 {
   bottom: 0;
   z-index: 90;
   width: min(26rem, 100vw);
-  background: var(--bg);
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-left: 1px solid rgba(239, 230, 211, 0.12);
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
@@ -3664,7 +3797,10 @@ body {
   width: min(26rem, 100vw);
   max-height: 92dvh;
   overflow-y: auto;
-  background: var(--paper);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(239, 230, 211, 0.12);
   border-radius: var(--r-md) var(--r-md) 0 0;
   padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
 }
@@ -4007,7 +4143,10 @@ body {
   width: min(26rem, 100vw);
   max-height: 92dvh;
   overflow-y: auto;
-  background: var(--paper);
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(239, 230, 211, 0.12);
   border-radius: var(--r-md) var(--r-md) 0 0;
   padding-bottom: calc(1.25rem + env(safe-area-inset-bottom));
 }

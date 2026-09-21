@@ -59,7 +59,7 @@ export function QuickView({ product, locale, onClose }: QuickViewProps) {
     <AnimatePresence>
       {product && mounted && (
         <m.div
-          className="qv"
+          className="qv qv--glass"
           role="dialog"
           aria-modal="true"
           aria-label={product.name}

@@ -70,7 +70,7 @@ export function SpotlightModal({ product, locale }: SpotlightModalProps) {
     <AnimatePresence>
       {open && (
         <m.div
-          className="spot"
+          className="spot spot--glass"
           role="dialog"
           aria-modal="true"
           aria-label={es ? "Producto estrella de la semana" : "Star product of the week"}

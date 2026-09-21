@@ -150,7 +150,7 @@ export function Header() {
       <AnimatePresence>
         {menuOpen && (
           <m.div
-            className="mobile-menu"
+            className="mobile-menu mobile-menu--glass"
             role="dialog"
             aria-modal="true"
             aria-label="Menú"
