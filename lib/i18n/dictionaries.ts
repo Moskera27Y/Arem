@@ -376,9 +376,9 @@ const en: Dictionary = {
     handmade: "handmade",
   },
   collections: {
-    eyebrow: "Curated edits",
+    eyebrow: "Stories worth sharing",
     title: "Collections",
-    sub: "Groups of pieces that tell a story: heritage, craft, origin and the coast.",
+    sub: "Groups of pieces that tell a story: heritage, craft and place.",
     filling: "This collection is filling up. Check back soon.",
   },
   notFound: {
@@ -393,11 +393,11 @@ const en: Dictionary = {
     notFoundCollection: "Collection not found",
   },
   footer: {
-    explore: "Explore",
-    brand: "Brand",
+    explore: "Shop",
+    brand: "Our craft",
     help: "Help",
     contact: "Contact",
-    bottomNote: "Handmade · Paid with pride",
+    bottomNote: "Handmade · Built with care",
   },
   account: {
     myAccount: "My account",
@@ -622,9 +622,9 @@ const es: Dictionary = {
     handmade: "hecho a mano",
   },
   collections: {
-    eyebrow: "Ediciones curadas",
+    eyebrow: "Historias que contar",
     title: "Colecciones",
-    sub: "Grupos de piezas que cuentan una historia: la herencia, el oficio, el origen y la costa.",
+    sub: "Grupos de piezas que cuentan una historia: herencia, oficio y lugar.",
     filling: "Esta colección se está llenando. Vuelve pronto.",
   },
   notFound: {
@@ -639,11 +639,11 @@ const es: Dictionary = {
     notFoundCollection: "Colección no encontrada",
   },
   footer: {
-    explore: "Explorar",
-    brand: "Marca",
+    explore: "Tienda",
+    brand: "Nuestro oficio",
     help: "Ayuda",
     contact: "Contacto",
-    bottomNote: "Hecho a mano · Pagado con orgullo",
+    bottomNote: "Hecho a mano · Con cuidado",
   },
   account: {
     myAccount: "Mi cuenta",

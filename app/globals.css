@@ -64,8 +64,13 @@
   --sp-8: 4rem;
   --sp-9: 6rem;
 
-  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --dur: 0.45s;
+  /* Natural stagger delays for sequential reveals (50–200ms range) */
+  --delay-1: 50ms;
+  --delay-2: 100ms;
+  --delay-3: 150ms;
+  --delay-4: 200ms;
 
   --container: 1320px;
   --gutter: clamp(1.25rem, 4vw, 3rem);
@@ -138,6 +143,8 @@ h4 {
   letter-spacing: -0.01em;
   color: var(--ink);
   text-wrap: balance;
+  /* Tabular numerals for stable price column alignment */
+  font-variant-numeric: tabular-nums;
 }
 
 :focus-visible {
@@ -216,11 +223,13 @@ h4 {
 .h2 {
   font-size: clamp(1.9rem, 3.6vw, 3rem);
   line-height: 1.05;
+  text-wrap: balance;
 }
 
 .h3 {
   font-size: clamp(1.2rem, 2vw, 1.55rem);
   line-height: 1.15;
+  text-wrap: balance;
 }
 
 .lead {
@@ -510,7 +519,7 @@ h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 1.1s var(--ease);
+  transition: transform 0.6s var(--ease);
 }
 
 .card:hover .card-media > img {
@@ -885,12 +894,14 @@ h4 {
   }
 }
 
-/* Campaign slides: stacked crossfade, active breathes slowly. */
 .hero__slide {
   position: absolute;
   inset: 0;
   opacity: 0;
   transition: opacity 0.9s var(--ease);
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__slide { transition: none; }
 }
 
 .hero__slide[data-active="true"] {
@@ -902,6 +913,11 @@ h4 {
   animation:
     hero-media-in 1.8s var(--ease) forwards,
     hero-breathe 9s var(--ease) 1.8s infinite alternate;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__slide[data-active="true"] img {
+    animation: hero-media-in 0.3s ease-out forwards;
+  }
 }
 
 @keyframes hero-breathe {
@@ -1155,6 +1171,7 @@ h4 {
   font-size: 0.95rem;
   line-height: 1.2;
   text-align: center;
+  text-wrap: balance;
   color: var(--ink);
 }
 
@@ -1228,7 +1245,7 @@ h4 {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 1.1s var(--ease);
+  transition: transform 0.6s var(--ease);
 }
 
 .product-card:hover .product-card__media img {
@@ -1615,6 +1632,7 @@ h4 {
 
 .page-hero__title {
   font-size: clamp(2.2rem, 5vw, 3.8rem);
+  text-wrap: balance;
 }
 
 .page-hero__sub {
@@ -1792,17 +1810,14 @@ h4 {
   background: var(--cream);
 }
 
+@media (prefers-reduced-motion: no-preference) {
 .category-card__media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 1.1s var(--ease);
-  will-change: transform;
-  backface-visibility: hidden;
+  transition: transform 0.6s var(--ease);
 }
 
 .category-card:hover .category-card__media img {
-  transform: scale(1.05);
+  transform: scale(1.03);
+}
 }
 
 .category-card__media::after {
@@ -1826,6 +1841,7 @@ h4 {
   font-size: clamp(1.4rem, 2.4vw, 1.9rem);
   line-height: 1.1;
   letter-spacing: -0.01em;
+  text-wrap: balance;
 }
 
 .category-card__link {
@@ -2062,6 +2078,7 @@ h4 {
 .article__title {
   font-size: clamp(1.9rem, 4.4vw, 3.2rem);
   line-height: 1.08;
+  text-wrap: balance;
   margin-top: 1rem;
 }
 
@@ -2383,7 +2400,13 @@ h4 {
   opacity: 0.14;
 }
 
-/* ----------------------- Product gallery controls ------------------- */
+/* Tabular numerals for stable price alignment in product prices */
+.pdp__price,
+.product-card__price,
+.cart-summary__row,
+.best__price {
+  font-variant-numeric: tabular-nums;
+}
 
 .gallery__main {
   position: relative;
@@ -2469,20 +2492,20 @@ h4 {
 /* Hero entrance (staggered, gentle) */
 .hero__content > * {
   opacity: 0;
-  animation: hero-in 0.9s var(--ease) forwards;
+  animation: hero-in 0.6s var(--ease) forwards;
 }
 
 .hero__content > *:nth-child(1) {
-  animation-delay: 0.1s;
+  animation-delay: var(--delay-1);
 }
 .hero__content > *:nth-child(2) {
-  animation-delay: 0.24s;
+  animation-delay: var(--delay-2);
 }
 .hero__content > *:nth-child(3) {
-  animation-delay: 0.38s;
+  animation-delay: var(--delay-3);
 }
 .hero__content > *:nth-child(4) {
-  animation-delay: 0.52s;
+  animation-delay: var(--delay-4);
 }
 
 @keyframes hero-in {
@@ -2496,7 +2519,8 @@ h4 {
   }
 }
 
-/* Gentle hover lift on cards and buttons */
+/* Gentle hover lift on cards and buttons — transform/opacity only */
+@media (prefers-reduced-motion: no-preference) {
 .btn--primary,
 .btn--secondary,
 .btn--gold-dark {
@@ -2504,8 +2528,8 @@ h4 {
     background var(--dur) var(--ease),
     color var(--dur) var(--ease),
     border-color var(--dur) var(--ease),
-    transform 0.25s var(--ease),
-    box-shadow 0.25s var(--ease);
+    transform 0.2s var(--ease),
+    box-shadow 0.2s var(--ease);
 }
 
 .btn--primary:hover,
@@ -2522,6 +2546,18 @@ h4 {
 .product-card:hover,
 .cat-chip:hover {
   transform: translateY(-3px);
+}
+}
+/* Reduced motion: disable transform-based hover effects */
+@media (prefers-reduced-motion: reduce) {
+  .hero__content > * { animation: none; opacity: 1; }
+  .btn--primary:hover,
+  .btn--gold-dark:hover,
+  .product-card:hover .product-card__media img,
+  .cat-chip:hover .cat-chip__media,
+  .category-card:hover .category-card__media img {
+    transform: none;
+  }
 }
 
 /* Mobile menu slide (entrance/exit driven by Motion) */
@@ -2557,6 +2593,7 @@ h4 {
   pointer-events: auto;
 }
 
+@media (prefers-reduced-motion: no-preference) {
 .drawer {
   position: fixed;
   top: 0;
@@ -2570,9 +2607,24 @@ h4 {
   transform: translateX(100%);
   transition: transform 0.45s var(--ease);
 }
-
 .drawer[data-open="true"] {
   transform: translateX(0);
+}
+}
+@media (prefers-reduced-motion: reduce) {
+  .drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 90;
+    width: min(26rem, 100vw);
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    transition: none;
+  }
+  .drawer[data-open="true"] { transform: translateX(0); }
 }
 
 .drawer__head {
@@ -2777,6 +2829,7 @@ h4 {
 
 .collection-hero__title {
   font-size: clamp(2rem, 4.6vw, 3.4rem);
+  text-wrap: balance;
   color: var(--paper);
 }
 
@@ -3025,6 +3078,9 @@ section[id],
   will-change: transform;
   pointer-events: none;
 }
+@media (prefers-reduced-motion: reduce) {
+  .section::before { animation: none; }
+}
 
 .section > * {
   position: relative;
@@ -3104,6 +3160,9 @@ section[id],
     white-space: nowrap;
     animation: announce-scroll 26s linear infinite;
     will-change: transform;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .announce__track { animation: none; }
   }
   @keyframes announce-scroll {
     from {

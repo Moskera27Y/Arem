@@ -156,7 +156,7 @@ export function BestSellers({ section, products, locale }: BestSellersProps) {
             </p>
             <div className="best__ctas">
               <Link href={`/${locale}/products/${product.slug}`} className="btn btn--primary">
-                {locale === "es" ? "Comprar ahora" : "Shop now"} <Icon name="arrow-right" size={14} />
+                {locale === "es" ? "Conoce la pieza" : "View piece"} <Icon name="arrow-right" size={14} />
               </Link>
             </div>
             <div className="best__nav">

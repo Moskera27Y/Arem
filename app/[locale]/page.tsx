@@ -22,8 +22,8 @@ export default async function HomePage({ params }: HomePageProps) {
     name: "AREM WORLD",
     description:
       locale === "es"
-        ? "Artesanía colombiana para el mundo."
-        : "Colombian craft, curated for the world.",
+        ? "Artesanía colombiana de taller para el mundo."
+        : "Colombian craft, from workshop to the world.",
   };
   return (
     <>

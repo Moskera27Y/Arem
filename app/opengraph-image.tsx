@@ -25,7 +25,7 @@ export default function OG() {
         <div style={{ fontSize: 92, lineHeight: 1.02, marginTop: 24 }}>
           Colombian craft,
           <br />
-          curated for the world.
+          from workshop to the world.
         </div>
         <div style={{ display: "flex", marginTop: 40, gap: 16 }}>
           {["#b4552d", "#d9a441", "#7a8450"].map((c) => (

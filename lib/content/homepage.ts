@@ -114,12 +114,12 @@ const seed: HomepageSeed = {
     {
       id: "hero",
       kind: "hero",
-      eyebrow: L("Colombian craft, curated for the world", "Artesanía colombiana para el mundo"),
-      title: L("Colombia to wear, to feel,", "Colombia que se lleva, se siente"),
+      eyebrow: L("Colombian craft from workshop to world", "Artesanía colombiana de taller para el mundo"),
+      title: L("Colombia to wear, to feel,", "Colombia que se lleva, se siente,"),
       titleAccent: L("to share.", "y se comparte."),
       subtitle: L(
-        "Authentic Colombian products made with tradition, passion and the hands of our artisans.",
-        "Productos auténticos de Colombia hechos con tradición, pasión y las manos de nuestros artesanos.",
+        "Objects shaped by tradition and hands that know their craft — from our workshops to your home.",
+        "Objetos moldeados por la tradición y manos que conocen su oficio — de nuestros talleres a tu hogar.",
       ),
       primaryCta: { label: L("Discover Colombia", "Descubre Colombia"), href: "/shop" },
       secondaryCta: { label: L("Read our story", "Nuestra historia"), href: "/about" },
@@ -130,8 +130,8 @@ const seed: HomepageSeed = {
           title: L("Sale,", "Ofertas,"),
           titleAccent: L("while they last.", "hasta agotar."),
           subtitle: L(
-            "Special prices on beloved handmade pieces.",
-            "Precios especiales en piezas hechas a mano.",
+            "Pieces we love, at prices worth sharing.",
+            "Piezas que amamos, a precios que valen la pena compartir.",
           ),
           primaryCta: { label: L("Shop the sale", "Ver ofertas"), href: "/shop?sale=1" },
           image: { src: "/images/hero-store-2.jpg", alt: L("Wayuu mochilas and AREM sign in store", "Mochilas wayuu y aviso AREM en la tienda") },
@@ -141,8 +141,8 @@ const seed: HomepageSeed = {
           title: L("Handmade,", "Hecho a mano,"),
           titleAccent: L("with love.", "con amor."),
           subtitle: L(
-            "Follow @arem.world for drops, behind-the-loom moments and new pieces.",
-            "Sigue @arem.world: lanzamientos, detrás del telar y piezas nuevas.",
+            "Follow along — workshop moments and new pieces, as they happen.",
+            "Síguenos — momentos de taller y piezas nuevas, en vivo.",
           ),
           primaryCta: { label: L("Explore collections", "Explorar colecciones"), href: "/collections" },
           image: { src: "/images/hero-store-3.jpg", alt: L("Handwoven clutches and jewelry in store", "Clutches tejidos y joyería en la tienda") },
@@ -155,8 +155,8 @@ const seed: HomepageSeed = {
       eyebrow: L("Shop by category", "Comprar por categoría"),
       title: L("Explore Colombia", "Explora Colombia"),
       subtitle: L(
-        "Six crafts, one country. Each with its land, its technique and its people.",
-        "Seis oficios, un solo país. Cada uno con su tierra, su técnica y su gente.",
+        "Six crafts, one country. Each with its own land, technique and people.",
+        "Seis oficios, un solo país. Cada uno con su tierra, técnica y gente.",
       ),
       categoryIds: ["cat-coffee", "cat-textiles", "cat-ceramics", "cat-bags", "cat-jewelry", "cat-home"],
     },
@@ -166,18 +166,18 @@ const seed: HomepageSeed = {
       eyebrow: L("Most loved", "Las favoritas"),
       title: L("Best sellers", "Más vendidas"),
       subtitle: L(
-        "The pieces our customers can't stop reordering — one by one.",
-        "Las piezas que no dejan de pedir — una por una.",
+        "The pieces our customers keep reaching for — one by one.",
+        "Las piezas que nuestros clientes vuelven a pedir — una por una.",
       ),
     },
     {
       id: "featured-products",
       kind: "featured-products",
-      eyebrow: L("New releases", "Novedades"),
+      eyebrow: L("New this week", "Novedades"),
       title: L("New releases", "Novedades"),
       subtitle: L(
-        "The latest pieces from our artisans — fresh this week.",
-        "Las piezas más recientes de nuestros artesanos — frescas esta semana.",
+        "Fresh pieces from our artisans — just arrived.",
+        "Piezas nuevas de nuestros artesanos — recién llegadas.",
       ),
       productIds: [
         "pr-mochila-katsu",
@@ -191,11 +191,11 @@ const seed: HomepageSeed = {
     {
       id: "sale",
       kind: "sale-rail",
-      eyebrow: L("Up to 40% off select styles", "Hasta 40% off en estilos seleccionados"),
+      eyebrow: L("Selected pieces", "Piezas seleccionadas"),
       title: L("Sale items", "Ofertas"),
       subtitle: L(
-        "Special prices on beloved pieces — while they last.",
-        "Precios especiales en piezas queridas — hasta agotar.",
+        "Hand-picked pieces, at our best prices.",
+        "Piezas elegidas a mano, a nuestros mejores precios.",
       ),
     },
     {
@@ -204,57 +204,57 @@ const seed: HomepageSeed = {
       eyebrow: L("Shop by craft", "Compra por oficio"),
       title: L("Our crafts", "Nuestros oficios"),
       subtitle: L(
-        "Three signature crafts, curated for you.",
-        "Tres oficios insignia, seleccionados para ti.",
+        "Three crafts we return to again and again.",
+        "Tres oficios a los que volvemos una y otra vez.",
       ),
     },
     {
       id: "why-shop",
       kind: "why-shop",
-      title: L("Why shop at AREM WORLD", "¿Por qué comprar en AREM WORLD?"),
+      title: L("Why choose AREM WORLD", "¿Por qué elegir AREM WORLD?"),
       sub: L(
-        "More than a purchase — a direct connection to Colombian hands.",
-        "Más que una compra — una conexión directa con las manos de Colombia.",
+        "More than a purchase — a direct link to the hands that made it.",
+        "Más que una compra — un enlace directo con las manos que la hicieron.",
       ),
       items: [
         {
           icon: "heart",
           title: L("Direct support for artisans", "Apoyas a los artesanos"),
           text: L(
-            "Every piece directly supports the artisans and producers who made it.",
-            "Cada pieza apoya directamente a los artesanos y productores que la hicieron.",
+            "Each sale goes straight to the maker who shaped the piece.",
+            "Cada venta va directamente al artesano que creó la pieza.",
           ),
         },
         {
           icon: "star",
-          title: L("Authentic Colombian products", "Productos auténticos de Colombia"),
+          title: L("Colombian origin, told plainly", "Origen colombiano, contado claro"),
           text: L(
-            "Made with traditional techniques and natural materials from the region.",
-            "Hechos con técnicas tradicionales y materiales naturales de la región.",
+            "Traditional techniques, natural materials — and the stories behind them.",
+            "Técnicas tradicionales, materiales naturales — y las historias detrás.",
           ),
         },
         {
           icon: "shield",
-          title: L("Secure purchase", "Compra segura"),
+          title: L("A purchase you can stand behind", "Una compra en la que puedes confiar"),
           text: L(
-            "Protected checkout and careful handling of your order.",
-            "Checkout protegido y un manejo cuidadoso de tu pedido.",
+            "Careful packing, tracked shipping, and returns that do not ask questions.",
+            "Empaque cuidadoso, envío rastreado y devoluciones sin preguntas.",
           ),
         },
         {
           icon: "globe",
           title: L("Shipping worldwide", "Envíos a todo el mundo"),
           text: L(
-            "We deliver Colombian craft to your door, anywhere.",
+            "We deliver Colombian craft to your door, wherever that is.",
             "Llevamos el oficio colombiano hasta tu puerta, donde estés.",
           ),
         },
         {
           icon: "gift",
-          title: L("Special packaging", "Empaque especial"),
+          title: L("Wrapped with care", "Envuelto con cuidado"),
           text: L(
-            "Each piece arrives wrapped with care and a story to share.",
-            "Cada pieza llega envuelta con cuidado y una historia para compartir.",
+            "Each piece arrives packaged to last, with its story tucked inside.",
+            "Cada pieza llega empaquetada para durar, con su historia dentro.",
           ),
         },
       ],

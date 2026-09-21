@@ -28,12 +28,12 @@ const content: AboutContent = {
     title: L("It started with a suitcase", "Empezó con una maleta"),
     body: [
       L(
-        "AREM WORLD was born in 2024, between a coffee farm in Quindío and a pottery workshop in Ráquira. The idea was simple: Colombian craft deserves an international stage, and artisans deserve to be treated as what they are — authors, not suppliers.",
-        "AREM WORLD nació en 2024, entre una finca cafetera del Quindío y un taller de cerámica en Ráquira. La idea era simple: el oficio colombiano merece vitrina internacional, y los artesanos merecen ser tratados como lo que son — autores, no proveedores.",
+        "AREM WORLD started in 2024 between a coffee farm in Quindío and a pottery workshop in Ráquira. The idea was simple: Colombian craft deserves an international stage, and artisans deserve to be treated as authors, not suppliers.",
+        "AREM WORLD nació en 2024 entre una finca cafetera del Quindío y un taller de cerámica en Ráquira. La idea era simple: el oficio colombiano merece vitrina internacional, y los artesanos merecen ser tratados como autores, no proveedores.",
       ),
       L(
-        "Today we work with more than 120 artisans and producers in 27 municipalities, and every piece we sell comes with transparent origin. That is not a marketing promise: it is our model.",
-        "Hoy trabajamos con más de 120 artesanos y productores en 27 municipios, y cada pieza que vendemos cuenta con la transparencia de su origen. No es una promesa de marketing: es nuestro modelo.",
+        "Today we work with more than 120 artisans across 27 municipalities, and every piece we sell comes with its origin on the label. That isn't a promise — it's our model.",
+        "Hoy trabajamos con más de 120 artesanos en 27 municipios, y cada pieza que vendemos lleva su origen en la etiqueta. No es una promesa — es nuestro modelo.",
       ),
     ],
     quote: L(

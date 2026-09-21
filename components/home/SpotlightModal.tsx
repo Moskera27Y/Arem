@@ -119,10 +119,10 @@ export function SpotlightModal({ product, locale }: SpotlightModalProps) {
               onClick={dismiss}
               className="btn btn--primary btn--block"
             >
-              {es ? "Ver producto" : "Shop now"} <Icon name="arrow-right" size={14} />
+              {es ? "Conoce la pieza" : "View piece"} <Icon name="arrow-right" size={14} />
             </Link>
             <button type="button" className="spot__later" onClick={dismiss}>
-              {es ? "Seguir explorando" : "Keep exploring"}
+              {es ? "No, gracias" : "No thanks"}
             </button>
           </div>
         </div>

@@ -17,11 +17,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://arem-mu.vercel.app"),
   title: {
-    default: "AREM WORLD — Colombian craft, curated for the world",
+    default: "AREM WORLD — Colombian craft from workshop to world",
     template: "%s · AREM WORLD",
   },
   description:
-    "AREM WORLD curates the best of Colombian craftsmanship — coffee, mochilas, ceramics, textiles and more — made by hand, told with pride.",
+    "Colombian craft from workshop to the world. Handmade pieces, told with pride.",
   keywords: ["Colombia", "artesanía", "handmade", "café colombiano", "mochilas wayuu", "cerámica"],
   openGraph: {
     title: "AREM WORLD",

@@ -39,12 +39,12 @@ export async function generateMetadata({
     },
     description:
       locale === "en"
-        ? "AREM WORLD curates the best of Colombian craftsmanship — coffee, mochilas, ceramics, textiles and more — made by hand, told with pride."
-        : "AREM WORLD selecciona lo mejor del oficio colombiano — café, mochilas, cerámica, textiles y más — hecho a mano, contado con orgullo.",
+        ? "Colombian craft from workshop to the world. Handmade pieces, told with pride."
+        : "Artesanía colombiana de taller para el mundo. Piezas hechas a mano, contadas con orgullo.",
     openGraph: {
       title: "AREM WORLD",
       description:
-        locale === "en" ? "Colombian craft, curated for the world." : "Artesanía colombiana para el mundo.",
+        locale === "en" ? "Colombian craft, from workshop to world." : "Artesanía colombiana, de taller para el mundo.",
       type: "website",
       locale: locale === "en" ? "en_US" : "es_CO",
     },

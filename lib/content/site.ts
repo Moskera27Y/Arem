@@ -37,8 +37,8 @@ export const siteSeed: SiteSeed = {
   ],
   footer: {
     about: L(
-      "AREM WORLD curates the best of Colombian craftsmanship — from Wayuu mochilas of La Guajira to the clay of Ráquira — and brings it to the world with care, transparency and pride.",
-      "AREM WORLD selecciona lo mejor del oficio colombiano — de las mochilas wayuu de La Guajira al barro de Ráquira — y lo lleva al mundo con cuidado, transparencia y orgullo.",
+      "AREM WORLD sources the best of Colombian craftsmanship — from Wayuu mochilas of La Guajira to the clay of Ráquira — bringing it to the world with care, transparency and pride.",
+      "AREM WORLD busca lo mejor del oficio colombiano — de las mochilas wayuu de La Guajira al barro de Ráquira — llevándolo al mundo con cuidado, transparencia y orgullo.",
     ),
     columns: [
       {
@@ -50,7 +50,7 @@ export const siteSeed: SiteSeed = {
         ],
       },
       {
-        title: L("Brand", "Marca"),
+        title: L("Our craft", "Nuestro oficio"),
         links: [
           { label: L("About us", "Nosotros"), href: "/about" },
           { label: L("Contact", "Contacto"), href: "/contact" },
@@ -75,8 +75,8 @@ export const siteSeed: SiteSeed = {
     ],
     socials: [],
     bottom: L(
-      "© 2026 AREM WORLD. Made with love in Colombia.",
-      "© 2026 AREM WORLD. Hecho con amor en Colombia.",
+      "© 2026 AREM WORLD. Handmade in Colombia, with care.",
+      "© 2026 AREM WORLD. Hecho a mano en Colombia, con cuidado.",
     ),
   },
   currency: "USD",
