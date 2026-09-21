@@ -41,6 +41,7 @@ export function Hero({ section, locale }: HeroProps) {
   const [hidden, setHidden] = useState(false);
   const [visible, setVisible] = useState(true);
   const [reduceMotion, setReduceMotion] = useState(false);
+  const [contentVisible, setContentVisible] = useState(false);
   const rootRef = useRef<HTMLElement>(null);
   const touchX = useRef<number | null>(null);
 
@@ -77,6 +78,13 @@ export function Hero({ section, locale }: HeroProps) {
   );
 
   const paused = hover || hidden || !visible || reduceMotion;
+
+  // Staggered content entrance once hero is in viewport
+  useEffect(() => {
+    if (!visible || reduceMotion || contentVisible) return;
+    const t = setTimeout(() => setContentVisible(true), 300);
+    return () => clearTimeout(t);
+  }, [visible, reduceMotion, contentVisible]);
 
   useEffect(() => {
     if (paused || count < 2) return;
@@ -125,13 +133,13 @@ export function Hero({ section, locale }: HeroProps) {
           </div>
         ))}
       </div>
-      <div key={`${index}-${cycle}`} className="hero__content">
-        <p className="hero__eyebrow">{slide.eyebrow}</p>
-        <TitleTag className="hero__title">
+      <div key={`${index}-${cycle}`} className="hero__content" data-animate={contentVisible ? "ready" : undefined}>
+        <p className="hero__eyebrow" style={{ animationDelay: "0ms" }}>{slide.eyebrow}</p>
+        <TitleTag className="hero__title" style={{ animationDelay: "200ms" }}>
           {slide.title} <em>{slide.titleAccent}</em>
         </TitleTag>
-        <p className="hero__sub">{slide.subtitle}</p>
-        <div className="hero__actions">
+        <p className="hero__sub" style={{ animationDelay: "350ms" }}>{slide.subtitle}</p>
+        <div className="hero__actions" style={{ animationDelay: "500ms" }}>
           <Link href={`/${locale}${slide.primaryCta.href}`} className="btn btn--gold-dark btn--lg">
             {slide.primaryCta.label}
           </Link>
