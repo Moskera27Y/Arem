@@ -162,7 +162,7 @@ export function Header() {
             <button type="button" className="icon-btn mobile-menu__close" aria-label={dict.a11y.closeMenu} onClick={() => setMenuOpen(false)}>
               <Icon name="close" size={22} />
             </button>
-            <Logo href={localePrefix} />
+            <Logo href={localePrefix} variant="light" />
             <nav aria-label="Menú móvil">
               {site.nav.map((link, i) => (
                 <ViewTransitionLink key={link.href} href={`${localePrefix}${link.href}`} className="mobile-menu__link">

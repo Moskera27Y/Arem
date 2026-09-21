@@ -135,10 +135,10 @@ export function Hero({ section, locale }: HeroProps) {
       </div>
       <div className="hero__brand-mark" data-animate={contentVisible ? "ready" : undefined}>
         <span className="hero__brand-letter" style={{ animationDelay: "0ms" }}>A</span>
-        <span className="hero__brand-letter" style={{ animationDelay: "100ms" }}>R</span>
-        <span className="hero__brand-letter" style={{ animationDelay: "200ms" }}>E</span>
-        <span className="hero__brand-letter" style={{ animationDelay: "300ms" }}>M</span>
-        <span className="hero__brand-word" style={{ animationDelay: "400ms" }}>WORLD</span>
+        <span className="hero__brand-letter" style={{ animationDelay: "120ms" }}>R</span>
+        <span className="hero__brand-letter" style={{ animationDelay: "240ms" }}>E</span>
+        <span className="hero__brand-letter" style={{ animationDelay: "360ms" }}>M</span>
+        <span className="hero__brand-word" style={{ animationDelay: "480ms" }}>WORLD</span>
       </div>
       <div key={`${index}-${cycle}`} className="hero__content" data-animate={contentVisible ? "ready" : undefined}>
         <p className="hero__eyebrow" data-hero-delay="600">{slide.eyebrow}</p>

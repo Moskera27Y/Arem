@@ -609,7 +609,8 @@ h4 {
 
 /* Brand logo sizing — preserved aspect ratio (760:240), no distortion. */
 .site-header .logo__img {
-  height: 56px; /* desktop header target — prominent branding */
+  height: 60px;
+  min-height: 60px;
 }
 
 .logo--light .logo__img {
@@ -790,6 +791,10 @@ h4 {
 
 .mobile-menu .logo {
   margin-bottom: 2rem;
+}
+.mobile-menu .logo__img {
+  height: 56px;
+  min-height: 56px;
 }
 
 .mobile-menu__link {
@@ -1130,13 +1135,13 @@ h4 {
 .hero__brand-mark {
   position: absolute;
   top: clamp(4rem, 6vw, 5.5rem);
-  right: var(--gutter);
+  right: clamp(4rem, 6vw, 5.5rem);
   z-index: 2;
   display: flex;
   align-items: center;
   gap: 0.3rem;
   opacity: 0;
-  transform: translateX(2rem);
+  transform: translateX(2rem) scale(0.9);
 }
 .hero__brand-mark[data-animate="ready"],
 .hero__content[data-animate="ready"] ~ .hero__nav {
@@ -1146,45 +1151,41 @@ h4 {
 .hero__brand-letter {
   display: inline-block;
   font-family: var(--font-serif);
-  font-size: clamp(2rem, 4.5vw, 3.2rem);
-  font-weight: 700;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
   font-style: italic;
   color: var(--gold-soft);
   line-height: 0.8;
   opacity: 0;
-  transform: translateY(1rem);
-  animation: hero-brand-in 0.7s var(--ease) both;
+  transform: translateY(2rem) rotateX(-30deg);
+  animation: hero-brand-in 1s var(--ease) both;
 }
-.hero__brand-letter:nth-child(1) { animation-delay: 0ms; }
-.hero__brand-letter:nth-child(2) { animation-delay: 100ms; }
-.hero__brand-letter:nth-child(3) { animation-delay: 200ms; }
-.hero__brand-letter:nth-child(4) { animation-delay: 300ms; }
 .hero__brand-word {
   display: inline-block;
-  font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+  font-size: clamp(0.8rem, 2vw, 1rem);
   font-weight: 500;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.4em;
   text-transform: uppercase;
   color: var(--paper);
   line-height: 1;
   opacity: 0;
   transform: translateX(-2rem);
-  animation: hero-brand-in 0.9s var(--ease) both;
-  animation-delay: 400ms;
+  animation: hero-brand-in 1.1s var(--ease) both;
+  text-shadow: 0 0 20px rgba(247, 241, 228, 0.5);
 }
 
 @keyframes hero-brand-in {
   0% {
     opacity: 0;
-    transform: translateY(1.2rem) scale(0.9);
+    transform: translateY(2.5rem) rotateX(-30deg) scale(0.8);
   }
-  70% {
+  55% {
     opacity: 1;
-    transform: translateY(-0.3rem) scale(1.04);
+    transform: translateY(-0.2rem) rotateX(5deg) scale(1.05);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0) rotateX(0) scale(1);
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1225,7 +1226,7 @@ h4 {
   position: relative;
   z-index: 1;
   width: 100%;
-  max-width: var(--container);
+  max-width: 680px;
   margin-inline: auto;
   padding: var(--gutter);
   padding-top: clamp(4rem, 8vw, 5.5rem);
@@ -1266,7 +1267,7 @@ h4 {
 }
 
 .hero__title {
-  font-size: clamp(2.2rem, 5.5vw, 4rem);
+  font-size: clamp(2.8rem, 6vw, 5.2rem);
   line-height: 1.02;
   letter-spacing: -0.02em;
   font-weight: 500;
@@ -5039,7 +5040,9 @@ body {
   }
 
   .site-header .logo__img {
-    height: 48px; /* mobile header target — larger for visibility */
+    height: 52px;
+    min-height: 52px;
+    width: auto;
   }
 
   .header-actions {
