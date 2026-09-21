@@ -82,11 +82,11 @@ const content: AboutContent = {
   cta: {
     title: L("Want to meet the hands?", "¿Quieres conocer a las manos?"),
     sub: L(
-      "Explore the collections, or the shop to see their work.",
-      "Explora las colecciones o la tienda para ver su trabajo.",
+      "Discover the collections, or the shop to see their work.",
+      "Descubre las colecciones o la tienda para ver su trabajo.",
     ),
-    collections: L("Explore collections", "Explorar colecciones"),
-    shop: L("Explore the shop", "Explorar la tienda"),
+    collections: L("See the collections", "Ver las colecciones"),
+    shop: L("Shop by craft", "Comprar por oficio"),
   },
 };
 

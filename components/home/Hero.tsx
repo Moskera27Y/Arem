@@ -120,8 +120,7 @@ export function Hero({ section, locale }: HeroProps) {
               alt={s.image.alt}
               priority={i === 0}
               sizes="100vw"
-              width={1920}
-              height={860}
+              className="hero__slide-img"
             />
           </div>
         ))}

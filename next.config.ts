@@ -47,8 +47,17 @@ const nextConfig: NextConfig = {
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
       {
+        // Ensure WebP images are served with correct content-type for older caches
+        source: "/images/:path*.webp",
+        headers: [{ key: "Content-Type", value: "image/webp" }],
+      },
+      {
         source: "/brand/:path*",
         headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+      {
+        source: "/brand/:path*.webp",
+        headers: [{ key: "Content-Type", value: "image/webp" }],
       },
     ];
   },

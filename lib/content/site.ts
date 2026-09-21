@@ -42,7 +42,7 @@ export const siteSeed: SiteSeed = {
     ),
     columns: [
       {
-        title: L("Explore", "Explorar"),
+        title: L("Shop & discover", "Tienda y descubrimiento"),
         links: [
           { label: L("Shop all", "Tienda completa"), href: "/shop" },
           { label: L("Collections", "Colecciones"), href: "/collections" },
