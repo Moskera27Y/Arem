@@ -20,6 +20,7 @@ import type { AdminProduct } from "@/lib/admin/types";
 import { useAdminStore } from "@/lib/admin/store";
 import { BiFields, ConfirmDialog, Field, PageHead, TagInput } from "@/components/admin/ui";
 import { CollectionPicker } from "@/components/admin/CollectionPicker";
+import { ImageUploadSlot } from "@/components/admin/ImageUploadSlot";
 import { Icon } from "@/components/ui/icons";
 
 const PLACEHOLDER_IMAGES = [
@@ -77,6 +78,17 @@ export function slugify(text: string): string {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 80) || "product";
+}
+
+/** Extract the Vercel Blob storage path from a public Blob URL (null if not Blob). */
+function blobStoragePath(url: string): string | null {
+  try {
+    const u = new URL(url.trim());
+    if (u.protocol !== "https:" || !u.hostname.endsWith(".public.blob.vercel-storage.com")) return null;
+    return u.pathname.replace(/^\//, "") || null;
+  } catch {
+    return null;
+  }
 }
 
 function fromSeed(seed: AdminProduct | undefined): FormValues {
@@ -220,6 +232,8 @@ export function ProductForm({ productId }: { productId?: string }) {
   const [values, setValues] = useState<FormValues>(() => fromSeed(existing));
   const [errors, setErrors] = useState<Errors>({});
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [loadedFor, setLoadedFor] = useState<string | null>(existing?.id ?? null);
 
   // The Admin store hydrates from localStorage after mount; once the record
@@ -257,12 +271,54 @@ export function ProductForm({ productId }: { productId?: string }) {
     return next;
   };
 
-  const handleSave = () => {
+  const handleSave = async () => {
+    if (saving) return;
     const next = validate();
     setErrors(next);
     if (Object.keys(next).length > 0) return;
-    upsertProduct(buildSeed(values, existing));
-    router.push("/admin/products");
+    const seed = buildSeed(values, existing);
+    upsertProduct(seed);
+    // Register Blob uploads in the Media library (DB) so product photos
+    // persist beyond the browser. Non-Blob URLs need no record.
+    setSaving(true);
+    setSaveError(null);
+    try {
+      let i = 0;
+      for (const raw of values.images) {
+        const src = raw.trim();
+        if (!src) continue;
+        const storagePath = blobStoragePath(src);
+        if (!storagePath) continue;
+        const res = await fetch("/api/media", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            key: `product-${seed.id}-img-${i}`,
+            url: src,
+            storage_path: storagePath,
+            type: "product",
+            usage: `Product · ${seed.name.en} · image ${i + 1}`,
+            alt_en: seed.name.en,
+            alt_es: seed.name.es,
+            entity_type: "product",
+            entity_id: seed.id,
+            sort_order: i,
+          }),
+        });
+        if (!res.ok) {
+          const d = (await res.json().catch(() => ({}))) as { error?: string };
+          throw new Error(d.error || "No se pudo registrar una foto en el Media library.");
+        }
+        i += 1;
+      }
+      router.push("/admin/products");
+    } catch (e) {
+      // The product itself is already saved locally; only the DB photo
+      // registry failed — stay so the user sees the honest error.
+      setSaveError(e instanceof Error ? e.message : "Error al guardar las fotos.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   const handleDelete = () => {
@@ -494,7 +550,7 @@ export function ProductForm({ productId }: { productId?: string }) {
 
         <section className="admin-form__section">
           <h2 className="admin-form__section-title">Images</h2>
-          <Field hint="Use a placeholder path from the list or any image URL.">
+          <Field hint="Pega una URL o sube un archivo desde tu PC o móvil (se guarda en Blob y queda registrado).">
             <datalist id="arem-placeholders">
               {PLACEHOLDER_IMAGES.map((src) => (
                 <option key={src} value={src} />
@@ -503,31 +559,16 @@ export function ProductForm({ productId }: { productId?: string }) {
           </Field>
           <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             {values.images.map((src, index) => (
-              <div className="image-slot" key={index}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img className="image-slot__preview" src={src || "/images/cat-textiles.svg"} alt="" />
-                <div className="image-slot__fields">
-                  <input
-                    className="input"
-                    list="arem-placeholders"
-                    value={src}
-                    onChange={(e) => {
-                      const next = [...values.images];
-                      next[index] = e.target.value;
-                      set("images", next);
-                    }}
-                    placeholder="/images/… or https://…"
-                  />
-                  <button
-                    type="button"
-                    className="btn btn--secondary btn--sm"
-                    style={{ alignSelf: "flex-start" }}
-                    onClick={() => set("images", values.images.filter((_, i) => i !== index))}
-                  >
-                    <Icon name="trash" size={13} /> Remove
-                  </button>
-                </div>
-              </div>
+              <ImageUploadSlot
+                key={index}
+                value={src}
+                onChange={(url) => {
+                  const next = [...values.images];
+                  next[index] = url;
+                  set("images", next);
+                }}
+                onRemove={() => set("images", values.images.filter((_, i) => i !== index))}
+              />
             ))}
             <button
               type="button"
@@ -541,8 +582,8 @@ export function ProductForm({ productId }: { productId?: string }) {
         </section>
 
         <div className="admin-form__actions">
-          <button type="button" className="btn btn--primary" onClick={handleSave}>
-            <Icon name="check" size={15} /> Save product
+          <button type="button" className="btn btn--primary" onClick={handleSave} disabled={saving}>
+            <Icon name="check" size={15} /> {saving ? "Guardando…" : "Save product"}
           </button>
           {existing && (
             <button type="button" className="btn btn--ghost-danger" onClick={() => setConfirmDelete(true)}>
@@ -550,6 +591,11 @@ export function ProductForm({ productId }: { productId?: string }) {
             </button>
           )}
         </div>
+        {saveError && (
+          <div className="admin-form__error-summary" role="alert" style={{ marginTop: "1rem" }}>
+            {saveError}
+          </div>
+        )}
       </div>
 
       <ConfirmDialog

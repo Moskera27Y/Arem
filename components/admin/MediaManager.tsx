@@ -6,7 +6,8 @@
  * refresh, devices and deployments; the storefront reads the same data.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import Link from "next/link";
 import { MEDIA_TYPES, type MediaType } from "@/lib/admin/types";
 import { ConfirmDialog, EmptyState, Field, PageHead } from "@/components/admin/ui";
 import { Icon } from "@/components/ui/icons";
@@ -41,6 +42,29 @@ const PLACEHOLDERS = [
 ];
 
 const typeLabel = (t: string) => MEDIA_TYPES.find((x) => x.id === t)?.label ?? t;
+
+/**
+ * Only categories + social photos are editable from the Media library.
+ * Hero and products are managed from their own sections; footer, logo,
+ * story and region assets are view-only here.
+ */
+const EDITABLE_TYPES: string[] = ["category", "social"];
+const isEditable = (t: string) => EDITABLE_TYPES.includes(t);
+
+function lockNotice(asset: MediaItem): ReactNode {
+  if (asset.type === "product") {
+    return (
+      <>
+        Esta imagen pertenece a un producto y es de solo lectura aquí. Edítala desde la{" "}
+        <Link href="/admin/products">sección Productos</Link>, donde puedes subir fotos desde tu PC o móvil.
+      </>
+    );
+  }
+  if (asset.type === "hero") {
+    return <>El hero no se modifica desde el Media library.</>;
+  }
+  return <>Este asset es de solo lectura en el Media library.</>;
+}
 
 function isValidSrc(value: string): boolean {
   const v = value.trim();
@@ -122,7 +146,7 @@ export function MediaManager() {
     <>
       <PageHead
         title="Media library"
-        sub="Imágenes persistentes (Neon + Vercel Blob). Los cambios se reflejan en la tienda al instante."
+        sub="Imágenes persistentes (Neon + Vercel Blob). Aquí solo se editan categorías y fotos sociales; hero y productos se gestionan en sus secciones."
         action={<span className="chip chip--published">{media.length} assets</span>}
       />
 
@@ -183,6 +207,7 @@ export function MediaManager() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={asset.url} alt={asset.alt_en ?? ""} loading="lazy" />
                 <span className="media-card__type">{typeLabel(asset.type)}</span>
+                {!isEditable(asset.type) && <span className="media-card__lock">Solo lectura</span>}
               </span>
               <span className="media-card__name">{asset.usage || asset.key}</span>
               <span className="media-card__meta">Alt: {asset.alt_en}</span>
@@ -238,6 +263,7 @@ function MediaEditModal({
   const [progress, setProgress] = useState(0);
   const [confirmReplace, setConfirmReplace] = useState(false);
   const fileRef = useRef<HTMLInputElement | null>(null);
+  const editable = isEditable(asset.type);
 
   const previewSrc = preview ?? draft.url;
   const replacing = draft.url !== asset.url;
@@ -343,6 +369,7 @@ function MediaEditModal({
               {saving && file && <p className="media-edit__note">Subiendo… {progress}%</p>}
             </div>
 
+            {editable ? (
             <div className="admin-form" style={{ gap: "1rem" }}>
               <Field label="URL de imagen / placeholder">
                 <datalist id="arem-media-placeholders">
@@ -387,6 +414,11 @@ function MediaEditModal({
                 </div>
               )}
             </div>
+            ) : (
+            <div className="admin-form" style={{ gap: "1rem" }}>
+              <p className="muted">{lockNotice(asset)}</p>
+            </div>
+            )}
           </div>
         </div>
 
@@ -394,12 +426,16 @@ function MediaEditModal({
           <button type="button" className="btn btn--secondary btn--sm" onClick={onClose}>
             Cancelar
           </button>
+          {editable && (
+            <>
           <button type="button" className="btn btn--ghost-danger btn--sm" onClick={onDeleteRequest}>
             <Icon name="trash" size={14} /> Eliminar
           </button>
           <button type="button" className="btn btn--primary btn--sm" onClick={save} disabled={saving}>
             <Icon name="check" size={15} /> {saving ? "Guardando…" : confirmReplace ? "Confirmar reemplazo" : "Guardar"}
           </button>
+            </>
+          )}
         </div>
       </div>
     </div>

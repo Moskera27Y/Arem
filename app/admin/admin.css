@@ -524,6 +524,21 @@
   gap: 0.5rem;
 }
 
+/* Upload progress bar (product image slots) */
+.upload-progress {
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--paper-deep);
+  border: 1px solid var(--line-soft);
+  overflow: hidden;
+}
+.upload-progress__bar {
+  height: 100%;
+  background: var(--gold-dark);
+  border-radius: 999px;
+  transition: width 0.2s ease;
+}
+
 /* Image picker datalist hint */
 .input-hint {
   font-size: 0.7rem;
@@ -816,6 +831,20 @@
   text-transform: uppercase;
   color: var(--paper);
   background: rgba(20, 16, 10, 0.72);
+  border-radius: var(--r-pill);
+}
+
+.media-card__lock {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: rgba(120, 90, 30, 0.85);
   border-radius: var(--r-pill);
 }
 
