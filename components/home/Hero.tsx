@@ -20,13 +20,24 @@ export function Hero({ section, locale }: HeroProps) {
   const mouseRef = useRef<{ x: number; y: number; near: boolean }>({ x: 0, y: 0, near: false });
   const logoPosRef = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
 
-  const label = useMemo(() => ({
-    eyebrow: "COLOMBIAN CRAFT FROM WORKSHOP TO WORLD",
-    title: "Colombia to wear.",
-    titleAccent: "To feel, to share.",
-    sub: "Each piece is hand-forged in our Bogotá atelier, where pre-collected metals meet traditional tooling. We work with reclaimed silver, ethically sourced stones, and gold-filled findings — built to last a lifetime.",
-    cta: locale === "es" ? "DESCUBRE LAS PIEZAS" : "DISCOVER THE CRAFTS",
-  }), [locale]);
+  const label = useMemo(() => {
+    if (locale === "es") {
+      return {
+        eyebrow: "ARTESANÍA COLOMBIANA DE TALLER PARA EL MUNDO",
+        title: "Colombia para vestir.",
+        titleAccent: "Para sentir, para compartir.",
+        sub: "Mochilas wayuu de La Guajira, cerámica de Ráquira, café del Eje Cafetero, tejidos de todo el país. Cada pieza nace en manos de artesanos colombianos y viaja para el mundo.",
+        cta: "DESCUBRE LAS PIEZAS",
+      };
+    }
+    return {
+      eyebrow: "COLOMBIAN CRAFT FROM WORKSHOP TO WORLD",
+      title: "Colombia to wear.",
+      titleAccent: "To feel, to share.",
+      sub: "From Wayuu mochilas of La Guajira to Ráquira clay, Eje Cafetero coffee and textiles from every region. Each piece is forged by Colombian hands, sent out for the world.",
+      cta: "DISCOVER THE CRAFTS",
+    };
+  }, [locale]);
 
   // — Reduced motion only —
   useEffect(() => {
@@ -98,9 +109,11 @@ export function Hero({ section, locale }: HeroProps) {
     if (!ctx) return;
     const W = canvas.width, H = canvas.height;
     const DPR = window.devicePixelRatio || 1;
+    const isMobile = W < 800 || /Mobi|Android/i.test(navigator.userAgent);
 
-    // Background stars — always visible
-    const P = 340;
+    // Adapt particle counts: fewer on mobile to keep 60fps
+    const P = isMobile ? 120 : 340;
+    const G = isMobile ? 40 : 90;
     const particles = Array.from({ length: P }, (_, i) => ({
       x: Math.random() * W,
       y: Math.random() * H,
@@ -113,7 +126,6 @@ export function Hero({ section, locale }: HeroProps) {
     }));
 
     // GOLD SWARM — premium particles that orbit and are attracted to the logo
-    const G = 90;
     const goldParticles = Array.from({ length: G }, (_, i) => ({
       x: Math.random() * W,
       y: Math.random() * H,

@@ -59,7 +59,7 @@ export function InstagramSection({ section, locale }: InstagramSectionProps) {
               </a>
             )}
             {!instaUrl && (
-              <p className="insta-empty-note">{es ? "Nuestro Instagram llega pronto." : "Our Instagram is coming soon."}</p>
+              <p className="insta-empty-note">{es ? "Pronto compartimos las historias detrás de cada pieza." : "Soon we'll share the stories behind each piece."}</p>
             )}
           </div>
           {instaUrl && (
@@ -76,33 +76,41 @@ export function InstagramSection({ section, locale }: InstagramSectionProps) {
         </div>
 
         <div className="insta-grid">
-          {section.tileImages.map((src, index) => {
-            const img = <ManagedImage src={src} alt={`Instagram ${handle} — post ${index + 1}`} />;
-            const tile = instaUrl && tileHref ? (
-              <a
-                key={src}
-                href={tileHref}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="insta-tile"
-                aria-label={`Instagram post ${index + 1} of ${handle}`}
-              >
-                {img}
-                <span className="insta-tile__overlay">
-                  <Icon name="instagram" size={16} />
-                </span>
-              </a>
-            ) : (
-              <div key={src} className="insta-tile is-static">
-                {img}
-              </div>
-            );
-            return (
-              <Reveal key={src} delay={Math.min(index, 5) * 60}>
-                {tile}
-              </Reveal>
-            );
-          })}
+          {!instaUrl ? (
+            <p className="insta-empty-note insta-empty-note--block">
+              {es
+                ? "Conecta con nosotros en Instagram @arem.world para ver el proceso artesanal detrás de cada pieza. Pronto compartimos el feed."
+                : "Connect with us on Instagram @arem.world to see the craft process behind each piece. Feed coming soon."}
+            </p>
+          ) : (
+            section.tileImages.map((src, index) => {
+              const img = <ManagedImage src={src} alt={`Instagram ${handle} — post ${index + 1}`} />;
+              const tile = instaUrl && tileHref ? (
+                <a
+                  key={src}
+                  href={tileHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="insta-tile"
+                  aria-label={`Instagram post ${index + 1} of ${handle}`}
+                >
+                  {img}
+                  <span className="insta-tile__overlay">
+                    <Icon name="instagram" size={16} />
+                  </span>
+                </a>
+              ) : (
+                <div key={src} className="insta-tile is-static">
+                  {img}
+                </div>
+              );
+              return (
+                <Reveal key={src} delay={Math.min(index, 5) * 60}>
+                  {tile}
+                </Reveal>
+              );
+            })
+          )}
         </div>
       </div>
     </section>

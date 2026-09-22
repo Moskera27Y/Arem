@@ -1,15 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getActiveProducts, getCategories, getCategoryBySlug } from "@/lib/content";
+import { getActiveProducts, getCategories, getCategoryBySlug, getRegions } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { isLocale, type Locale } from "@/lib/i18n/config";
-import { ShopFilters, type ShopFilterCategory } from "@/components/shop/ShopFilters";
+import { ShopFilters, type ShopFilterCategory, type ShopFilterRegion } from "@/components/shop/ShopFilters";
 import { ShopGrid } from "@/components/shop/ShopGrid";
 
 interface ShopPageProps {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ category?: string; sort?: string; q?: string; sale?: string }>;
+  searchParams: Promise<{ category?: string; sort?: string; q?: string; sale?: string; region?: string }>;
 }
 
 export async function generateMetadata({ params }: ShopPageProps): Promise<Metadata> {
@@ -32,12 +32,13 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
   const { locale: raw } = await params;
   if (!isLocale(raw)) notFound();
   const locale = raw as Locale;
-  const { category: categorySlug, sort: sortParam, q: qParam, sale: saleParam } = await searchParams;
+  const { category: categorySlug, sort: sortParam, q: qParam, sale: saleParam, region: regionParam } = await searchParams;
 
   const dict = getDictionary(locale);
   const localePrefix = `/${locale}`;
 
   const activeSlug = categorySlug && getCategoryBySlug(locale, categorySlug) ? categorySlug : null;
+  const activeRegion = regionParam && getRegions(locale).find((r) => r.slug === regionParam) ? regionParam : null;
   const sort = sortParam ?? "featured";
   const query = (qParam ?? "").trim().slice(0, 80);
   const saleOnly = saleParam === "1";
@@ -54,7 +55,13 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
     ? byQuery.filter((p) => p.compareAtPrice && p.compareAtPrice.amount > p.price.amount)
     : byQuery;
 
-  const sorted = [...visible];
+  // Region filter (territory of origin)
+  const regionList = getRegions(locale);
+  const visibleByRegion = activeRegion
+    ? visible.filter((p) => p.regionId === regionList.find((r) => r.slug === activeRegion)?.id)
+    : visible;
+
+  const sorted = [...visibleByRegion];
   switch (sort) {
     case "price-asc":
       sorted.sort((a, b) => a.price.amount - b.price.amount);
@@ -76,6 +83,12 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
   }));
 
   const activeCategory = activeSlug ? getCategoryBySlug(locale, activeSlug) : null;
+
+  const filterRegions: ShopFilterRegion[] = regionList.map((region) => ({
+    slug: region.slug,
+    name: region.name,
+    count: all.filter((p) => p.regionId === region.id).length,
+  }));
 
   return (
     <div className="shop-page">
@@ -101,7 +114,9 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
           <div className="shop-layout">
             <ShopFilters
               categories={filterCategories}
+              regions={filterRegions}
               activeSlug={activeSlug}
+              activeRegion={activeRegion}
               sort={sort}
               query={query}
               saleOnly={saleOnly}

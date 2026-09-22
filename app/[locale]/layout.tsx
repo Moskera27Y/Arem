@@ -13,6 +13,7 @@ import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/layout/CartDrawer";
+import { CookieBanner } from "@/components/ui/CookieBanner";
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -75,6 +76,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
           <main id="main">{children}</main>
           <Footer locale={locale} />
           <CartDrawer />
+          <CookieBanner />
           <Toaster />
         </AdminProvider>
       </StoreProvider>

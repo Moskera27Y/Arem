@@ -113,6 +113,9 @@ export interface Dictionary {
     topicOther: string;
     send: string;
     success: string;
+    consent: string;
+    consentRequired: string;
+    consentPrivacy: string;
   };
   contact: {
     eyebrow: string;
@@ -359,6 +362,9 @@ const en: Dictionary = {
     topicOther: "Other",
     send: "Send message",
     success: "Message sent. We'll reply within 24 business hours.",
+    consent: "I agree to the processing of my data to respond to this inquiry.",
+    consentRequired: "You must accept the privacy policy to send this message.",
+    consentPrivacy: "Privacy Policy",
   },
   contact: {
     eyebrow: "Let's talk",
@@ -605,6 +611,9 @@ const es: Dictionary = {
     topicOther: "Otro",
     send: "Enviar mensaje",
     success: "Mensaje enviado. Te responderemos en menos de 24 horas hábiles.",
+    consent: "Acepto el tratamiento de mis datos para responder esta consulta.",
+    consentRequired: "Debes aceptar la política de privacidad para enviar este mensaje.",
+    consentPrivacy: "Política de privacidad",
   },
   contact: {
     eyebrow: "Hablemos",

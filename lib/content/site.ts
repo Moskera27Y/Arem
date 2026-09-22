@@ -61,17 +61,26 @@ export const siteSeed: SiteSeed = {
       {
         title: L("Help", "Ayuda"),
         links: [
-          { label: L("Shipping & returns", "Envíos y devoluciones"), href: "/contact" },
+          { label: L("Shipping & returns", "Envíos y devoluciones"), href: "/refunds" },
           { label: L("Track your order", "Rastrea tu pedido"), href: "/tracking" },
           { label: L("FAQ", "Preguntas frecuentes"), href: "/contact" },
-          { label: L("Privacy", "Privacidad"), href: "/about" },
+          { label: L("Privacy", "Privacidad"), href: "/privacy" },
+        ],
+      },
+      {
+        title: L("Legal", "Legal"),
+        links: [
+          { label: L("Privacy Policy", "Política de Privacidad"), href: "/privacy" },
+          { label: L("Terms & Conditions", "Términos y Condiciones"), href: "/terms" },
+          { label: L("Cookie Policy", "Política de Cookies"), href: "/cookies" },
+          { label: L("Refund Policy", "Política de Reembolsos"), href: "/refunds" },
         ],
       },
     ],
     contact: [
       { label: L("Email", "Correo"), value: L("hola@arem.world", "hola@arem.world") },
-      { label: L("WhatsApp", "WhatsApp"), value: L("+57 300 123 4567", "+57 300 123 4567") },
-      { label: L("Bogotá · Colombia", "Bogotá · Colombia"), value: L("Carrera 7 # 45-12", "Carrera 7 # 45-12") },
+      { label: L("WhatsApp", "WhatsApp"), value: L("+57 302 747 2998", "+57 302 747 2998") },
+      { label: L("Bogotá · Colombia", "Bogotá · Colombia"), value: L("Carrera 7 # 45-12, Bogotá, Colombia", "Carrera 7 # 45-12, Bogotá, Colombia") },
     ],
     socials: [],
     bottom: L(

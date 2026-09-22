@@ -14,9 +14,17 @@ export interface ShopFilterCategory {
   count: number;
 }
 
+export interface ShopFilterRegion {
+  slug: string;
+  name: string;
+  count: number;
+}
+
 interface ShopFiltersProps {
   categories: ShopFilterCategory[];
+  regions: ShopFilterRegion[];
   activeSlug: string | null;
+  activeRegion: string | null;
   sort: string;
   query: string;
   saleOnly: boolean;
@@ -24,7 +32,7 @@ interface ShopFiltersProps {
 }
 
 /** Filter sidebar + search + sort. All state lives in the URL (shareable). */
-export function ShopFilters({ categories, activeSlug, sort, query, saleOnly, localePrefix }: ShopFiltersProps) {
+export function ShopFilters({ categories, regions, activeSlug, activeRegion, sort, query, saleOnly, localePrefix }: ShopFiltersProps) {
   const router = useRouter();
   const locale = useLocale();
   const dict = getDictionary(locale);
@@ -52,9 +60,10 @@ export function ShopFilters({ categories, activeSlug, sort, query, saleOnly, loc
     return merged;
   }, [categories, adminCategories, hydrated, locale]);
 
-  const hrefFor = (slug: string | null, nextSort: string, nextQuery: string = query) => {
+  const hrefFor = (slug: string | null, nextSort: string, nextQuery: string = query, nextRegion: string | null = activeRegion) => {
     const params = new URLSearchParams();
     if (slug) params.set("category", slug);
+    if (nextRegion) params.set("region", nextRegion);
     if (nextSort !== "featured") params.set("sort", nextSort);
     if (nextQuery.trim()) params.set("q", nextQuery.trim());
     if (saleOnly) params.set("sale", "1");
@@ -141,6 +150,39 @@ export function ShopFilters({ categories, activeSlug, sort, query, saleOnly, loc
             ))}
           </ul>
         </div>
+        {regions.length > 0 && (
+          <div className="filter-group">
+            <h2 className="filter-group__title">
+              {locale === "es" ? "Región / Territorio" : "Region / Territory"}
+            </h2>
+            <ul className="filter-list">
+              <li>
+                <Link
+                  href={hrefFor(null, sort, query, null)}
+                  className="filter-item"
+                  data-active={activeRegion === null}
+                >
+                  <span>{locale === "es" ? "Todas las regiones" : "All regions"}</span>
+                  <span className="filter-item__count">
+                    {regions.reduce((sum, r) => sum + r.count, 0)}
+                  </span>
+                </Link>
+              </li>
+              {regions.map((region) => (
+                <li key={region.slug}>
+                  <Link
+                    href={hrefFor(activeSlug, sort, query, region.slug)}
+                    className="filter-item"
+                    data-active={activeRegion === region.slug}
+                  >
+                    <span>{region.name}</span>
+                    <span className="filter-item__count">{region.count}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
         <button
           type="button"
           className="btn btn--primary btn--block filters-close"

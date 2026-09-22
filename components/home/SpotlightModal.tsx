@@ -99,7 +99,7 @@ export function SpotlightModal({ product, locale }: SpotlightModalProps) {
             aria-hidden="true"
             className="spot__media"
           >
-            <ManagedImage src={image.src} alt="" sizes="(max-width: 640px) 100vw, 320px" width={640} height={760} />
+            <ManagedImage src={image.src} alt={product.name} sizes="(max-width: 640px) 100vw, 320px" width={640} height={760} />
           </Link>
         )}
         <div className="spot__body">

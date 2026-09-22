@@ -29,7 +29,15 @@ const nextConfig: NextConfig = {
           {
             key: "Content-Security-Policy",
             value:
-              "frame-ancestors 'self' https://cm-portfolio-beige.vercel.app https://cm-portfolio-cristians-projects-5a37e367.vercel.app",
+              "default-src 'self'; " +
+              "script-src 'self'; " +
+              "style-src 'self' 'unsafe-inline'; " +
+              "img-src 'self' data: https://*.public.blob.vercel-storage.com https:; " +
+              "font-src 'self' data:; " +
+              "connect-src 'self' https://api.resend.com https://api.square.co https://*.public.blob.vercel-storage.com; " +
+              "frame-ancestors 'self' https://cm-portfolio-beige.vercel.app https://cm-portfolio-cristians-projects-5a37e367.vercel.app; " +
+              "base-uri 'self'; " +
+              "form-action 'self'",
           },
           {
             key: "Permissions-Policy",

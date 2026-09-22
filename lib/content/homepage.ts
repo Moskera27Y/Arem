@@ -118,8 +118,8 @@ const seed: HomepageSeed = {
       title: L("Colombia to wear.", "Colombia que se lleva."),
       titleAccent: L("To feel, to share.", "A sentir, a compartir."),
       subtitle: L(
-        "Handmade objects from the workshops of twelve artisans across five regions — each piece carrying the weight of a place and a craft.",
-        "Objetos hechos a mano desde los talleres de doce artesanos en cinco regiones — cada pieza con el peso de un lugar y un oficio.",
+        "Handmade objects from the workshops of seven artisans across five regions — each piece carrying the weight of a place and a craft.",
+        "Objetos hechos a mano desde los talleres de siete artesanos en cinco regiones — cada pieza con el peso de un lugar y un oficio.",
       ),
       primaryCta: { label: L("Discover the crafts", "Descubre los oficios"), href: "/shop" },
       secondaryCta: { label: L("Our story", "Nuestra historia"), href: "/about" },

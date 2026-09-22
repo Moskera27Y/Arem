@@ -87,7 +87,7 @@ export function QuickView({ product, locale, onClose }: QuickViewProps) {
                 aria-hidden="true"
                 className="qv__media"
               >
-                <ManagedImage src={image.src} alt="" sizes="(max-width: 640px) 100vw, 380px" width={760} height={900} />
+                <ManagedImage src={image.src} alt={product.name} sizes="(max-width: 640px) 100vw, 380px" width={760} height={900} />
               </Link>
             )}
             <div className="qv__body">

@@ -787,10 +787,9 @@ h4 {
   position: fixed;
   inset: 0;
   z-index: 90;
-  background: color-mix(in srgb, var(--bg) 96%, transparent);
   background: #faf7f0;
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
   border-left: 1px solid var(--line);
   padding: calc(var(--header-h) + 1rem) var(--gutter) 2rem;
   overflow-y: auto;
@@ -801,7 +800,10 @@ h4 {
   padding-left: calc(var(--gutter) + env(safe-area-inset-left));
   padding-right: calc(var(--gutter) + env(safe-area-inset-right));
   padding-bottom: calc(2rem + env(safe-area-inset-bottom));
-  color: var(--ink);
+  /* Force text colors dark on the solid cream background — fixes Safari blur halo bug */
+  color: var(--ink) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .mobile-menu__close {
@@ -2261,7 +2263,15 @@ h4 {
 }
 .insta-handle:hover { text-decoration: underline; text-underline-offset: 3px; }
 .insta-follow { white-space: nowrap; }
-.insta-empty-note { margin-top: 0.75rem; font-size: var(--text-sm, 14px); color: #6b645a; }
+.insta-empty-note { margin-top: 0.75rem; font-size: var(--text-sm, 14px); color: var(--muted); }
+.insta-empty-note--block {
+  margin: 0 auto;
+  max-width: 560px;
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--muted);
+  line-height: 1.7;
+}
 .insta-tile.is-static { cursor: default; }
 
 .insta-tile {
@@ -4205,6 +4215,176 @@ body {
 .cat-row,
 .products-row {
   scroll-padding-inline: var(--gutter);
+}
+
+/* ============================== LEGAL PAGES ============================== */
+.legal {
+  padding: clamp(3rem, 9vw, 5rem) 0 2rem;
+  max-width: 780px;
+  margin: 0 auto;
+}
+.legal__section {
+  margin-bottom: 2.25rem;
+}
+.legal__title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.1rem, 3vw, 1.25rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+}
+.legal__para {
+  font-size: var(--text-sm);
+  line-height: 1.8;
+  color: var(--ink-2);
+  margin-bottom: 0.7rem;
+}
+.legal__meta {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+.legal__updated {
+  font-size: var(--text-xs);
+  color: var(--muted);
+}
+.legal__email {
+  color: var(--gold);
+  font-weight: 600;
+  text-decoration: underline;
+}
+.legal__email:hover {
+  color: var(--clay-deep);
+}
+
+/* Form consent checkbox */
+.field__label--checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  cursor: pointer;
+  font-size: var(--text-sm);
+  line-height: 1.6;
+  color: var(--ink-2);
+}
+.field__checkbox-label {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+.field__link {
+  color: var(--gold);
+  text-decoration: underline;
+  font-weight: 600;
+}
+.field__link:hover {
+  color: var(--clay-deep);
+}
+.field__error {
+  display: none;
+  font-size: var(--text-xs);
+  color: var(--clay-deep);
+  margin-top: 0.25rem;
+}
+input.checkbox:invalid:not(:placeholder-shown) ~ .field__error,
+input:invalid[type="checkbox"]:not(:placeholder-shown) + .field__error,
+.checkbox:required:invalid ~ .field__error {
+  display: block;
+}
+input.checkbox {
+  margin-top: 0.15rem;
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
+/* Newsletter consent checkbox — compact */
+.newsletter-consent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--text-xs);
+  color: var(--muted);
+  margin-top: 0.4rem;
+}
+.newsletter-consent .checkbox {
+  margin-top: 0;
+  width: 0.9rem;
+  height: 0.9rem;
+}
+
+/* ============================== COOKIE BANNER ============================== */
+.cookie-banner {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: 200;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: var(--bg);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-top: 1px solid var(--line);
+  padding: 1rem var(--gutter) calc(1rem + env(safe-area-inset-bottom));
+  font-size: var(--text-sm);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.06);
+}
+.cookie-banner--enter {
+  animation: slide-up 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.cookie-banner__text {
+  flex: 1;
+  min-width: 20rem;
+}
+.cookie-banner__link {
+  color: var(--gold);
+  text-decoration: underline;
+  font-weight: 600;
+}
+.cookie-banner__link:hover {
+  color: var(--clay-deep);
+}
+.cookie-banner__actions {
+  display: flex;
+  gap: 0.6rem;
+  flex: 0 0 auto;
+}
+.cookie-banner__btn {
+  min-width: 96px;
+}
+
+/* Cookie banner — mobile safe areas */
+@media (max-width: 640px) {
+  .cookie-banner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem var(--gutter) calc(1rem + env(safe-area-inset-bottom));
+  }
+  .cookie-banner__actions {
+    width: 100%;
+  }
+  .cookie-banner__btn {
+    flex: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 900px) {

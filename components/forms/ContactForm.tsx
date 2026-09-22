@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Link from "next/link";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { Icon } from "@/components/ui/icons";
@@ -79,6 +80,27 @@ export function ContactForm() {
           className="textarea"
           placeholder={dict.forms.messagePlaceholder}
         />
+      </div>
+      <div className="field form-grid--single">
+        <label className="field__label field__label--checkbox">
+          <input
+            type="checkbox"
+            name="consent"
+            required
+            className="checkbox"
+            defaultChecked={false}
+            aria-required="true"
+          />
+          <span className="field__checkbox-label">
+            {dict.forms.consent}{" "}
+            <Link href={`/${locale}/privacy`} className="field__link">
+              {dict.forms.consentPrivacy}
+            </Link>
+          </span>
+        </label>
+        <span className="field__error" aria-live="polite">
+          {dict.forms.consentRequired}
+        </span>
       </div>
       <div className="form-grid--single">
         <button type="submit" className="btn btn--primary btn--lg">
