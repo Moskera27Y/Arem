@@ -2753,6 +2753,13 @@ h4 {
   border: 1px solid rgba(89, 100, 63, 0.3);
 }
 
+.form-status--error,
+.form-status--err {
+  background: rgba(154, 59, 40, 0.1);
+  color: var(--clay-deep);
+  border: 1px solid rgba(154, 59, 40, 0.35);
+}
+
 /* ---------------------------- Page hero --------------------------- */
 
 .page-hero {

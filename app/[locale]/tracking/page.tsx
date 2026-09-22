@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 interface Ev {
@@ -11,7 +12,8 @@ interface Ev {
 
 export default function TrackingPage() {
   const locale = useLocale();
-  const es = locale === "es";
+  const dict = getDictionary(locale);
+  const t = dict.tracking;
   const [code, setCode] = useState("");
   const [state, setState] = useState<{ status: string; events: Ev[] } | null>(null);
   const [error, setError] = useState("");
@@ -28,7 +30,7 @@ export default function TrackingPage() {
       if (!res.ok) setError(d.error || "Error");
       else setState({ status: String(d.shipment?.status ?? ""), events: d.events ?? [] });
     } catch {
-      setError("Error de conexión");
+      setError(t.connectionError);
     } finally {
       setBusy(false);
     }
@@ -37,14 +39,14 @@ export default function TrackingPage() {
   return (
     <section className="section">
       <div className="container" style={{ maxWidth: "34rem" }}>
-        <h1 className="h2">{es ? "Rastrea tu pedido" : "Track your order"}</h1>
-        <p className="muted">{es ? "Ingresa tu número de guía (ej. AREM-XXXXXXXX)." : "Enter your tracking number (e.g. AREM-XXXXXXXX)."}</p>
+        <h1 className="h2">{t.title}</h1>
+        <p className="muted">{t.sub}</p>
         <form onSubmit={submit} className="acc-field">
-          <label htmlFor="trk">{es ? "Número de guía" : "Tracking number"}</label>
+          <label htmlFor="trk">{t.label}</label>
           <div style={{ display: "flex", gap: "0.5rem" }}>
             <input id="trk" className="acc-input" value={code} onChange={(e) => setCode(e.target.value)} required />
             <button type="submit" className="btn btn--primary" disabled={busy}>
-              {busy ? "…" : es ? "Rastrear" : "Track"}
+              {busy ? "…" : t.track}
             </button>
           </div>
         </form>

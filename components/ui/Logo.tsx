@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocale } from "@/lib/i18n/locale-context";
 
 interface LogoProps {
   /**
@@ -19,12 +21,13 @@ interface LogoProps {
  * Rendered with preserved aspect ratio; sized by context via `.logo__img`.
  */
 export function Logo({ variant = "dark", href = "/" }: LogoProps) {
+  const dict = getDictionary(useLocale());
   return (
     <Link href={href} className={`logo${variant === "light" ? " logo--light" : ""}`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/brand/arem-world-logo.svg"
-        alt="AREM WORLD — Colombian craftmanship"
+        alt={dict.a11y.logoAlt}
         className="logo__img"
         width={760}
         height={240}

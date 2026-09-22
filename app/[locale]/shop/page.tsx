@@ -94,7 +94,7 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
     <div className="shop-page">
       <section className="page-hero">
         <div className="container">
-          <nav className="breadcrumbs" aria-label="Breadcrumbs">
+          <nav className="breadcrumbs" aria-label={dict.a11y.breadcrumbs}>
             <Link href={localePrefix}>{dict.common.home}</Link>
             <span className="breadcrumbs__sep">/</span>
             <span>{dict.nav.shop}</span>

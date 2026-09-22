@@ -142,7 +142,7 @@ export function BestSellers({ section, products, locale }: BestSellersProps) {
 
           <div key={`${product.id}-${cycle}`} className="best__body">
             <p className="eyebrow best__kicker">
-              {locale === "es" ? `Nº ${pad(index)} más vendida` : `Nº ${pad(index)} best seller`}
+              {dict.home.bestSeller(pad(index))}
             </p>
             <h3 className="best__name">
               <Link href={`/${locale}/products/${product.slug}`}>{product.name}</Link>
@@ -156,7 +156,7 @@ export function BestSellers({ section, products, locale }: BestSellersProps) {
             </p>
             <div className="best__ctas">
               <Link href={`/${locale}/products/${product.slug}`} className="btn btn--primary">
-                {locale === "es" ? "Conoce la pieza" : "View piece"} <Icon name="arrow-right" size={14} />
+                {dict.home.viewPiece} <Icon name="arrow-right" size={14} />
               </Link>
             </div>
             <div className="best__nav">
@@ -164,7 +164,7 @@ export function BestSellers({ section, products, locale }: BestSellersProps) {
                 <button
                   type="button"
                   className="icon-action"
-                  aria-label={locale === "es" ? "Anterior" : "Previous"}
+                  aria-label={dict.a11y.prev}
                   onClick={() => go(index - 1)}
                 >
                   <Icon name="chevron-down" size={16} style={{ transform: "rotate(90deg)" }} />
@@ -172,7 +172,7 @@ export function BestSellers({ section, products, locale }: BestSellersProps) {
                 <button
                   type="button"
                   className="icon-action"
-                  aria-label={locale === "es" ? "Siguiente" : "Next"}
+                  aria-label={dict.a11y.next}
                   onClick={() => go(index + 1)}
                 >
                   <Icon name="chevron-down" size={16} style={{ transform: "rotate(-90deg)" }} />

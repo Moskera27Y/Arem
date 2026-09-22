@@ -34,17 +34,13 @@ export default function LocaleError({
           {dict.notFound.code}
         </p>
         <h1 className="display" style={{ marginTop: "1rem" }}>
-          {locale === "es"
-            ? "Algo salió mal"
-            : "Something went wrong"}
+          {dict.error.title}
         </h1>
         <p
           className="muted"
           style={{ maxWidth: "32rem", margin: "1.25rem auto 2rem" }}
         >
-          {locale === "es"
-            ? "No pudimos cargar esta página. Inténtalo de nuevo o vuelve al inicio."
-            : "We couldn't load this page. Give it another shot or head back home."}
+          {dict.error.sub}
         </p>
         <div
           style={{
@@ -61,9 +57,9 @@ export default function LocaleError({
             type="button"
             className="btn btn--secondary"
             onClick={() => window.location.reload()}
-            aria-label={locale === "es" ? "Recargar página" : "Reload page"}
+            aria-label={dict.error.reloadPage}
           >
-            {locale === "es" ? "Recargar" : "Reload"}
+            {dict.error.reload}
           </button>
         </div>
       </div>

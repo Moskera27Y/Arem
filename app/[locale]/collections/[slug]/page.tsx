@@ -44,7 +44,7 @@ export default async function CollectionPage({ params }: { params: Promise<Param
     <>
       <section className="section section--flush-top">
         <div className="container">
-          <nav className="breadcrumbs" aria-label="Breadcrumbs" style={{ marginBottom: "2rem" }}>
+          <nav className="breadcrumbs" aria-label={dict.a11y.breadcrumbs} style={{ marginBottom: "2rem" }}>
             <Link href={prefix}>{dict.common.home}</Link>
             <span className="breadcrumbs__sep">/</span>
             <Link href={`${prefix}/collections`}>{dict.nav.collections}</Link>

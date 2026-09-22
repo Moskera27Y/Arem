@@ -19,9 +19,7 @@ export function InstagramSection({ section, locale }: InstagramSectionProps) {
   const insta = instagramOf(links);
   const instaUrl = insta ? hrefFor("instagram", insta.value) : null;
   const handle = insta?.label || section.handle || "Instagram";
-  const es = locale === "es";
-  const followLabel = es ? "Seguir en Instagram" : "Follow on Instagram";
-  const ctaAria = es ? `Seguir a ${handle} en Instagram` : `Follow ${handle} on Instagram`;
+  const s = dict.social;
   // When a specific post URL is configured, tiles use it (https-only, enforced
   // server-side); otherwise the main URL.
   const tileHref = insta?.post_url && /^https:\/\//i.test(insta.post_url) ? insta.post_url : instaUrl;
@@ -59,7 +57,7 @@ export function InstagramSection({ section, locale }: InstagramSectionProps) {
               </a>
             )}
             {!instaUrl && (
-              <p className="insta-empty-note">{es ? "Pronto compartimos las historias detrás de cada pieza." : "Soon we'll share the stories behind each piece."}</p>
+              <p className="insta-empty-note">{s.emptySearch}</p>
             )}
           </div>
           {instaUrl && (
@@ -68,9 +66,9 @@ export function InstagramSection({ section, locale }: InstagramSectionProps) {
               target="_blank"
               rel="noopener noreferrer"
               className="btn btn--primary btn--sm insta-follow"
-              aria-label={ctaAria}
+              aria-label={s.followAria(handle)}
             >
-              <Icon name="instagram" size={15} /> {followLabel}
+              <Icon name="instagram" size={15} /> {s.followLabel}
             </a>
           )}
         </div>
@@ -78,13 +76,15 @@ export function InstagramSection({ section, locale }: InstagramSectionProps) {
         <div className="insta-grid">
           {!instaUrl ? (
             <p className="insta-empty-note insta-empty-note--block">
-              {es
-                ? "Conecta con nosotros en Instagram @arem.world para ver el proceso artesanal detrás de cada pieza. Pronto compartimos el feed."
-                : "Connect with us on Instagram @arem.world to see the craft process behind each piece. Feed coming soon."}
+              {s.feedNote}{" "}
+              <a href="https://instagram.com/arem.world" target="_blank" rel="noopener noreferrer">
+                @arem.world
+              </a>
             </p>
           ) : (
             section.tileImages.map((src, index) => {
-              const img = <ManagedImage src={src} alt={`Instagram ${handle} — post ${index + 1}`} />;
+              const tileLabel = s.openProfile(handle);
+              const img = <ManagedImage src={src} alt={`Instagram ${handle}`} />;
               const tile = instaUrl && tileHref ? (
                 <a
                   key={src}
@@ -92,7 +92,7 @@ export function InstagramSection({ section, locale }: InstagramSectionProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="insta-tile"
-                  aria-label={`Instagram post ${index + 1} of ${handle}`}
+                  aria-label={tileLabel}
                 >
                   {img}
                   <span className="insta-tile__overlay">

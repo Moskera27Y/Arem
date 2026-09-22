@@ -5,6 +5,7 @@ import Link from "next/link";
 import { AnimatePresence, m, useReducedMotion } from "motion/react";
 import type { Product } from "@/lib/content";
 import type { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useCurrency } from "@/lib/currency/currency-context";
 import { ManagedImage } from "@/components/ui/ManagedImage";
 import { Icon } from "@/components/ui/icons";
@@ -64,7 +65,7 @@ export function SpotlightModal({ product, locale }: SpotlightModalProps) {
 
   if (!product) return null;
   const image = product.images[0];
-  const es = locale === "es";
+  const dict = getDictionary(locale).spotlight;
 
   return (
     <AnimatePresence>
@@ -73,7 +74,7 @@ export function SpotlightModal({ product, locale }: SpotlightModalProps) {
           className="spot spot--glass"
           role="dialog"
           aria-modal="true"
-          aria-label={es ? "Producto estrella de la semana" : "Star product of the week"}
+          aria-label={dict.title}
           onClick={(e) => {
             if (e.target === e.currentTarget) dismiss();
           }}
@@ -88,7 +89,7 @@ export function SpotlightModal({ product, locale }: SpotlightModalProps) {
             exit={reduceMotion ? undefined : { opacity: 0, y: 24, scale: 0.98, transition: { duration: 0.2 } }}
             transition={{ type: "spring", stiffness: 320, damping: 30 }}
           >
-        <button type="button" className="spot__close" aria-label={es ? "Cerrar" : "Close"} onClick={dismiss}>
+        <button type="button" className="spot__close" aria-label={dict.close} onClick={dismiss}>
           <Icon name="close" size={18} />
         </button>
         {image && (
@@ -104,7 +105,7 @@ export function SpotlightModal({ product, locale }: SpotlightModalProps) {
         )}
         <div className="spot__body">
           <p className="eyebrow spot__kicker">
-            {es ? "Estrella de la semana" : "Star of the week"}
+            {dict.kicker}
           </p>
           <h2 className="spot__name">{product.name}</h2>
           <p className="spot__price">
@@ -119,10 +120,10 @@ export function SpotlightModal({ product, locale }: SpotlightModalProps) {
               onClick={dismiss}
               className="btn btn--primary btn--block"
             >
-              {es ? "Conoce la pieza" : "View piece"} <Icon name="arrow-right" size={14} />
+              {dict.viewPiece} <Icon name="arrow-right" size={14} />
             </Link>
             <button type="button" className="spot__later" onClick={dismiss}>
-              {es ? "No, gracias" : "No thanks"}
+              {dict.later}
             </button>
           </div>
         </div>

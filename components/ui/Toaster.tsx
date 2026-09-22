@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, m, useReducedMotion } from "motion/react";
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocale } from "@/lib/i18n/locale-context";
 import { useCart } from "@/lib/store/cart-context";
 import { Icon } from "@/components/ui/icons";
 
@@ -30,6 +32,7 @@ interface ToastItem extends ToastData {
 export function Toaster() {
   const [items, setItems] = useState<ToastItem[]>([]);
   const { openCart } = useCart();
+  const dict = getDictionary(useLocale());
   const reduceMotion = useReducedMotion() ?? false;
 
   const dismiss = useCallback((key: number) => {
@@ -69,11 +72,11 @@ export function Toaster() {
               {t.message && <p className="toast__message">{t.message}</p>}
               <div className="toast__actions">
                 <button type="button" className="toast__link" onClick={() => { dismiss(t.key); openCart(); }}>
-                  {t.actionLabel ?? "View cart"}
+                  {t.actionLabel ?? dict.a11y.viewCart}
                 </button>
               </div>
             </div>
-            <button type="button" className="toast__close" aria-label="Dismiss" onClick={() => dismiss(t.key)}>
+            <button type="button" className="toast__close" aria-label={dict.a11y.dismiss} onClick={() => dismiss(t.key)}>
               <Icon name="close" size={14} />
             </button>
           </m.div>

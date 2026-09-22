@@ -19,7 +19,6 @@ export function CartContent() {
   const freeShipping = useFreeShippingActive();
   const { lines, subtotal, setQuantity, remove, clear } = useCart();
   const { format, isEstimate } = useCurrency();
-  const es = locale === "es";
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => setMounted(true), []);
@@ -31,7 +30,7 @@ export function CartContent() {
           <EmptyState
             icon="bag"
             title={dict.cart.empty}
-            sub={es ? "Las piezas hechas a mano te están esperando." : "Handmade pieces are waiting for you."}
+            sub={dict.cart.emptySub}
             actionHref={`${localePrefix}/shop`}
             actionLabel={dict.nav.shop}
           />
@@ -120,21 +119,19 @@ export function CartContent() {
                 </div>
                 {isEstimate && (
                   <p className="currency-note">
-                    {locale === "es"
-                      ? "Conversión estimada. El pago final se cobra en USD."
-                      : "Estimated conversion. Final payment is charged in USD."}
+                    {dict.cart.estimatedNote}
                   </p>
                 )}
               </div>
               <div className="cart-summary__row cart-summary__row--total" style={{ marginTop: "0.75rem" }}>
-                <span>{locale === "es" ? "Total final (USD)" : "Final total (USD)"}</span>
+                <span>{dict.cart.finalTotal}</span>
                 <span>{formatCurrency(subtotal, "USD")}</span>
               </div>
               <Link href={`${localePrefix}/checkout`} className="btn btn--primary btn--block" style={{ marginTop: "1.5rem" }}>
-                {es ? "Finalizar compra" : "Checkout"}
+                {dict.cart.checkoutNow}
               </Link>
               <p className="muted" style={{ fontSize: "var(--text-xs)", textAlign: "center", marginTop: "0.9rem" }}>
-                {es ? "El pago se cobra en USD." : "Payment is charged in USD."}
+                {dict.cart.paymentNote}
               </p>
               <Link href={`${localePrefix}/shop`} className="btn btn--secondary btn--block" style={{ marginTop: "0.75rem" }}>
                 {dict.cart.keepShopping}

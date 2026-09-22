@@ -29,7 +29,7 @@ export default function ForgotPasswordPage() {
       if (data.ok) {
         setStatus({
           ok: true,
-          message: locale === "es" ? "Si existe una cuenta, recibirás un correo para restablecer la contraseña." : "If an account exists, you'll receive a password reset email.",
+          message: a.resetSent,
         });
       } else {
         setStatus({ ok: false, message: "Error" });
@@ -52,7 +52,7 @@ export default function ForgotPasswordPage() {
           <input id="fg-email" type="email" className="acc-input" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </div>
         <button type="submit" className="btn btn--primary" disabled={loading}>
-          {loading ? a.loading : locale === "es" ? "Enviar enlace" : "Send link"}
+          {loading ? a.loading : a.sendLink}
         </button>
       </form>
       <p className="auth-caret">

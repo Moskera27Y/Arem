@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
 
 interface LegalSection {
@@ -21,6 +22,7 @@ interface LegalPageProps {
  */
 export function LegalPage({ sections, lastUpdated }: LegalPageProps) {
   const locale = useLocale();
+  const dict = getDictionary(locale).legal;
 
   // Ensure the page scrolls to top on locale change
   useEffect(() => {
@@ -47,18 +49,14 @@ export function LegalPage({ sections, lastUpdated }: LegalPageProps) {
 
         <footer className="legal__meta">
           <p className="legal__updated">
-            {locale === "es"
-              ? `Última actualización: ${lastUpdated}`
-              : `Last updated: ${lastUpdated}`}
+            {dict.lastUpdated} {lastUpdated}
           </p>
           <p className="legal__contact">
-            {locale === "es"
-              ? "¿Preguntas? Escríbenos a "
-              : "Questions? Email "}{" "}
+            {dict.questions}{" "}
             <a
               href="mailto:hola@arem.world"
               className="legal__email"
-              aria-label={locale === "es" ? "Correo electrónico de contacto" : "Contact email"}
+              aria-label={dict.contactEmailAria}
             >
               hola@arem.world
             </a>

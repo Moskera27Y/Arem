@@ -56,10 +56,10 @@ export function ProductCard({ product, priority }: ProductCardProps) {
     btn.classList.add("is-added");
     setTimeout(() => btn.classList.remove("is-added"), 1200);
     toast({
-      title: locale === "es" ? "Agregado al carrito" : "Added to cart",
+      title: dict.product.addedToCart,
       message: merged.name,
       image: image?.src,
-      actionLabel: locale === "es" ? "Ver carrito" : "View cart",
+      actionLabel: dict.a11y.viewCart,
     });
   };
 
@@ -105,7 +105,7 @@ export function ProductCard({ product, priority }: ProductCardProps) {
           {comparePrice && <span className="price--was">{format(comparePrice.amount)}</span>}
         </div>
         {isEstimate && (
-          <p className="currency-note">{locale === "es" ? "Conversión estimada." : "Estimated conversion."}</p>
+          <p className="currency-note">{dict.product.estimatedShort}</p>
         )}
         {region && (
           <span className="product-card__origin">
@@ -125,7 +125,7 @@ export function ProductCard({ product, priority }: ProductCardProps) {
           <button
             type="button"
             className="icon-action"
-            aria-label={locale === "es" ? "Vista rápida" : "Quick view"}
+            aria-label={dict.a11y.quickView}
             onClick={() => setQuickView(true)}
           >
             <Icon name="eye" size={15} />

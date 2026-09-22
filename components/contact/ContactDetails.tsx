@@ -42,7 +42,7 @@ export function ContactDetails() {
     <>
       <section className="page-hero">
         <div className="container">
-          <nav className="breadcrumbs" aria-label="Breadcrumbs">
+          <nav className="breadcrumbs" aria-label={dict.a11y.breadcrumbs}>
             <Link href={prefix}>{dict.common.home}</Link>
             <span className="breadcrumbs__sep">/</span>
             <span>{dict.nav.contact}</span>
@@ -62,7 +62,7 @@ export function ContactDetails() {
               <div className="contact-list">
                 {email && <div className="contact-item"><span className="contact-item__label">Email</span><div className="contact-item__value">{email}</div></div>}
                 {whatsapp && <div className="contact-item"><span className="contact-item__label">WhatsApp</span><div className="contact-item__value">{whatsapp}</div></div>}
-                {addressParts.length > 0 && <div className="contact-item"><span className="contact-item__label">{locale === "es" ? "Dirección" : "Address"}</span><div className="contact-item__value">{addressParts.join(" · ")}</div></div>}
+                {addressParts.length > 0 && <div className="contact-item"><span className="contact-item__label">{dict.contact.addressLabel}</span><div className="contact-item__value">{addressParts.join(" · ")}</div></div>}
                 {hours && <div className="contact-item"><span className="contact-item__label">{dict.contact.hours}</span><div className="contact-item__value">{hours}</div></div>}
               </div>
             </div>

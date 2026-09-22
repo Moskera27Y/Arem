@@ -25,7 +25,7 @@ function ResetForm() {
     setLoading(true);
     setError("");
     if (password !== confirm) {
-      setError(locale === "es" ? "Las contraseñas no coinciden" : "Passwords don't match");
+      setError(a.passwordMismatch);
       setLoading(false);
       return;
     }
@@ -54,7 +54,7 @@ function ResetForm() {
     <AuthCard title={a.resetTitle} sub={a.resetSub}>
       {!token ? (
         <div className="acc-status acc-status--err">
-          {locale === "es" ? "No se encontró el token." : "No token found."}
+          {a.noToken}
         </div>
       ) : (
         <form onSubmit={submit}>

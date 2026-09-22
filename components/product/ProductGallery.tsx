@@ -108,7 +108,7 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
             <button
               type="button"
               className="gallery__nav gallery__nav--prev"
-              aria-label="Previous image"
+              aria-label={dict.a11y.prevImage}
               onClick={goPrev}
             >
               <Icon name="chevron-down" size={18} />
@@ -116,7 +116,7 @@ export function ProductGallery({ images, name }: ProductGalleryProps) {
             <button
               type="button"
               className="gallery__nav gallery__nav--next"
-              aria-label="Next image"
+              aria-label={dict.a11y.nextImage}
               onClick={goNext}
             >
               <Icon name="chevron-down" size={18} />

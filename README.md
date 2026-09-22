@@ -154,4 +154,9 @@ fully isolated.
 ## Out of scope (Phase 4+)
 
 Database (Prisma/Supabase), real authentication, checkout, Stripe/PayPal,
-orders, shipping/tracking, real photography, newsletter/contact backends.
+orders, shipping/tracking, real photography, newsletter ESP import.
+
+Contact (`/api/contact` → `contact_messages`) and newsletter capture
+(`/api/newsletter` → `newsletter_subscribers`) persist to Neon Postgres
+(`scripts/contact-schema.mjs`, `scripts/newsletter-schema.mjs`); Resend
+notification is best-effort when `RESEND_API_KEY` is set.

@@ -1,7 +1,13 @@
 /** Shop loading skeleton — search, chips, toolbar and product cards. */
+"use client";
+
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocale } from "@/lib/i18n/locale-context";
+
 export default function ShopLoading() {
+  const dict = getDictionary(useLocale());
   return (
-    <div aria-busy="true" aria-label="Cargando tienda">
+    <div aria-busy="true" aria-label={dict.account.loading}>
       <div className="page-hero">
         <div className="container">
           <div className="sk-line shimmer" style={{ width: "12rem" }} />

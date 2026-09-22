@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import type { HomeSection } from "@/lib/types";
 import { ARREM } from "@/components/ui/ARREM";
 
@@ -375,7 +376,7 @@ export function Hero({ section, locale }: HeroProps) {
     <section
       className="hero hero--luxury"
       data-animate={contentVisible ? "ready" : undefined}
-      aria-label="Colombian craft from workshop to world"
+      aria-label={getDictionary(locale).a11y.heroLabel}
     >
       {/* Reactive particle canvas — background layer */}
       <canvas

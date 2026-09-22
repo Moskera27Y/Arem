@@ -52,20 +52,18 @@ export function RecommendedProducts({
   // Contextual eyebrow text based on recommendation source
   const getEyebrow = (): string => {
     if (type === "similar") {
-      return locale === "es" ? "Piezas similares" : "Similar pieces";
+      return dict.recommendations.similar;
     }
     if (type === "category") {
-      return locale === "es" ? "Más de este oficio" : "From this craft";
+      return dict.recommendations.fromCraft;
     }
-    return locale === "es" ? "Piezas favoritas" : "Favourites";
+    return dict.recommendations.favorites;
   };
 
   if (error) {
     return (
       <p className="muted" style={{ fontSize: "0.875rem", padding: "1rem 0" }}>
-        {locale === "es"
-          ? "No se pudieron cargar las recomendaciones. Inténtalo más tarde."
-          : "Could not load recommendations. Try again later."}
+        {dict.recommendations.loadError}
       </p>
     );
   }

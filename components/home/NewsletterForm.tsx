@@ -25,15 +25,11 @@ export function NewsletterForm() {
       return;
     }
     if (!isValid(email)) {
-      setError(locale === "es" ? "Email inválido" : "Invalid email");
+      setError(dict.forms.invalidEmail);
       return;
     }
     if (!consent) {
-      setError(
-        locale === "es"
-          ? "Debes aceptar la política de privacidad."
-          : "You must accept the privacy policy.",
-      );
+      setError(dict.forms.newsletterConsentRequired);
       return;
     }
 
@@ -50,11 +46,7 @@ export function NewsletterForm() {
       setStatus("sent");
     } catch {
       setStatus("error");
-      setError(
-        locale === "es"
-          ? "Error al suscribirte. Intenta más tarde."
-          : "Could not subscribe. Try again later.",
-      );
+      setError(dict.forms.subscribeError);
     }
   };
 
@@ -92,11 +84,9 @@ export function NewsletterForm() {
           aria-required="true"
         />
         <span className="field__checkbox-label">
-          {locale === "es"
-            ? "Acepto la política de privacidad y recibir emails."
-            : "I accept the privacy policy and marketing emails."}{" "}
+          {dict.forms.newsletterConsent}{" "}
           <Link href={`/${locale}/privacy`} className="field__link">
-            {locale === "es" ? "Política de privacidad" : "Privacy Policy"}
+            {dict.forms.consentPrivacy}
           </Link>
         </span>
       </label>

@@ -40,6 +40,7 @@ export function AddressBook({ initial }: { initial: CustomerAddress[] }) {
   const [draft, setDraft] = useState<Draft>(EMPTY);
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null);
   const [status, setStatus] = useState<{ ok: boolean; message: string } | null>(null);
+  const [saving, setSaving] = useState(false);
 
   function openAdd() {
     setDraft({ ...EMPTY, is_default_shipping: list.length === 0, is_default_billing: list.length === 0 });
@@ -73,8 +74,9 @@ export function AddressBook({ initial }: { initial: CustomerAddress[] }) {
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
+    if (saving) return;
     if (!draft.recipient_name || !draft.line1 || !draft.city || !draft.country) {
-      setStatus({ ok: false, message: "Faltan campos" });
+      setStatus({ ok: false, message: a.requiredFields });
       return;
     }
     const payload = {
@@ -90,6 +92,7 @@ export function AddressBook({ initial }: { initial: CustomerAddress[] }) {
       is_default_billing: draft.is_default_billing,
     };
     try {
+      setSaving(true);
       const url = editing ? `/api/customer/addresses/${editing.id}` : "/api/customer/addresses";
       const res = await fetch(url, {
         method: editing ? "PUT" : "POST",
@@ -107,6 +110,8 @@ export function AddressBook({ initial }: { initial: CustomerAddress[] }) {
       }
     } catch {
       setStatus({ ok: false, message: "Error" });
+    } finally {
+      setSaving(false);
     }
   }
 
@@ -189,8 +194,10 @@ export function AddressBook({ initial }: { initial: CustomerAddress[] }) {
             {a.defaultBilling}
           </label>
           <div className="acc-form__actions">
-            <button type="submit" className="btn--primary">{editing ? a.save : a.add}</button>
-            <button type="button" className="acc-btn-secondary" onClick={close}>{a.cancel}</button>
+            <button type="submit" className="btn--primary" disabled={saving} aria-busy={saving}>
+              {saving ? a.saving : editing ? a.save : a.add}
+            </button>
+            <button type="button" className="acc-btn-secondary" onClick={close} disabled={saving}>{a.cancel}</button>
           </div>
         </form>
       )}

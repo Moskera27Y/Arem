@@ -67,7 +67,7 @@ export function ProductView({ product: staticProduct, slug }: ProductViewProps) 
 
   return (
     <>
-      <nav className="breadcrumbs" aria-label="Breadcrumbs" style={{ marginBottom: "2rem" }}>
+      <nav className="breadcrumbs" aria-label={dict.a11y.breadcrumbs} style={{ marginBottom: "2rem" }}>
         <Link href={localePrefix}>{dict.common.home}</Link>
         <span className="breadcrumbs__sep">/</span>
         <Link href={`${localePrefix}/shop`}>{dict.nav.shop}</Link>
@@ -87,14 +87,14 @@ export function ProductView({ product: staticProduct, slug }: ProductViewProps) 
         <div className="pdp__info">
           <div>
             <h1 className="pdp__title">{product.name}</h1>
-            <p className="pdp-rating" aria-label={locale === "es" ? "Sin reseñas todavía" : "No reviews yet"}>
+            <p className="pdp-rating" aria-label={dict.product.noReviews}>
               <span className="pdp-rating__stars" aria-hidden="true">
                 {[0, 1, 2, 3, 4].map((i) => (
                   <Icon key={i} name="star" size={13} />
                 ))}
               </span>
               <span className="pdp-rating__text">
-                {locale === "es" ? "Nuevo · Sé la primera reseña" : "New · Be the first to review"}
+                {dict.product.beFirstReview}
               </span>
             </p>
             <p className="pdp__tagline" style={{ marginTop: "0.6rem" }}>
@@ -109,7 +109,7 @@ export function ProductView({ product: staticProduct, slug }: ProductViewProps) 
             {percent !== null && !discount && <span className="badge badge--dark">-{percent}%</span>}
             {product.badge && !discount && <span className="badge badge--dark">{product.badge}</span>}
             {isEstimate && (
-              <p className="currency-note">{locale === "es" ? "Conversión estimada. El pago final se cobra en USD." : "Estimated conversion. Final payment is charged in USD."}</p>
+              <p className="currency-note">{dict.cart.estimatedNote}</p>
             )}
           </div>
 
@@ -173,14 +173,12 @@ export function ProductView({ product: staticProduct, slug }: ProductViewProps) 
           )}
 
           <details className="pdp-acc" name="pdp-info">
-            <summary>{locale === "es" ? "Envíos y devoluciones" : "Shipping & returns"}</summary>
+            <summary>{dict.product.shippingTitle}</summary>
             <div className="pdp-acc__body">
               <p>
-                {locale === "es"
-                  ? "Enviamos a todo el mundo desde EE. UU. con guía rastreable. Tienes 30 días para devoluciones."
-                  : "We ship worldwide from the US with tracking. 30-day returns."}{" "}
+                {dict.product.shippingBody}{" "}
                 <Link href={`${localePrefix}/tracking`}>
-                  {locale === "es" ? "Rastrear pedido" : "Track your order"}
+                  {dict.product.trackOrder}
                 </Link>
                 {" · "}
                 <Link href={`${localePrefix}/contact`}>{dict.nav.contact}</Link>
@@ -190,7 +188,7 @@ export function ProductView({ product: staticProduct, slug }: ProductViewProps) 
 
           {artisan && (
             <div className="pdp-editorial pdp-maker">
-              <span className="eyebrow">{locale === "es" ? "Conoce al creador" : "Meet the maker"}</span>
+              <span className="eyebrow">{dict.product.meetMaker}</span>
               <h3>{artisan.name}</h3>
               <p className="pdp-maker__craft">{artisan.craft}</p>
               <p>{artisan.bio}</p>

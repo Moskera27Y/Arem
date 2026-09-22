@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useAnnouncements } from "@/lib/admin/storefront-hooks";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
 import { Icon } from "@/components/ui/icons";
 
@@ -17,6 +18,7 @@ interface AnnouncementBarProps {
  */
 export function AnnouncementBar({ items }: AnnouncementBarProps) {
   const locale = useLocale();
+  const dict = getDictionary(locale);
   const announcements = useAnnouncements();
   const extras = announcements.map((a) => a.text[locale]).filter(Boolean);
   const [paused, setPaused] = useState(false);
@@ -24,7 +26,7 @@ export function AnnouncementBar({ items }: AnnouncementBarProps) {
   const all = [...items, ...extras].filter(Boolean).slice(0, 6);
 
   return (
-    <div className="announce" role="region" aria-label="Announcement" data-paused={paused || undefined}>
+    <div className="announce" role="region" aria-label={dict.a11y.announcement} data-paused={paused || undefined}>
       <span className="announce__track">
         {all.map((message, index) => (
           <span key={`${message}-${index}`} className="announce__item">
@@ -46,7 +48,7 @@ export function AnnouncementBar({ items }: AnnouncementBarProps) {
         type="button"
         className="announce__pause"
         aria-pressed={paused}
-        aria-label={locale === "es" ? (paused ? "Reanudar anuncios" : "Pausar anuncios") : paused ? "Play announcements" : "Pause announcements"}
+        aria-label={paused ? dict.a11y.playAnnouncements : dict.a11y.pauseAnnouncements}
         onClick={() => setPaused((v) => !v)}
       >
         <span className="marquee-toggle" data-playing={paused || undefined} aria-hidden="true" />

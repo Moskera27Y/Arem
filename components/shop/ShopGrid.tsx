@@ -96,7 +96,7 @@ export function ShopGrid({ products, locale, sort, activeSlug, query, saleOnly, 
         <EmptyState
           icon="search"
           title={dict.shop.empty}
-          sub={locale === "es" ? "Prueba con otra palabra o categoría." : "Try another word or category."}
+          sub={dict.shop.noResults}
           actionHref={`${localePrefix}/shop`}
           actionLabel={dict.shop.all}
         />

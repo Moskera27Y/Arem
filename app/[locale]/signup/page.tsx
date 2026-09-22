@@ -28,7 +28,7 @@ export default function SignUpPage() {
     setLoading(true);
     setError("");
     if (password !== confirm) {
-      setError(locale === "es" ? "Las contraseñas no coinciden" : "Passwords don't match");
+      setError(a.passwordMismatch);
       setLoading(false);
       return;
     }

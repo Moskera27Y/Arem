@@ -30,7 +30,7 @@ export function WishlistContent() {
           <EmptyState
             icon="heart"
             title={dict.wishlist.empty}
-            sub={locale === "es" ? "Toca el corazón en lo que ames." : "Tap the heart on what you love."}
+            sub={dict.wishlist.emptySub}
             actionHref={`${localePrefix}/shop`}
             actionLabel={dict.nav.shop}
           />

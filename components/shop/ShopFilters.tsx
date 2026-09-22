@@ -80,14 +80,14 @@ export function ShopFilters({ categories, regions, activeSlug, activeRegion, sor
         onClick={() => setSheetOpen((v) => !v)}
       >
         <Icon name="search" size={15} />
-        {locale === "es" ? "Filtros" : "Filters"}
+        {dict.filters.title}
         {activeSlug && <span className="filters-fab__dot" aria-hidden="true" />}
       </button>
       {sheetOpen && (
         <button
           type="button"
           className="filters-backdrop"
-          aria-label={locale === "es" ? "Cerrar filtros" : "Close filters"}
+          aria-label={dict.filters.close}
           onClick={() => setSheetOpen(false)}
         />
       )}
@@ -102,14 +102,14 @@ export function ShopFilters({ categories, regions, activeSlug, activeRegion, sor
             }}
           >
             <label htmlFor="shop-q" className="filter-group__title">
-              {locale === "es" ? "Buscar" : "Search"}
+              {dict.filters.search}
             </label>
             <input
               id="shop-q"
               name="q"
               type="search"
               defaultValue={query}
-              placeholder={locale === "es" ? "café, mochila, barro…" : "coffee, mochila, clay…"}
+              placeholder={dict.filters.searchPlaceholder}
               className="acc-input"
               onChange={(e) => {
                 const v = e.target.value;
@@ -153,7 +153,7 @@ export function ShopFilters({ categories, regions, activeSlug, activeRegion, sor
         {regions.length > 0 && (
           <div className="filter-group">
             <h2 className="filter-group__title">
-              {locale === "es" ? "Región / Territorio" : "Region / Territory"}
+              {dict.filters.region}
             </h2>
             <ul className="filter-list">
               <li>
@@ -162,7 +162,7 @@ export function ShopFilters({ categories, regions, activeSlug, activeRegion, sor
                   className="filter-item"
                   data-active={activeRegion === null}
                 >
-                  <span>{locale === "es" ? "Todas las regiones" : "All regions"}</span>
+                  <span>{dict.filters.allRegions}</span>
                   <span className="filter-item__count">
                     {regions.reduce((sum, r) => sum + r.count, 0)}
                   </span>
@@ -188,7 +188,7 @@ export function ShopFilters({ categories, regions, activeSlug, activeRegion, sor
           className="btn btn--primary btn--block filters-close"
           onClick={() => setSheetOpen(false)}
         >
-          {locale === "es" ? "Ver resultados" : "Show results"}
+          {dict.filters.showResults}
         </button>
       </aside>
     </>

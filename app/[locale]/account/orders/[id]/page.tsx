@@ -34,7 +34,8 @@ const money = (v: string | number, currency: string) => {
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string; id: string }> }) {
   const { locale } = await params;
-  return { title: locale === "es" ? "Detalle del pedido" : "Order details" };
+  const dict = getDictionary((locale === "es" ? "es" : "en") as Locale);
+  return { title: dict.account.orderDetails };
 }
 
 export default async function OrderDetailPage({ params }: { params: Promise<{ locale: string; id: string }> }) {
@@ -99,7 +100,7 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ lo
           <div className="meta">{dict.cart.shipping}: {money(order.shipping_total, order.currency)}</div>
           <div className="meta" style={{ fontWeight: 600 }}>{a.total}: {money(order.total, order.currency)}</div>
           <div className="meta" style={{ fontSize: "var(--text-2xs, 12px)" }}>
-            {locale === "es" ? "El pago final se cobra en USD." : "Final payment is charged in USD."}
+            {a.paymentUsdNote}
           </div>
         </div>
       </div>

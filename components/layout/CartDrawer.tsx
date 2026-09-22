@@ -131,7 +131,7 @@ export function CartDrawer() {
                 {dict.cart.viewFull}
               </Link>
               <p className="muted" style={{ fontSize: "var(--text-xs)", textAlign: "center" }}>
-                {dict.cart.checkoutLater}
+                {dict.cart.paymentNote}
               </p>
             </div>
           </>

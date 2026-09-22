@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
 import Link from "next/link";
 
@@ -42,22 +43,19 @@ export function CookieBanner() {
 
   if (consent !== null || !visible) return null;
 
-  const text =
-    locale === "es"
-      ? "Usamos cookies esenciales para que el sitio funcione y cookies analíticas opcionales para mejorar tu experiencia. "
-      : "We use essential cookies to make the site work and optional analytics cookies to improve your experience. ";
+  const c = getDictionary(locale).cookie;
 
   return (
     <div
       className={`cookie-banner ${reduceMotion ? "" : "cookie-banner--enter"}`}
       role="dialog"
       aria-live="polite"
-      aria-label={locale === "es" ? "Preferencias de cookies" : "Cookie preferences"}
+      aria-label={c.preferences}
     >
       <div className="cookie-banner__text">
-        {text}
+        {c.text}
         <Link href={`/${locale}/cookies`} className="cookie-banner__link">
-          {locale === "es" ? "Política de cookies" : "Cookie policy"}
+          {c.policy}
         </Link>
       </div>
       <div className="cookie-banner__actions">
@@ -65,17 +63,17 @@ export function CookieBanner() {
           type="button"
           className="btn btn--sm btn--ghost cookie-banner__btn"
           onClick={() => handleSave("partial")}
-          aria-label={locale === "es" ? "Rechazar cookies no esenciales" : "Reject non-essential cookies"}
+          aria-label={c.rejectAria}
         >
-          {locale === "es" ? "Rechazar" : "Reject"}
+          {c.reject}
         </button>
         <button
           type="button"
           className="btn btn--sm btn--primary cookie-banner__btn"
           onClick={() => handleSave("granted")}
-          aria-label={locale === "es" ? "Aceptar todas las cookies" : "Accept all cookies"}
+          aria-label={c.acceptAria}
         >
-          {locale === "es" ? "Aceptar todo" : "Accept all"}
+          {c.accept}
         </button>
       </div>
     </div>

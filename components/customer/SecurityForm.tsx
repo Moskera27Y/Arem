@@ -18,7 +18,7 @@ export function SecurityForm() {
     e.preventDefault();
     setStatus(null);
     if (next !== confirm) {
-      setStatus({ ok: false, message: locale === "es" ? "Las contraseñas no coinciden" : "Passwords don't match" });
+      setStatus({ ok: false, message: a.passwordMismatch });
       return;
     }
     setSaving(true);

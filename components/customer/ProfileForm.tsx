@@ -81,7 +81,7 @@ export function ProfileForm({ profile }: { profile: CustomerProfile }) {
           </select>
         </div>
         <div className="acc-field">
-          <label htmlFor="pf-currency">{locale === "es" ? "Moneda" : "Currency"}</label>
+          <label htmlFor="pf-currency">{a.currencyLabel}</label>
           <select id="pf-currency" className="acc-input" value={currency} onChange={(e) => setCurrency(e.target.value as never)}>
             <option value="USD">USD</option>
             <option value="COP">COP</option>
@@ -89,7 +89,7 @@ export function ProfileForm({ profile }: { profile: CustomerProfile }) {
             <option value="GBP">GBP</option>
             <option value="CAD">CAD</option>
           </select>
-          <span className="acc-note">{locale === "es" ? "Solo cambia la visualización. El pago siempre se cobra en USD." : "Display only. Payment is always charged in USD."}</span>
+          <span className="acc-note">{a.currencyNote}</span>
         </div>
         <div className="acc-form__actions">
           <button type="submit" className="btn--primary" disabled={saving}>

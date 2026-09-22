@@ -1,7 +1,13 @@
 /** PDP loading skeleton — gallery + info column. */
+"use client";
+
+import { getDictionary } from "@/lib/i18n/dictionaries";
+import { useLocale } from "@/lib/i18n/locale-context";
+
 export default function ProductLoading() {
+  const dict = getDictionary(useLocale());
   return (
-    <div className="section" aria-busy="true" aria-label="Cargando producto">
+    <div className="section" aria-busy="true" aria-label={dict.account.loading}>
       <div className="container">
         <div className="pdp">
           <div>

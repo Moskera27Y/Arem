@@ -9,13 +9,33 @@ import { Icon } from "@/components/ui/icons";
 export function ContactForm() {
   const locale = useLocale();
   const dict = getDictionary(locale);
-  const [status, setStatus] = useState<"idle" | "sent">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // Phase 2: local confirmation only. A later phase connects this form to
-    // the Admin/backend (or a mail provider) and adds validation.
-    setStatus("sent");
+    if (status === "sending") return;
+    const data = new FormData(event.currentTarget);
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: String(data.get("name") ?? ""),
+          email: String(data.get("email") ?? ""),
+          topic: String(data.get("topic") ?? "other"),
+          message: String(data.get("message") ?? ""),
+          consent: data.get("consent") === "on",
+          locale,
+        }),
+      });
+      if (!res.ok) throw new Error(`contact ${res.status}`);
+      const json = (await res.json()) as { success?: boolean };
+      if (!json.success) throw new Error("contact not stored");
+      setStatus("sent");
+    } catch {
+      setStatus("error");
+    }
   };
 
   if (status === "sent") {
@@ -103,8 +123,18 @@ export function ContactForm() {
         </span>
       </div>
       <div className="form-grid--single">
-        <button type="submit" className="btn btn--primary btn--lg">
-          {dict.forms.send}
+        {status === "error" && (
+          <p className="form-status form-status--error" role="alert" style={{ marginBottom: "0.75rem" }}>
+            {dict.forms.sendError}
+          </p>
+        )}
+        <button
+          type="submit"
+          className="btn btn--primary btn--lg"
+          disabled={status === "sending"}
+          aria-busy={status === "sending"}
+        >
+          {status === "sending" ? dict.forms.sending : dict.forms.send}
         </button>
       </div>
     </form>

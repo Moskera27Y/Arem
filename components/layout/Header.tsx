@@ -82,7 +82,7 @@ export function Header() {
             <Logo href={localePrefix} />
           </div>
 
-          <nav className="nav" aria-label="Principal">
+          <nav className="nav" aria-label={dict.a11y.mainNav}>
             {site.nav.map((link) => (
               <ViewTransitionLink
                 key={link.href}
@@ -158,7 +158,7 @@ export function Header() {
                 type="search"
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
-                placeholder={locale === "es" ? "Buscar piezas…" : "Search pieces…"}
+                placeholder={dict.filters.searchPieces}
                 aria-label={dict.a11y.search}
                 className="header-search__input"
               />
@@ -177,7 +177,7 @@ export function Header() {
             data-open={menuReady}
             role="dialog"
             aria-modal="true"
-            aria-label="Menú"
+            aria-label={dict.a11y.mobileNav}
             initial={reduceMotion ? false : { opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={reduceMotion ? undefined : { opacity: 0, y: -12, transition: { duration: 0.22 } }}
@@ -187,10 +187,10 @@ export function Header() {
               <Icon name="close" size={22} />
             </button>
             <Logo href={localePrefix} variant="light" />
-            <nav aria-label="Menú móvil">
+            <nav aria-label={dict.a11y.mobileNav}>
               {/* Inicio: acceso directo a casa (el logo no está en la barra móvil) */}
               <ViewTransitionLink href={localePrefix} className="mobile-menu__link mobile-menu__link--home">
-                {locale === "es" ? "Inicio" : "Home"}
+                {dict.common.home}
               </ViewTransitionLink>
               {site.nav.map((link, i) => (
                 <ViewTransitionLink key={link.href} href={`${localePrefix}${link.href}`} className="mobile-menu__link" data-i={i}>

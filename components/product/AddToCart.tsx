@@ -147,20 +147,20 @@ export function AddToCart({ product }: AddToCartProps) {
       <div className="pdp-trust">
         <span className="pdp-trust__item">
           <Icon name="shield" size={14} />
-          {locale === "es" ? "Compra segura" : "Secure checkout"}
+          {dict.product.secureCheckout}
         </span>
         <span className="pdp-trust__item">
           <Icon name="globe" size={14} />
-          {locale === "es" ? "Envío con rastreo" : "Tracked shipping"}
+          {dict.product.trackedShipping}
         </span>
         <span className="pdp-trust__item">
           <Icon name="check" size={14} />
-          {locale === "es" ? "Hecho a mano" : "Handmade"}
+          {dict.product.handmade}
         </span>
       </div>
 
       <span className="sr-only" role="status" aria-live="polite">
-        {added ? (locale === "es" ? "Agregado al carrito" : "Added to cart") : ""}
+        {added ? dict.product.addedToCart : ""}
       </span>
       {showBar &&
         typeof document !== "undefined" &&
