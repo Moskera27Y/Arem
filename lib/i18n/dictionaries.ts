@@ -121,6 +121,7 @@ export interface Dictionary {
     finalTotal: string;
     checkoutNow: string;
     paymentNote: string;
+    slideToClear: string;
   };
   wishlist: {
     title: string;
@@ -525,6 +526,7 @@ const en: Dictionary = {
     finalTotal: "Final total (USD)",
     checkoutNow: "Checkout",
     paymentNote: "Payment is charged in USD.",
+    slideToClear: "Slide to clear",
   },
   wishlist: {
     title: "Wishlist",
@@ -929,6 +931,7 @@ const es: Dictionary = {
     finalTotal: "Total final (USD)",
     checkoutNow: "Finalizar compra",
     paymentNote: "El pago se cobra en USD.",
+    slideToClear: "Desliza para vaciar",
   },
   wishlist: {
     title: "Favoritos",

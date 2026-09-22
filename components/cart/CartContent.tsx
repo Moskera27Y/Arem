@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { getProductById } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
@@ -11,6 +11,77 @@ import { formatCurrency } from "@/lib/money";
 import { useCart } from "@/lib/store/cart-context";
 import { EmptyState } from "@/components/ui/EmptyState";
 import { Icon } from "@/components/ui/icons";
+
+/**
+ * Slide-to-confirm for destructive clear-cart (bencho spirit).
+ * Drag the thumb past 85% to confirm; it springs back otherwise.
+ * Pointer events cover mouse + touch.
+ */
+function SlideToConfirm({ label, onConfirm }: { label: string; onConfirm: () => void }) {
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const thumbRef = useRef<HTMLSpanElement | null>(null);
+  const [dx, setDx] = useState(0);
+  const [dragging, setDragging] = useState(false);
+  const startX = useRef(0);
+  const maxX = useRef(0);
+
+  const down = (e: React.PointerEvent) => {
+    const track = trackRef.current;
+    if (!track) return;
+    maxX.current = Math.max(0, track.clientWidth - 52);
+    startX.current = e.clientX - dx;
+    setDragging(true);
+    thumbRef.current?.setPointerCapture(e.pointerId);
+  };
+  const move = (e: React.PointerEvent) => {
+    if (!dragging) return;
+    setDx(Math.min(Math.max(0, e.clientX - startX.current), maxX.current));
+  };
+  const up = () => {
+    if (!dragging) return;
+    setDragging(false);
+    if (maxX.current > 0 && dx >= maxX.current * 0.85) {
+      onConfirm();
+    }
+    setDx(0);
+  };
+
+  return (
+    <div
+      ref={trackRef}
+      className="slide-confirm"
+      style={{ marginTop: "1.5rem" }}
+      onPointerMove={move}
+      onPointerUp={up}
+      onPointerCancel={up}
+    >
+      <span className="slide-confirm__fill" style={{ width: dx + 52 }} />
+      <span className="slide-confirm__label">
+        {label} <Icon name="arrow-right" size={13} />
+      </span>
+      <span
+        ref={thumbRef}
+        className="slide-confirm__thumb"
+        role="button"
+        tabIndex={0}
+        aria-label={label}
+        onPointerDown={down}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onConfirm();
+          }
+        }}
+        style={{
+          transform: `translateX(${dx}px)`,
+          transition: dragging ? "none" : "transform 0.25s var(--ease-spring)",
+        }}
+      >
+        <Icon name="arrow-right" size={16} />
+      </span>
+    </div>
+  );
+}
 
 export function CartContent() {
   const locale = useLocale();
@@ -95,9 +166,7 @@ export function CartContent() {
                   );
                 })}
               </div>
-              <button type="button" className="cart-line__remove" style={{ marginTop: "1.5rem" }} onClick={clear}>
-                {dict.cart.clear}
-              </button>
+              <SlideToConfirm label={dict.cart.slideToClear} onConfirm={clear} />
             </div>
 
             <div style={{ border: "1px solid var(--line)", borderRadius: "var(--r-md)", padding: "1.75rem" }}>

@@ -66,6 +66,7 @@
   --sp-9: 6rem;
 
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.35, 0.4, 1);
   --dur: 0.45s;
   /* Natural stagger delays for sequential reveals (50–200ms range) */
   --delay-1: 50ms;
@@ -263,7 +264,8 @@ h4 {
 }
 
 .btn:active {
-  transform: translateY(1px);
+  transform: translateY(1px) scale(0.99);
+  transition-duration: 0.1s;
 }
 
 .btn--primary {
@@ -2841,6 +2843,8 @@ h4 {
   letter-spacing: -0.01em;
   text-wrap: balance;
   margin: 0;
+  color: var(--paper);
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.45);
 }
 .shop-hero__sub {
   margin-top: 1rem;
@@ -2852,6 +2856,61 @@ h4 {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
+}
+
+/* ---- Editorial hero entrance (animate.style spirit, hand-rolled) ----
+ * Staggered block entrances, composited only. Respects the global
+ * prefers-reduced-motion kill-switch (durations collapse to 0.01ms). */
+.shop-hero__crumbs { animation: shop-in-down 0.5s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.shop-hero__eyebrow { animation: shop-in-up 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both; }
+.shop-hero__title { animation: shop-title-in 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both; }
+.shop-hero__sub { animation: shop-in-up 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both; }
+.shop-hero__count-pill { animation: shop-pop-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both; }
+.shop-hero__count-pill:nth-child(2) { animation-delay: 0.57s; }
+.shop-hero__count-pill:nth-child(3) { animation-delay: 0.69s; }
+
+@keyframes shop-in-up {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes shop-in-down {
+  from { opacity: 0; transform: translateY(-14px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes shop-title-in {
+  0% { opacity: 0; transform: translateY(34px) scale(0.985); }
+  60% { opacity: 1; transform: translateY(-4px) scale(1.002); }
+  100% { opacity: 1; transform: none; }
+}
+@keyframes shop-pop-in {
+  0% { opacity: 0; transform: scale(0.5); }
+  70% { opacity: 1; transform: scale(1.08); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+/* Chips entrance: staggered rise, capped */
+.shop-chip { animation: shop-in-up 0.45s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.shop-chip:nth-child(2) { animation-delay: 0.05s; }
+.shop-chip:nth-child(3) { animation-delay: 0.1s; }
+.shop-chip:nth-child(4) { animation-delay: 0.15s; }
+.shop-chip:nth-child(5) { animation-delay: 0.2s; }
+.shop-chip:nth-child(6) { animation-delay: 0.25s; }
+.shop-chip:nth-child(7) { animation-delay: 0.3s; }
+.shop-chip:nth-child(n+8) { animation-delay: 0.35s; }
+
+/* Scroll interaction: hero content drifts away as it exits (desktop +
+ * mobile Chrome/Safari with view timelines; enhancement only). */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .shop-hero__inner {
+      animation: shop-hero-out linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 90%;
+    }
+  }
+}
+@keyframes shop-hero-out {
+  to { opacity: 0; transform: translateY(-40px); }
 }
 .shop-hero__count-pill {
   display: inline-flex;
@@ -3252,6 +3311,99 @@ h4 {
 .option-btn[data-disabled="true"] {
   opacity: 0.4;
   pointer-events: none;
+}
+
+/* Sliding option pills (magnetic-select spirit): single scroll row with a
+ * thumb that glides to the selected value. Composited transform + width. */
+.pill-group {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.25rem;
+  margin: -0.25rem;
+  scrollbar-width: none;
+  scroll-snap-type: x proximity;
+}
+.pill-group::-webkit-scrollbar {
+  display: none;
+}
+.pill-thumb {
+  position: absolute;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  left: 0;
+  width: 0;
+  border-radius: var(--r-md);
+  background: var(--ink);
+  transition:
+    transform 0.32s var(--ease-spring),
+    width 0.32s var(--ease-spring),
+    opacity 0.2s var(--ease);
+  pointer-events: none;
+}
+.pill-group .option-btn {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  border-color: var(--line);
+  background: transparent;
+}
+.pill-group .option-btn[data-active="true"] {
+  border-color: transparent;
+  background: transparent;
+  color: var(--paper);
+}
+
+/* Slide-to-confirm (bencho spirit): drag the thumb to the end. */
+.slide-confirm {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  background: var(--bg);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: pan-y;
+  min-height: 3rem;
+}
+.slide-confirm__fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background: rgba(154, 59, 40, 0.14);
+}
+.slide-confirm__label {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  pointer-events: none;
+}
+.slide-confirm__thumb {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: var(--r-pill);
+  background: var(--ink);
+  color: var(--paper);
+  cursor: grab;
+  touch-action: none;
+}
+.slide-confirm__thumb:active {
+  cursor: grabbing;
 }
 
 .pdp__actions {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import type { Product } from "@/lib/content";
 import { getDictionary } from "@/lib/i18n/dictionaries";
@@ -11,6 +11,75 @@ import { Icon } from "@/components/ui/icons";
 
 interface AddToCartProps {
   product: Product;
+}
+
+/**
+ * Option value pills with a sliding thumb that glides to the selected
+ * value (measured, composited transform). Single scroll row on all screens.
+ */
+function OptionPills({
+  option,
+  selected,
+  isSoldOut,
+  onSelect,
+}: {
+  option: { id: string; name: string; values: string[] };
+  selected: string;
+  isSoldOut: (value: string) => boolean;
+  onSelect: (value: string) => void;
+}) {
+  const trackRef = useRef<HTMLDivElement | null>(null);
+  const btnRefs = useRef(new Map<string, HTMLButtonElement>());
+  const [thumb, setThumb] = useState({ x: 0, w: 0, show: false });
+
+  const place = () => {
+    const track = trackRef.current;
+    const btn = btnRefs.current.get(selected);
+    if (!track || !btn) {
+      setThumb((t) => (t.show ? { ...t, show: false } : t));
+      return;
+    }
+    const x = btn.offsetLeft;
+    const w = btn.offsetWidth;
+    setThumb((t) => (t.x === x && t.w === w && t.show ? t : { x, w, show: true }));
+  };
+
+  useLayoutEffect(() => {
+    place();
+    window.addEventListener("resize", place);
+    return () => window.removeEventListener("resize", place);
+  });
+
+  return (
+    <div ref={trackRef} className="pill-group">
+      <span
+        className="pill-thumb"
+        aria-hidden="true"
+        style={{ transform: `translateX(${thumb.x}px)`, width: thumb.w, opacity: thumb.show ? 1 : 0 }}
+      />
+      {option.values.map((value) => {
+        const isSelected = selected === value;
+        const soldOut = isSoldOut(value);
+        return (
+          <button
+            key={value}
+            ref={(el) => {
+              if (el) btnRefs.current.set(value, el);
+              else btnRefs.current.delete(value);
+            }}
+            type="button"
+            className="option-btn"
+            data-active={isSelected}
+            data-disabled={soldOut}
+            aria-pressed={isSelected}
+            onClick={() => onSelect(value)}
+          >
+            {value}
+          </button>
+        );
+      })}
+    </div>
+  );
 }
 
 /**
@@ -40,6 +109,16 @@ export function AddToCart({ product }: AddToCartProps) {
 
   const soldOut = !variant || variant.inventory <= 0;
   const stockLeft = variant ? variant.inventory : 0;
+
+  const isValueSoldOut = (optionId: string, value: string) =>
+    !product.variants.some(
+      (v) =>
+        v.optionValues[optionId] === value &&
+        v.inventory > 0 &&
+        product.options.every(
+          (o) => o.id === optionId || v.optionValues[o.id] === selected[o.id],
+        ),
+    );
 
   const handleAdd = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (!variant || soldOut) return;
@@ -72,32 +151,12 @@ export function AddToCart({ product }: AddToCartProps) {
             </span>
             {variant && <span>{dict.product.available(stockLeft)}</span>}
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
-            {option.values.map((value) => {
-              const isSelected = selected[option.id] === value;
-              const isSoldOut = !product.variants.some(
-                (v) =>
-                  v.optionValues[option.id] === value &&
-                  v.inventory > 0 &&
-                  product.options.every(
-                    (o) => o.id === option.id || v.optionValues[o.id] === selected[o.id],
-                  ),
-              );
-              return (
-                <button
-                  key={value}
-                  type="button"
-                  className="option-btn"
-                  data-active={isSelected}
-                  data-disabled={isSoldOut}
-                  aria-pressed={isSelected}
-                  onClick={() => setSelected((prev) => ({ ...prev, [option.id]: value }))}
-                >
-                  {value}
-                </button>
-              );
-            })}
-          </div>
+          <OptionPills
+            option={option}
+            selected={selected[option.id]}
+            isSoldOut={(value) => isValueSoldOut(option.id, value)}
+            onSelect={(value) => setSelected((prev) => ({ ...prev, [option.id]: value }))}
+          />
         </div>
       ))}
 

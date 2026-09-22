@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 import { getVariantById } from "@/lib/content";
+import { tick } from "@/lib/haptics";
 import type { CartLine } from "@/lib/types";
 
 const STORAGE_KEY = "arem.cart.v1";
@@ -59,6 +60,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [lines]);
 
   const add = useCallback((productId: string, variantId: string, quantity = 1) => {
+    tick();
     setLines((prev) => {
       const existing = prev.find((l) => l.variantId === variantId);
       if (existing) {

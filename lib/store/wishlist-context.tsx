@@ -10,6 +10,8 @@ import {
   type ReactNode,
 } from "react";
 
+import { tick } from "@/lib/haptics";
+
 const STORAGE_KEY = "arem.wishlist.v1";
 export const AUTH_CHANGED_EVENT = "arem:auth-change";
 
@@ -102,6 +104,7 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
   const toggle = useCallback(
     (productId: string) => {
+      tick();
       const present = ids.includes(productId);
       if (authed) {
         const url = present
