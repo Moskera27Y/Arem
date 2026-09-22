@@ -10,7 +10,6 @@ import { useLocale } from "@/lib/i18n/locale-context";
 import { useCart } from "@/lib/store/cart-context";
 import { useWishlist } from "@/lib/store/wishlist-context";
 import { Logo } from "@/components/ui/Logo";
-import ParticleLogo from "@/components/ui/ParticleLogo";
 import { Icon } from "@/components/ui/icons";
 import { ViewTransitionLink } from "@/components/ui/ViewTransitionLink";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
@@ -80,14 +79,7 @@ export function Header() {
       <header className={`site-header${scrolled ? " scrolled" : ""}`}>
         <div className="container site-header__inner">
           <div className="site-header__brand">
-            {/* SVG wordmark: visible on mobile / reduced-motion, hidden on */}
-            {/* desktop when the ParticleLogo canvas is active. */}
             <Logo href={localePrefix} />
-            <ParticleLogo
-              text="AR•EM"
-              className="particle-logo absolute left-1/2 top-1/2 hidden h-[60px] w-auto -translate-x-1/2 -translate-y-1/2 sm:block"
-              aria-hidden={!reduceMotion}
-            />
           </div>
 
           <nav className="nav" aria-label="Principal">

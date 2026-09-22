@@ -596,16 +596,18 @@ h4 {
 
 .site-header__inner {
   display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
-  gap: 1rem;
+  gap: clamp(0.75rem, 2vw, 1.5rem);
   height: var(--header-h);
 }
 
 .site-header__brand {
   justify-self: start;
-  min-width: 0; /* prevent grid collapse from large logo on narrow screens */
-  position: relative; /* container for the ParticleLogo canvas overlay */
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .header-actions {
@@ -613,19 +615,12 @@ h4 {
   min-width: 0; /* prevent grid collapse from wide action cluster */
 }
 
-/*
- * ParticleLogo canvas overlay on desktop (sm+). On mobile the SVG
- * wordmark stays visible. When prefers-reduced-motion is active the
- * canvas renders static dots (per ParticleLogo), so keep it visible.
- */
-@media (min-width: 640px) {
-  .site-header__brand .particle-logo {
-    display: block;
-  }
-  /* Hide the static SVG wordmark once the animated canvas logo is active */
-  .site-header__brand .logo {
-    display: none;
-  }
+/* Brand wordmark always visible (desktop + mobile).
+ * The experimental ParticleLogo canvas overlay was removed: it used
+ * absolute positioning inside a zero-size brand container, which hid
+ * the SVG logo and pushed the nav into the actions cluster. */
+.particle-logo {
+  display: none !important;
 }
 
 .logo {
@@ -671,6 +666,8 @@ h4 {
   align-items: center;
   justify-content: center;
   gap: 0;
+  min-width: 0;
+  white-space: nowrap;
 }
 
 .nav-link {
@@ -683,6 +680,7 @@ h4 {
   color: var(--ink-2);
   padding: 0.4rem 1.05rem;
   transition: color 0.25s var(--ease);
+  flex-shrink: 0;
 }
 
 /* Wayuu diamond separators between links. */
@@ -731,6 +729,31 @@ h4 {
   display: flex;
   align-items: center;
   gap: var(--sp-2);
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+/* Compact header for mid-width screens (900–1150px): the full nav +
+ * lang/currency/actions cluster no longer fits with large paddings,
+ * which caused CONTACT to overlap the USD selector. Shrink first,
+ * collapse to hamburger at 900px. */
+@media (max-width: 1150px) {
+  .nav-link {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.9rem;
+    letter-spacing: 0.08em;
+  }
+  .nav-link::after {
+    left: 0.6rem;
+    right: 0.6rem;
+  }
+  .header-actions {
+    gap: 0.15rem;
+  }
+  .site-header .logo__img {
+    height: 48px;
+    min-height: 48px;
+  }
 }
 
 .icon-btn {
@@ -813,6 +836,24 @@ h4 {
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1.5px;
+}
+
+/* Currency selector in header — compact styling consistent with lang-switch */
+.currency-switch {
+  appearance: none;
+  -webkit-appearance: none;
+  background: transparent;
+  border: 1px solid var(--line-soft);
+  border-radius: var(--r-sm);
+  padding: 0.2rem 0.4rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  min-width: 44px;
+  height: 36px;
 }
 
 /* Mobile menu */
@@ -5925,24 +5966,27 @@ input.checkbox {
     padding: 1.75rem;
   }
 
+  .trust-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem 1rem;
+  }
+
+  .trust-item:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ── Header mobile: independent 640px breakpoint (was incorrectly
+   nested inside @media 1080px, causing premature collapse) ── */
+@media (max-width: 640px) {
   .site-header__inner {
-    gap: 1rem;
-    padding: 1rem var(--gutter);
+    gap: clamp(0.5rem, 2vw, 1rem);
+    padding: 0.75rem var(--gutter);
+    height: var(--header-h);
+    grid-template-columns: auto 1fr auto;
   }
-
-  .site-header .logo__img {
-    height: 52px;
-    min-height: 52px;
-    width: auto;
-  }
-
-  .header-actions {
-    gap: 0.1rem;
-  }
-
-  .icon-btn {
-    width: 2.75rem;
-    height: 2.75rem;
+  .nav {
+    display: none;
   }
   .header-actions {
     gap: 0.25rem;
@@ -5951,18 +5995,41 @@ input.checkbox {
   .header-actions .icon-btn--account {
     display: none;
   }
-
-  /* Larger tap targets for mobile navigation icons */
+  .header-actions .icon-btn--search-mobile {
+    display: inline-flex;
+  }
   .header-actions .icon-btn {
+    display: inline-flex;
     width: 2.85rem;
     height: 2.85rem;
   }
   .menu-btn {
+    display: inline-flex;
     margin-left: 0.25rem;
   }
 
-  .header-actions .icon-btn--search-mobile {
-    display: inline-flex;
+  .site-header .logo__img {
+    height: 48px;
+    min-height: 48px;
+    width: auto;
+  }
+
+  /* Currency selector styling for mobile header */
+  .currency-switch {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent;
+    border: 1px solid var(--line-soft);
+    border-radius: var(--r-sm);
+    padding: 0.25rem 0.5rem;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-2);
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    min-width: 44px;
+    height: 44px;
   }
 
   .header-search {
@@ -5997,15 +6064,6 @@ input.checkbox {
 
   .lang-switch__item {
     gap: 0.35rem;
-  }
-
-  .trust-row {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem 1rem;
-  }
-
-  .trust-item:last-child {
-    grid-column: 1 / -1;
   }
 }
 
