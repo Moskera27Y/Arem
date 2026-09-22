@@ -19,6 +19,8 @@ export function Hero({ section, locale }: HeroProps) {
   const requestRef = useRef<number>(0);
   const mouseRef = useRef<{ x: number; y: number; near: boolean }>({ x: 0, y: 0, near: false });
   const logoPosRef = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
+  /** Paint gate: false while the hero is scrolled out of view (mobile battery saver). */
+  const visibleRef = useRef(true);
 
   const label = useMemo(() => {
     if (locale === "es") {
@@ -107,9 +109,14 @@ export function Hero({ section, locale }: HeroProps) {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
-    const W = canvas.width, H = canvas.height;
-    const DPR = window.devicePixelRatio || 1;
-    const isMobile = W < 800 || /Mobi|Android/i.test(navigator.userAgent);
+    // Cap DPR at 2: modern phones report 3-4x, which multiplies the
+    // per-frame cost of the full-screen gradients.
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    // Live CSS-pixel dims (canvas.width is device px; the context is
+    // scaled by DPR in resize(), so all logic runs in CSS px).
+    const dims = () => ({ W: canvas.clientWidth || 1, H: canvas.clientHeight || 1 });
+    let { W, H } = dims();
+    const isMobile = Math.min(window.innerWidth, W) < 800 || /Mobi|Android/i.test(navigator.userAgent);
 
     // Adapt particle counts: fewer on mobile to keep 60fps
     const P = isMobile ? 120 : 340;
@@ -143,6 +150,11 @@ export function Hero({ section, locale }: HeroProps) {
 
     const animate = () => {
       requestRef.current = requestAnimationFrame(animate);
+      // Off-screen: skip all paint work (mobile battery/CPU saver)
+      if (!visibleRef.current) return;
+      // Refresh live dims in case a resize slipped through
+      W = canvas.clientWidth || W;
+      H = canvas.clientHeight || H;
       ctx.clearRect(0, 0, W, H);
 
       // Idle detection
@@ -317,9 +329,11 @@ export function Hero({ section, locale }: HeroProps) {
 
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * DPR;
-      canvas.height = rect.height * DPR;
-      ctx.scale(DPR, DPR);
+      canvas.width = Math.max(1, Math.round(rect.width * DPR));
+      canvas.height = Math.max(1, Math.round(rect.height * DPR));
+      // setTransform (not scale): re-asserted after the width reset, never stacks
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ({ W, H } = dims());
     };
     resize();
     window.addEventListener("resize", resize);
@@ -332,13 +346,29 @@ export function Hero({ section, locale }: HeroProps) {
     };
   }, [reduceMotion]);
 
-  // Pointer + touch events
+  // Pause canvas paint when the hero scrolls out of view
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas || typeof IntersectionObserver === "undefined") return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        visibleRef.current = entries[0]?.isIntersecting ?? true;
+      },
+      { threshold: 0 },
+    );
+    io.observe(canvas);
+    return () => io.disconnect();
+  }, []);
+
+  // Pointer + touch events on the whole hero section (not just the canvas,
+  // which sits behind the content): mouse AND finger drags stir the swarm.
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
+    const target = canvas.parentElement ?? canvas;
     const opts = { passive: true };
-    canvas.addEventListener("pointermove", handlePointerMove, opts);
-    return () => canvas.removeEventListener("pointermove", handlePointerMove);
+    target.addEventListener("pointermove", handlePointerMove, opts);
+    return () => target.removeEventListener("pointermove", handlePointerMove);
   }, [handlePointerMove]);
 
   return (

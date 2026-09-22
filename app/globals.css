@@ -2033,6 +2033,28 @@ h4 {
   --actions-delay: 1.05s;
 }
 
+@media (max-width: 640px) {
+  /* Mobile: faster hero entrance (0.25–0.55s). The long desktop stagger
+   * reads as frozen on slow connections. */
+  .hero__content[data-animate="ready"] .hero__eyebrow {
+    --eyebrow-delay: 0.25s;
+  }
+  .hero__content[data-animate="ready"] .hero__title {
+    --title-delay: 0.35s;
+  }
+  .hero__content[data-animate="ready"] .hero__sub {
+    --sub-delay: 0.45s;
+  }
+  .hero__content[data-animate="ready"] .hero__actions {
+    --actions-delay: 0.55s;
+  }
+  /* Cheaper sticky-header blur on mobile GPUs */
+  .site-header {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+
 /* --------------------------- Category chips ----------------------- */
 
 .cat-row {
@@ -6156,21 +6178,22 @@ input.checkbox {
   :root {
     view-transition: auto;
   }
-  /* Custom crossfade for navigations (replaces Next default swap) */
+  /* Soft editorial handoff between pages (replaces Next default swap).
+   * Opacity + translateY only (composited) so it stays smooth on mobile. */
   ::view-transition-old(root) {
-    animation: fade-out 0.25s ease-out;
+    animation: vt-out 0.32s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
   ::view-transition-new(root) {
-    animation: fadeIn 0.25s ease-out;
+    animation: vt-in 0.38s cubic-bezier(0.25, 0.1, 0.25, 1);
     /* keep hero media visible during transition */
     z-index: 1;
   }
-  @keyframes fade-out {
-    to { opacity: 0; }
+  @keyframes vt-out {
+    to { opacity: 0; transform: translateY(-14px) scale(0.996); }
   }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+  @keyframes vt-in {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
   }
 }
 
