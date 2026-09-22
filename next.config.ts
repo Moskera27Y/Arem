@@ -14,6 +14,9 @@ const nextConfig: NextConfig = {
     ],
   },
   poweredByHeader: false,
+  // View Transitions: enabled via CSS `view-transition: auto` in globals.css
+  // + document.startViewTransition interception in components/ui/ViewTransitions.tsx
+  // (No experimental Next.js flag needed beyond the platform default.)
   // Pin file tracing to this project instead of the auto-inferred workspace root.
   outputFileTracingRoot: process.cwd(),
   async headers() {

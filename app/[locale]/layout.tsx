@@ -8,6 +8,7 @@ import { AdminProvider } from "@/lib/admin/store";
 import { SetDocumentLang } from "@/components/layout/SetDocumentLang";
 import { MotionProvider } from "@/components/ui/MotionProvider";
 import { SmoothScroll } from "@/components/ui/SmoothScroll";
+import { ViewTransitions } from "@/components/ui/ViewTransitions";
 import { Toaster } from "@/components/ui/Toaster";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { Header } from "@/components/layout/Header";
@@ -68,6 +69,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
     <LocaleProvider locale={locale}>
       <SetDocumentLang locale={locale} />
       <SmoothScroll />
+      <ViewTransitions />
       <MotionProvider>
       <StoreProvider>
         <AdminProvider>

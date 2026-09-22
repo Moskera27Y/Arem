@@ -1,0 +1,25 @@
+name: Lighthouse CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+concurrency: lighthouse
+jobs:
+  lighthouse:
+    name: Lighthouse audits
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - run: npm ci
+      - uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            https://arem-mu.vercel.app/en
+            https://arem-mu.vercel.app/es
+            https://arem-mu.vercel.app/en/shop
+          budgetPath: ./budget.json
