@@ -26,6 +26,10 @@ const nextConfig: NextConfig = {
         headers: [
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          // Force-edge revalidation on the HTML so CSP/security header
+          // changes (e.g. script-src 'unsafe-inline') propagate within
+          // 5 min instead of being stuck on a warm CDN cache.
+          { key: "Cache-Control", value: "s-maxage=300, stale-while-revalidate=60" },
           // No X-Frame-Options: it would override the CSP allowlist below
           // and re-block the portfolio preview. frame-ancestors is the
           // modern, more precise control (self + CM Studio portfolio only).
