@@ -115,7 +115,7 @@ export function Header() {
             </Link>
             <Link
               href={`${localePrefix}/wishlist`}
-              className="icon-btn"
+              className="icon-btn icon-btn--wishlist"
               aria-label={`${dict.a11y.wishlist}${wishlistCount ? ` (${wishlistCount})` : ""}`}
               title={dict.a11y.wishlist}
             >
@@ -203,6 +203,9 @@ export function Header() {
               </Link>
               <Link href={`${localePrefix}/account`} className="mobile-menu__row-link">
                 <Icon name="user" size={15} /> {dict.account.myAccount}
+              </Link>
+              <Link href={`${localePrefix}/wishlist`} className="mobile-menu__row-link">
+                <Icon name="heart" size={15} /> {dict.a11y.wishlist}
               </Link>
             </div>
             <div className="mobile-menu__meta">

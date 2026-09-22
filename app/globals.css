@@ -1185,15 +1185,18 @@ h4 {
   position: absolute;
   left: 50%;
   top: clamp(2rem, 6vw, 4.5rem);
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(28px) scale(0.96);
   z-index: 3;
   opacity: 0;
   will-change: transform, opacity;
-  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.48s both;
+  transition:
+    opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s,
+    transform 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s;
   pointer-events: none;
 }
 .hero[data-animate="ready"] .hero__brand-outer {
   opacity: 1;
+  transform: translateX(-50%) translateY(0) scale(1);
 }
 
 .hero__brand-mark {
@@ -1306,33 +1309,63 @@ h4 {
   }
 }
 
-/* Brand letter entrance — staggered fade in */
+/* Brand letter entrance — staggered blur + rise */
 .hero__brand-letter {
   display: inline-block;
   opacity: 0;
-  transform: translateY(0.8rem) scale(0.9);
-  animation: hero-letter-in 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  transform: translateY(1.4rem) scale(0.9);
+  filter: blur(8px);
+  animation: hero-letter-in 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-fill-mode: forwards;
 }
-.hero__brand-letter--a { animation-delay: 0s; }
-.hero__brand-letter--em { animation-delay: 0.4s; }
+.hero__brand-letter--a { animation-delay: 0.35s; }
+.hero__brand-letter--em { animation-delay: 0.65s; }
 
 @keyframes hero-letter-in {
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  0% { opacity: 0; transform: translateY(1.4rem) scale(0.9); filter: blur(8px); }
+  60% { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
 }
 
-/* Flor central ❀ — brillo pulsátil dorado + rotación lenta */
+/* Flor central ❀ — grande, con destellos dorados: entrada pop + pulso + giro lento */
 .hero__brand-flower {
   display: inline-block;
-  color: #d9a85a;
-  font-size: 1.15em;
-  animation: hero-flower-pulse 4.5s ease-in-out infinite, hero-flower-rotate 42s linear infinite;
+  color: #f3d68a;
+  font-size: 1.6em;
+  transform-origin: center;
+  animation:
+    hero-flower-in 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both,
+    hero-flower-pulse 4.5s ease-in-out 1.8s infinite,
+    hero-flower-rotate 42s linear infinite;
   text-shadow:
     0 0 0 rgba(217, 164, 65, 0.0),
-    0 0 22px rgba(217, 164, 65, 0.85),
-    0 0 48px rgba(217, 164, 65, 0.55),
-    0 0 80px rgba(217, 164, 65, 0.4);
-  filter: drop-shadow(0 0 10px rgba(217, 164, 65, 0.6));
+    0 0 22px rgba(255, 214, 130, 0.95),
+    0 0 52px rgba(217, 164, 65, 0.7),
+    0 0 90px rgba(217, 164, 65, 0.5);
+  filter: drop-shadow(0 0 12px rgba(255, 214, 130, 0.7));
+}
+@keyframes hero-flower-in {
+  0% { opacity: 0; transform: scale(0) rotate(-90deg); }
+  70% { opacity: 1; transform: scale(1.28) rotate(8deg); }
+  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+}
+
+/* Destellos estrella alrededor de la flor (el glifo hereda el foil
+ * transparente del padre; el brillo sale del text-shadow dorado) */
+.hero__spark {
+  position: absolute;
+  color: transparent;
+  line-height: 1;
+  text-shadow:
+    0 0 10px rgba(255, 222, 133, 0.95),
+    0 0 24px rgba(217, 168, 74, 0.8);
+  opacity: 0;
+  animation: hero-spark-twinkle 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes hero-spark-twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.15) rotate(25deg); }
 }
 @keyframes hero-flower-pulse {
   0%, 100% { opacity: 0.95; }
@@ -6022,8 +6055,8 @@ input.checkbox {
   }
   .header-actions .icon-btn {
     display: inline-flex;
-    width: 2.85rem;
-    height: 2.85rem;
+    width: 2.6rem;
+    height: 2.6rem;
   }
   .menu-btn {
     display: inline-flex;
@@ -6031,8 +6064,8 @@ input.checkbox {
   }
 
   .site-header .logo__img {
-    height: 48px;
-    min-height: 48px;
+    height: 36px;
+    min-height: 36px;
     width: auto;
   }
 
@@ -6086,6 +6119,26 @@ input.checkbox {
 
   .lang-switch__item {
     gap: 0.35rem;
+  }
+}
+
+/* ── Very small phones: logo + lang + 4 icon buttons + currency no longer
+   fit in ~360px, so the brand column pushed the actions off-screen (the
+   logo "covered" the texts). Currency lives on in the hamburger menu. ── */
+@media (max-width: 560px) {
+  .header-actions .currency-switch {
+    display: none;
+  }
+}
+
+@media (max-width: 400px) {
+  .site-header .logo__img {
+    height: 32px;
+    min-height: 32px;
+  }
+  /* Wishlist stays reachable via the hamburger menu row */
+  .header-actions .icon-btn--wishlist {
+    display: none;
   }
 }
 

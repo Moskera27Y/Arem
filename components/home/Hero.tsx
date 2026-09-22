@@ -120,7 +120,7 @@ export function Hero({ section, locale }: HeroProps) {
 
     // Adapt particle counts: fewer on mobile to keep 60fps
     const P = isMobile ? 120 : 340;
-    const G = isMobile ? 40 : 90;
+    const G = isMobile ? 52 : 110;
     const particles = Array.from({ length: P }, (_, i) => ({
       x: Math.random() * W,
       y: Math.random() * H,
@@ -140,7 +140,7 @@ export function Hero({ section, locale }: HeroProps) {
       vy: (Math.random() - 0.5) * 0.3,
       size: Math.random() * 1.4 + 0.5,
       angle: (i / G) * Math.PI * 2,
-      radius: Math.random() * 140 + 60, // orbit radius around logo
+      radius: Math.random() * 110 + 40, // tight orbit hugging the logo
       speed: 0.0012 + Math.random() * 0.0018,
       pulse: Math.random() * Math.PI * 2,
     }));
