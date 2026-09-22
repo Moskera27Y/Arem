@@ -1401,74 +1401,59 @@ h4 {
 }
 
 /* ======================== HERO BRAND MARK (AREM) ======================== */
-/* Container for AREM — centered on desktop, large, dramatic */
+/* Container for AR❀EM — centered, perfectly positioned above hero content.
+   Connects visually to the dark starry canvas. */
 .hero__brand-outer {
-  position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 1;
-  margin: 0 auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: absolute !important;
+  top: clamp(2.5rem, 6vw, 4.5rem) !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 3 !important;
   opacity: 0;
   pointer-events: none;
-  width: 100%;
+  width: max-content;
+  will-change: opacity, transform;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.48s both;
 }
+.hero[data-animate="ready"] .hero__brand-outer,
 .hero__brand-outer[data-animate="ready"] {
   opacity: 1;
-  animation: hero-brand-outer-in 0.4s ease-out 0.2s both;
-}
-@keyframes hero-brand-outer-in {
-  to { opacity: 1; }
 }
 
 .hero__brand-mark {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.18rem;
+  gap: 0.12em;
   font-family: var(--font-serif);
-  font-size: clamp(4rem, 12vw, 7rem);
+  font-size: clamp(4rem, 14vw, 7rem);
   font-weight: 600;
   line-height: 0.9;
-  letter-spacing: -0.05em;
-  color: var(--paper);
-  text-shadow:
-    0 0 45px rgba(217, 168, 74, 0.55),
+  letter-spacing: -0.04em;
+  /* Gold foil texture — glitter dorado */
+  background: linear-gradient(135deg, #f8f3e7 0%, #d9c97a 30%, #8b7339 65%, #f8f3e7 100%);
+  backgroundClip: text;
+  WebkitBackgroundClip: text;
+  color: transparent;
+  backgroundSize: 300% 300%;
+  animation: hero-gold-shimmer 14s ease-in-out infinite;
+  textShadow:
+    0 0 45px rgba(217, 168, 74, 0.6),
     0 0 90px rgba(217, 168, 74, 0.35),
-    0 4px 45px rgba(10, 7, 4, 0.75);
+    0 4px 45px rgba(10, 7, 4, 0.7);
   position: relative;
-  will-change: transform, opacity;
+  filter: drop-shadow(0 0 12px rgba(217, 168, 74, 0.5));
+  will-change: transform, opacity, text-shadow;
   animation: hero-glow-pulse 3.5s ease-in-out 0.9s both;
 }
-@keyframes hero-glow-pulse {
-  0%, 100% {
-    text-shadow:
-      0 0 40px rgba(211,172,95,0.5),
-      0 0 70px rgba(211,172,95,0.3),
-      0 2px 30px rgba(10,7,4,0.85);
-  }
-  50% {
-    text-shadow:
-      0 0 60px rgba(211,172,95,0.9),
-      0 0 100px rgba(211,172,95,0.5),
-      0 2px 30px rgba(10,7,4,0.85);
-  }
-}
 
+/* Letter entrance — staggered */
 .hero__brand-letter {
   display: inline-block;
-  position: relative;
   opacity: 0;
-  transform: translate3d(0, 0.8rem, -50px) rotateX(-30deg) scale(0.7);
-  color: var(--paper);
-  text-shadow:
-    0 0 40px rgba(211, 172, 95, 0.8),
-    0 0 70px rgba(211, 172, 95, 0.5),
-    0 2px 30px rgba(10, 7, 4, 0.85);
-  animation: hero-letter-in 1.2s var(--ease) both;
+  transform: translateY(0.8rem) scale(0.9);
+  animation: hero-letter-in 1.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-fill-mode: forwards;
 }
 @keyframes hero-letter-in {
   0% {
@@ -1610,66 +1595,131 @@ h4 {
   }
 }
 
-/* Second star layer — moving particles (parallax drift) */
-.hero::after {
+/* Continuous float + subtle glow — applied to brand-mark container */
+@keyframes hero-float {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-8px) scale(1.1); }
+}
+
+/* Light trail behind logo letters — CSS only */
+.hero__brand-letter::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -180%;
+  width: 160%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(211, 172, 95, 0.65),
+    rgba(255, 248, 220, 0.5),
+    transparent);
+  transform: skewX(-22deg);
+  opacity: 0;
+  animation: hero-trail 1.4s var(--ease) 0.08s forwards;
+  pointer-events: none;
+}
+@keyframes hero-trail {
+  0% { opacity: 0; left: -180%; }
+  8% { opacity: 0.15; }
+  50% { opacity: 0.35; }
+  92% { opacity: 0.12; }
+  100% { opacity: 0; left: 100%; }
+}
+.hero__brand-letter--a::before { animation-delay: 0.02s; }
+.hero__brand-letter--em::before { animation-delay: 0.18s; }
+
+/* Starfield particle twinkle — CSS grid of glowing dots (fondo secundario si canvas falla) */
+.hero::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(circle at 30% 15%, rgba(211, 172, 95, 0.025) 1px, transparent 1px),
-    radial-gradient(circle at 75% 10%, rgba(211, 172, 95, 0.02) 1px, transparent 1px),
-    radial-gradient(circle at 20% 80%, rgba(89, 100, 63, 0.02) 1px, transparent 1px),
-    radial-gradient(circle at 85% 70%, rgba(255, 248, 220, 0.025) 1px, transparent 1px);
-  background-size: 200px 200px;
-  opacity: 0;
+    radial-gradient(circle at 12% 28%, rgba(255,248,220,0.045) 1px, transparent 1px),
+    radial-gradient(circle at 88% 32%, rgba(255,248,220,0.035) 1px, transparent 1px),
+    radial-gradient(circle at 35% 65%, rgba(166,80,46,0.03) 1px, transparent 1px),
+    radial-gradient(circle at 68% 18%, rgba(89,100,63,0.025) 1px, transparent 1px),
+    radial-gradient(circle at 22% 82%, rgba(255,248,220,0.04) 1px, transparent 1px),
+    radial-gradient(circle at 92% 75%, rgba(255,248,220,0.03) 1px, transparent 1px),
+    radial-gradient(circle at 5% 55%, rgba(89,100,63,0.025) 1px, transparent 1px),
+    radial-gradient(circle at 78% 58%, rgba(166,80,46,0.025) 1px, transparent 1px),
+    radial-gradient(circle at 55% 88%, rgba(255,248,220,0.035) 1px, transparent 1px),
+    radial-gradient(circle at 95% 15%, rgba(217,172,95,0.025) 1px, transparent 1px);
+  background-size: 90px 90px, 110px 110px, 95px 95px, 120px 120px, 100px 100px, 115px 115px, 85px 85px, 105px 105px, 95px 95px, 80px 80px;
+  background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0;
+  opacity: 0.3;
   animation: hero-stars-appear 2s ease-out 0.2s both,
-             hero-stars-move 35s linear 2.5s infinite;
+             hero-twinkle 4.5s ease-in-out 2.5s infinite,
+             hero-stars-drift 28s linear 2.5s infinite;
   pointer-events: none;
 }
-@keyframes hero-stars-move {
-  0% { transform: translate3d(0, 0, 0) scale(1); }
-  50% { transform: translate3d(-40px, 20px, 0) scale(1.02); }
-  100% { transform: translate3d(0, 0, 0) scale(1); }
+@keyframes hero-stars-appear {
+  to { opacity: 0.42; }
+}
+@keyframes hero-twinkle {
+  0%, 100% { opacity: 0.35; }
+  50% { opacity: 0.52; }
+}
+@keyframes hero-stars-drift {
+  0% {
+    background-position:
+      0% 0%,   0% 0%,   0% 0%,   0% 0%,   0% 0%,
+      0% 0%,   0% 0%,   0% 0%,   0% 0%,   0% 0%;
+  }
+  25% {
+    background-position:
+      8% 4%,   -6% 2%,   4% -3%,   -4% 6%,   6% -4%,
+      -5% 5%,   7% -2%,   -3% 7%,   5% 3%,   -8% -1%;
+  }
+  50% {
+    background-position:
+      12% 6%,   -8% 4%,   8% -2%,   -6% 8%,   9% -6%,
+      -7% 3%,   10% 1%,   6% 9%,   -9% 5%,   7% -3%;
+  }
+  75% {
+    background-position:
+      5% -3%,   -3% 6%,   2% 8%,   -8% -2%,   4% 5%,
+      -2% 9%,   9% -1%,   3% 7%,   -7% 4%,   6% 6%;
+  }
+  100% {
+    background-position:
+      0% 0%,   0% 0%,   0% 0%,   0% 0%,   0% 0%,
+      0% 0%,   0% 0%,   0% 0%,   0% 0%,   0% 0%;
+  }
 }
 
-/* Slide overlay — subtle colored texture on active slide only */
-.hero__slide-overlay {
+/* Fade-out overlay at bottom of hero */
+.hero::after {
+  content: "";
   position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at center, rgba(12, 8, 5, 0.65) 0%, rgba(12, 8, 5, 0.85) 100%);
-  opacity: 0;
-  transition: opacity 0.9s var(--ease);
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 22vh;
+  min-height: 120px;
+  z-index: 1;
+  background: linear-gradient(to bottom, transparent 0%, rgba(10, 5, 2, 0.85) 100%);
   pointer-events: none;
 }
-.hero__slide[data-active="true"] .hero__slide-overlay {
-  opacity: 1;
-}
 
-/* Desktop positioning — AREM large and centered at top, content below it */
+/* Desktop positioning — logo centered top, content below */
 @media (min-width: 1024px) {
   .hero__brand-outer {
-    position: absolute;
-    top: 35%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: clamp(2.5rem, 6vw, 4.5rem);
   }
   .hero__brand-mark {
-    font-size: clamp(6rem, 16vw, 9rem);
+    font-size: clamp(4rem, 14vw, 7rem);
   }
   .hero__content {
-    margin-top: 26rem;
+    margin-top: 16rem;
   }
 }
 
-/* Mobile: AREM smaller, below hero content */
-@media (max-width: 768px) {
+/* Mobile: logo above content */
+@media (max-width: 640px) {
   .hero__brand-outer {
-    position: relative;
-    top: auto;
-    left: auto;
-    transform: translate(0, 0);
-    margin-top: 4rem;
+    top: clamp(1.5rem, 4vw, 2.5rem);
   }
   .hero__brand-mark {
     font-size: clamp(3.5rem, 12vw, 5rem);
