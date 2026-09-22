@@ -1716,7 +1716,7 @@ h4 {
   }
 }
 
-/* Mobile: logo above content */
+/* Mobile: logo centered top, content below — safe for thumb reach */
 @media (max-width: 640px) {
   .hero__brand-outer {
     top: clamp(1.5rem, 4vw, 2.5rem);
@@ -1725,7 +1725,10 @@ h4 {
     font-size: clamp(3.5rem, 12vw, 5rem);
   }
   .hero__content {
-    margin-top: 0;
+    margin-top: clamp(8rem, 16vw, 12rem); /* Space for logo on mobile */
+  }
+  .hero__geom--poly {
+    display: none; /* hide geometry on small screens for clarity */
   }
 }
 

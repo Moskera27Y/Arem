@@ -4,7 +4,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import type { Locale } from "@/lib/i18n/config";
 import type { HomeSection } from "@/lib/types";
-import { Icon } from "@/components/ui/icons";
 import { ARREM } from "@/components/ui/ARREM";
 
 interface HeroProps {
@@ -12,15 +11,15 @@ interface HeroProps {
   locale: Locale;
 }
 
-/** Luxury Hero: dark starry canvas + reactive particles + animated AR❀EM logo. */
+/** Luxury Hero: dark starry canvas + reactive particles + gold swarm around AR❀EM + animated logo. */
 export function Hero({ section, locale }: HeroProps) {
   const [contentVisible, setContentVisible] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const requestRef = useRef<number>(0);
   const mouseRef = useRef<{ x: number; y: number; near: boolean }>({ x: 0, y: 0, near: false });
+  const logoPosRef = useRef<{ x: number; y: number; w: number; h: number } | null>(null);
 
-  // — Responsive label / copy —
   const label = useMemo(() => ({
     eyebrow: "COLOMBIAN CRAFT FROM WORKSHOP TO WORLD",
     title: "Colombia to wear.",
@@ -29,20 +28,43 @@ export function Hero({ section, locale }: HeroProps) {
     cta: locale === "es" ? "DESCUBRE LAS PIEZAS" : "DISCOVER THE CRAFTS",
   }), [locale]);
 
-  // — Reduced motion only (no visibility hack that kills canvas) —
+  // — Reduced motion only —
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
     setReduceMotion(mq.matches);
     const fn = (e: MediaQueryListEvent) => setReduceMotion(e.matches);
     mq.addEventListener("change", fn);
     const t = setTimeout(() => setContentVisible(true), 200);
-    return () => {
-      clearTimeout(t);
-      mq.removeEventListener("change", fn);
-    };
+    return () => { clearTimeout(t); mq.removeEventListener("change", fn); };
   }, []);
 
-  // — Mouse proximity for particle interaction —
+  // — Track logo position via ResizeObserver on brand-mark —
+  useEffect(() => {
+    const el = document.querySelector(".hero__brand-mark") as HTMLElement | null;
+    if (!el) return;
+    const updateLogoPos = () => {
+      const rect = el.getBoundingClientRect();
+      const canvas = canvasRef.current;
+      if (canvas) {
+        const cRect = canvas.getBoundingClientRect();
+        logoPosRef.current = {
+          x: rect.left + rect.width / 2 - cRect.left,
+          y: rect.top + rect.height / 2 - cRect.top,
+          w: rect.width,
+          h: rect.height,
+        };
+      }
+    };
+    const ro = new ResizeObserver(() => updateLogoPos());
+    ro.observe(el);
+    const onWin = () => updateLogoPos();
+    window.addEventListener("scroll", onWin, { passive: true });
+    window.addEventListener("resize", onWin);
+    updateLogoPos();
+    return () => { ro.disconnect(); window.removeEventListener("scroll", onWin); window.removeEventListener("resize", onWin); };
+  }, [contentVisible]);
+
+  // — Mouse proximity for particle + logo interaction —
   const handlePointerMove = useCallback((e: MouseEvent) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -60,7 +82,7 @@ export function Hero({ section, locale }: HeroProps) {
       const ctx = canvas.getContext("2d");
       if (!ctx) return;
       const W = canvas.width, H = canvas.height;
-      ctx.fillStyle = "#0a0502";
+      ctx.fillStyle = "#0d0703";
       ctx.fillRect(0, 0, W, H);
       for (let i = 0; i < 400; i++) {
         const x = Math.random() * W, y = Math.random() * H;
@@ -77,7 +99,7 @@ export function Hero({ section, locale }: HeroProps) {
     const W = canvas.width, H = canvas.height;
     const DPR = window.devicePixelRatio || 1;
 
-    // Particles: stars + sparkles — always visible, never fully dark
+    // Background stars — always visible
     const P = 340;
     const particles = Array.from({ length: P }, (_, i) => ({
       x: Math.random() * W,
@@ -90,21 +112,35 @@ export function Hero({ section, locale }: HeroProps) {
       baseAlpha: 0.35 + Math.random() * 0.5,
     }));
 
+    // GOLD SWARM — premium particles that orbit and are attracted to the logo
+    const G = 90;
+    const goldParticles = Array.from({ length: G }, (_, i) => ({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      size: Math.random() * 1.4 + 0.5,
+      angle: (i / G) * Math.PI * 2,
+      radius: Math.random() * 140 + 60, // orbit radius around logo
+      speed: 0.0012 + Math.random() * 0.0018,
+      pulse: Math.random() * Math.PI * 2,
+    }));
+
     let t = 0;
-    let idleFade = 0; // 0 = active, max 1 = idle (but particles ALWAYS visible)
+    let idleFade = 0;
 
     const animate = () => {
       requestRef.current = requestAnimationFrame(animate);
       ctx.clearRect(0, 0, W, H);
 
-      // Idle detection: after 6s of no mouse activity → subtle dimming
+      // Idle detection
       if (!mouseRef.current.near) {
-        idleFade = Math.min(1, idleFade + 0.0015); // slower fade in
+        idleFade = Math.min(1, idleFade + 0.0015);
       } else {
-        idleFade = Math.max(0, idleFade - 0.012); // faster restore
+        idleFade = Math.max(0, idleFade - 0.012);
       }
 
-      // Dark gradient background — rich midnight, not flat black
+      // Dark gradient background
       const darkBase = "#0d0703";
       const darkMid = "#080402";
       const darkEnd = "#050301";
@@ -115,7 +151,7 @@ export function Hero({ section, locale }: HeroProps) {
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, W, H);
 
-      // Vignette — intensifies on idle but never blackouts
+      // Vignette
       const vignetteStrength = 0.28 + idleFade * 0.12;
       const rad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) / 1.3);
       rad.addColorStop(0, "transparent");
@@ -125,21 +161,20 @@ export function Hero({ section, locale }: HeroProps) {
 
       t += 0.016;
       const mouse = mouseRef.current;
-      // Idle factor: 0 = active, 1 = idle (reduces speed, keeps min brightness)
       const speedFactor = 1 - (idleFade * 0.7);
-      const brightnessFactor = 0.7 + (idleFade * 0.3); // always at least 70% visible
+      const brightnessFactor = 0.7 + (idleFade * 0.3);
+      const logo = logoPosRef.current;
 
       ctx.save();
       ctx.globalCompositeOperation = "lighter";
 
+      // === BACKGROUND STARS ===
       particles.forEach((p) => {
-        // Organic drift — slowed on idle
         p.x += p.vx * speedFactor;
         p.y += p.vy * speedFactor;
         if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
         if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
 
-        // Cursor-reactive: accelerate toward pointer when nearby
         if (mouse.near) {
           const dx = mouse.x - p.x, dy = mouse.y - p.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
@@ -151,7 +186,6 @@ export function Hero({ section, locale }: HeroProps) {
           }
         }
 
-        // Twinkle — dimmed on idle but NEVER disappears
         const a = (p.baseAlpha + Math.sin(t * 0.6 + p.twinkle) * 0.1) * brightnessFactor;
         ctx.globalAlpha = a;
         ctx.fillStyle = p.sparkle ? "#d9c97a" : "#c9a85a";
@@ -159,7 +193,6 @@ export function Hero({ section, locale }: HeroProps) {
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
 
-        // Sparkle rays on sparkle particles — dimmed on idle but still visible
         if (p.sparkle && p.size > 0.9 && Math.sin(t * 2 + p.twinkle) > 0.3) {
           ctx.globalAlpha = a * 0.6;
           ctx.strokeStyle = "#d9c97a";
@@ -175,7 +208,88 @@ export function Hero({ section, locale }: HeroProps) {
         }
       });
 
-      // Golden beam when cursor is within range — always subtle
+      // === GOLD SWARM — premium particles around AR❀EM logo ===
+      if (logo) {
+        goldParticles.forEach((g, i) => {
+          // Orbit animation around logo
+          g.angle += g.speed * speedFactor;
+          const orbitX = logo.x + Math.cos(g.angle) * g.radius;
+          const orbitY = logo.y + Math.sin(g.angle) * (g.radius * 0.7);
+
+          // Attraction to mouse when nearby logo
+          const dxMouse = mouse.x - orbitX;
+          const dyMouse = mouse.y - orbitY;
+          const distMouse = Math.sqrt(dxMouse * dxMouse + dyMouse * dyMouse);
+          let tx = orbitX, ty = orbitY;
+          if (distMouse < 120 && mouse.near) {
+            const force = (120 - distMouse) / 120;
+            tx += (dxMouse / distMouse) * 30 * force;
+            ty += (dyMouse / distMouse) * 30 * force;
+          }
+          // Drift back to orbit point
+          g.vx += (tx - g.x) * 0.02 * speedFactor;
+          g.vy += (ty - g.y) * 0.02 * speedFactor;
+          g.vx *= 0.96; g.vy *= 0.96;
+          g.x += g.vx; g.y += g.vy;
+
+          // Draw gold spark with glow
+          const sparkle = Math.sin(t * 3 + g.pulse) > 0.3;
+          const size = g.size * (1 + Math.sin(t * 2 + g.pulse) * 0.2);
+          ctx.globalAlpha = brightnessFactor * (0.6 + Math.sin(t * 1.3 + g.pulse) * 0.4);
+          if (sparkle) {
+            // Draw sparkle star shape
+            ctx.save();
+            ctx.translate(g.x, g.y);
+            ctx.scale(size / 2, size / 2);
+            ctx.beginPath();
+            for (let s = 0; s < 8; s++) {
+              const a2 = (s * Math.PI) / 4;
+              const r1 = s % 2 === 0 ? 1 : 0.5;
+              ctx.lineTo(Math.cos(a2) * r1, Math.sin(a2) * r1);
+            }
+            ctx.closePath();
+            ctx.fillStyle = "#fff5d4";
+            ctx.fill();
+            ctx.restore();
+          } else {
+            ctx.fillStyle = "#d9c97a";
+            ctx.beginPath();
+            ctx.arc(g.x, g.y, size, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          // Draw connecting lines between nearby gold particles
+          if (i % 2 === 0) {
+            goldParticles.forEach((g2, j) => {
+              if (j <= i + 3 && j > i) {
+                const dx = g.x - g2.x, dy = g.y - g2.y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 50) {
+                  ctx.globalAlpha = 0.25 * brightnessFactor * (1 - dist / 50);
+                  ctx.strokeStyle = "#d9c97a";
+                  ctx.lineWidth = 0.5;
+                  ctx.beginPath();
+                  ctx.moveTo(g.x, g.y);
+                  ctx.lineTo(g2.x, g2.y);
+                  ctx.stroke();
+                }
+              }
+            });
+          }
+        });
+
+        // Halo glow beneath logo
+        ctx.globalAlpha = 0.25 * brightnessFactor;
+        ctx.fillStyle = "radial-gradient";
+        const halo = ctx.createRadialGradient(logo.x, logo.y, 0, logo.x, logo.y, 90);
+        halo.addColorStop(0, "rgba(217, 168, 74, 0.4)");
+        halo.addColorStop(0.5, "rgba(217, 168, 74, 0.15)");
+        halo.addColorStop(1, "transparent");
+        ctx.fillStyle = halo;
+        ctx.fillRect(logo.x - 90, logo.y - 90, 180, 180);
+      }
+
+      // Golden beam when cursor is within range
       if (mouse.near && canvasRef.current) {
         const rect = canvasRef.current.getBoundingClientRect();
         ctx.globalAlpha = 0.22 * brightnessFactor;
@@ -230,7 +344,7 @@ export function Hero({ section, locale }: HeroProps) {
         height={820}
       />
 
-      {/* Central AR❀EM logo — inside hero, animated */}
+      {/* Central AR❀EM logo — animated gold foil + halo */}
       <div
         className="hero__brand-outer"
         data-animate={contentVisible ? "ready" : undefined}
@@ -250,7 +364,7 @@ export function Hero({ section, locale }: HeroProps) {
         }}
       />
 
-      {/* Main content — left aligned */}
+      {/* Main content — left aligned, pushed down past logo on desktop */}
       <div className="hero__content">
         <p className="hero__eyebrow" data-hero-delay="580">
           {label.eyebrow}
