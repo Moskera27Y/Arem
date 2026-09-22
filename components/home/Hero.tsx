@@ -78,16 +78,16 @@ export function Hero({ section, locale }: HeroProps) {
     const DPR = window.devicePixelRatio || 1;
 
     // Particles: stars + sparkles — always visible, never fully dark
-    const P = 320;
+    const P = 340;
     const particles = Array.from({ length: P }, (_, i) => ({
       x: Math.random() * W,
       y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: (Math.random() - 0.5) * 0.3,
-      size: Math.random() * 1.5 + 0.3,
+      vx: (Math.random() - 0.5) * 0.45,
+      vy: (Math.random() - 0.5) * 0.35,
+      size: Math.random() * 1.8 + 0.4,
       twinkle: Math.random() * Math.PI * 2,
-      sparkle: i % 7 === 0,
-      baseAlpha: 0.3 + Math.random() * 0.5,
+      sparkle: i % 6 === 0,
+      baseAlpha: 0.35 + Math.random() * 0.5,
     }));
 
     let t = 0;
@@ -104,10 +104,10 @@ export function Hero({ section, locale }: HeroProps) {
         idleFade = Math.max(0, idleFade - 0.012); // faster restore
       }
 
-      // Dark gradient background — never fully black, keeps depth
-      const darkBase = "#0a0502";
-      const darkMid = "#060301";
-      const darkEnd = "#040200";
+      // Dark gradient background — rich midnight, not flat black
+      const darkBase = "#0d0703";
+      const darkMid = "#080402";
+      const darkEnd = "#050301";
       const grad = ctx.createLinearGradient(0, 0, W, H);
       grad.addColorStop(0, darkBase);
       grad.addColorStop(0.5, darkMid);
@@ -116,7 +116,7 @@ export function Hero({ section, locale }: HeroProps) {
       ctx.fillRect(0, 0, W, H);
 
       // Vignette — intensifies on idle but never blackouts
-      const vignetteStrength = 0.35 + idleFade * 0.15;
+      const vignetteStrength = 0.28 + idleFade * 0.12;
       const rad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) / 1.3);
       rad.addColorStop(0, "transparent");
       rad.addColorStop(1, `rgba(10, 5, 2, ${vignetteStrength})`);
@@ -127,7 +127,7 @@ export function Hero({ section, locale }: HeroProps) {
       const mouse = mouseRef.current;
       // Idle factor: 0 = active, 1 = idle (reduces speed, keeps min brightness)
       const speedFactor = 1 - (idleFade * 0.7);
-      const brightnessFactor = 0.6 + (idleFade * 0.4); // always at least 60% visible
+      const brightnessFactor = 0.7 + (idleFade * 0.3); // always at least 70% visible
 
       ctx.save();
       ctx.globalCompositeOperation = "lighter";
@@ -178,7 +178,7 @@ export function Hero({ section, locale }: HeroProps) {
       // Golden beam when cursor is within range — always subtle
       if (mouse.near && canvasRef.current) {
         const rect = canvasRef.current.getBoundingClientRect();
-        ctx.globalAlpha = 0.18 * brightnessFactor;
+        ctx.globalAlpha = 0.22 * brightnessFactor;
         const beamGrad = ctx.createLinearGradient(rect.width / 2, rect.height / 2, mouse.x, mouse.y);
         beamGrad.addColorStop(0, "#d9a85a");
         beamGrad.addColorStop(1, "transparent");

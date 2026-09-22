@@ -23,6 +23,7 @@ export function Header() {
   const { count, openCart } = useCart();
   const { ids } = useWishlist();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   const site = getSiteConfig(locale);
   const localePrefix = `/${locale}`;
@@ -37,6 +38,14 @@ export function Header() {
       document.body.style.overflow = "";
     };
   }, [menuOpen]);
+
+  // Scroll state for header gradient — triggers cream→clear fade as hero enters viewport
+  useEffect(() => {
+    const update = () => setScrolled(window.scrollY > 40);
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    return () => window.removeEventListener("scroll", update);
+  }, []);
 
   const wishlistCount = ids.length;
   const [cartBump, setCartBump] = useState(false);
@@ -53,7 +62,7 @@ export function Header() {
 
   return (
     <>
-      <header className="site-header">
+      <header className={`site-header${scrolled ? " scrolled" : ""}`}>
         <div className="container site-header__inner">
           <div className="site-header__brand">
             <Logo href={localePrefix} />
