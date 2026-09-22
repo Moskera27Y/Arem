@@ -102,37 +102,40 @@ export function AddToCart({ product }: AddToCartProps) {
       ))}
 
       <div ref={buyRowRef} className="pdp__buyrow" style={{ display: "flex", gap: "0.85rem", flexWrap: "wrap", marginTop: "0.5rem" }}>
-        <div className="cart-line__qty" style={{ padding: "0.7rem 0.4rem" }}>
-          <button
-            type="button"
-            className="qty-btn"
-            aria-label={dict.a11y.decreaseQty}
-            onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-          >
-            <Icon name="minus" size={14} />
-          </button>
-          <span className="cart-line__qty-val" style={{ minWidth: "2rem" }}>
-            {quantity}
-          </span>
-          <button
-            type="button"
-            className="qty-btn"
-            aria-label={dict.a11y.increaseQty}
-            onClick={() => setQuantity((q) => Math.min(stockLeft || 99, q + 1))}
-          >
-            <Icon name="plus" size={14} />
-          </button>
+        <div className="qty-row" style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+          <div className="cart-line__qty" style={{ padding: "0.7rem 0.4rem" }}>
+            <button
+              type="button"
+              className="qty-btn"
+              aria-label={dict.a11y.decreaseQty}
+              onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+            >
+              <Icon name="minus" size={14} />
+            </button>
+            <span className="cart-line__qty-val" style={{ minWidth: "2rem" }}>
+              {quantity}
+            </span>
+            <button
+              type="button"
+              className="qty-btn"
+              aria-label={dict.a11y.increaseQty}
+              onClick={() => setQuantity((q) => Math.min(stockLeft || 99, q + 1))}
+            >
+              <Icon name="plus" size={14} />
+            </button>
+          </div>
         </div>
         <button
           type="button"
           className="btn btn--primary btn--lg"
           disabled={soldOut}
           onClick={handleAdd}
+          data-mobile-price={variant ? format(variant.price.amount) : ""}
           style={{ flex: 1 }}
         >
           {soldOut
             ? dict.product.soldOut
-            : `${dict.product.addToCart} · ${variant ? format(variant.price.amount) : ""}`}
+            : <><span className="price-in-label">{dict.product.addToCart} · {variant ? format(variant.price.amount) : ""}</span><span className="price-in-label-mobile">{dict.product.addToCart}</span></>}
         </button>
       </div>
 
