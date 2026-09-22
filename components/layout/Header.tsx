@@ -188,6 +188,10 @@ export function Header() {
             </button>
             <Logo href={localePrefix} variant="light" />
             <nav aria-label="Menú móvil">
+              {/* Inicio: acceso directo a casa (el logo no está en la barra móvil) */}
+              <ViewTransitionLink href={localePrefix} className="mobile-menu__link mobile-menu__link--home">
+                {locale === "es" ? "Inicio" : "Home"}
+              </ViewTransitionLink>
               {site.nav.map((link, i) => (
                 <ViewTransitionLink key={link.href} href={`${localePrefix}${link.href}`} className="mobile-menu__link" data-i={i}>
                   <span className="mobile-menu__index" aria-hidden="true">
