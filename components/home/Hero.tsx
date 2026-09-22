@@ -386,14 +386,30 @@ export function Hero({ section, locale }: HeroProps) {
         height={820}
       />
 
-      {/* Central AR❀EM logo — animated gold foil + halo */}
+      {/* Central AR❀EM brand scene — framed gold-foil mark, orbit rings, light sweep */}
       <div
         className="hero__brand-outer"
         data-animate={contentVisible ? "ready" : undefined}
         role="img"
         aria-label="AR❀EM"
       >
-        <ARREM animated={!reduceMotion} />
+        <p className="hero__brand-kicker" aria-hidden="true">
+          {locale === "es" ? "Hecho a mano · Colombia" : "Handmade · Colombia"}
+        </p>
+        <div className="hero__brand-frame">
+          <span className="hero__frame-corner hero__frame-corner--tl" aria-hidden="true" />
+          <span className="hero__frame-corner hero__frame-corner--tr" aria-hidden="true" />
+          <span className="hero__frame-corner hero__frame-corner--bl" aria-hidden="true" />
+          <span className="hero__frame-corner hero__frame-corner--br" aria-hidden="true" />
+          <span className="hero__orbit hero__orbit--a" aria-hidden="true">
+            <span className="hero__orbit-dot" />
+          </span>
+          <span className="hero__orbit hero__orbit--b" aria-hidden="true">
+            <span className="hero__orbit-dot" />
+          </span>
+          <ARREM animated={!reduceMotion} />
+        </div>
+        <span className="hero__sheen" aria-hidden="true" />
       </div>
 
       {/* Floating polyhedron (right side only) */}

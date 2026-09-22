@@ -14,13 +14,13 @@ export function ARREM({ animated = true }: { animated?: boolean }) {
         AR
       </span>
 
-      {/* Flor central ❀ con brillo pulsátil + glitter */}
-      <span
-        className="hero__brand-flower"
-        aria-hidden="true"
-        style={animated ? undefined : { animationDelay: "0s" }}
-      >
-        ❀
+      {/* Flor central ❀ con órbita propia de chispas */}
+      <span className="hero__flower-wrap" aria-hidden="true">
+        <span className="hero__brand-flower">❀</span>
+        <span className="hero__flower-orbit">
+          <span className="hero__flower-dot" />
+          <span className="hero__flower-dot hero__flower-dot--b" />
+        </span>
       </span>
 
       {/* Letra EM con foil */}
