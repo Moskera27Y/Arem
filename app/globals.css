@@ -791,7 +791,13 @@ h4 {
   border-left: 1px solid rgba(239, 230, 211, 0.12);
   padding: calc(var(--header-h) + 1rem) var(--gutter) 2rem;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   animation: fade-in 0.3s var(--ease);
+  /* Safe areas */
+  padding-top: max(calc(var(--header-h) + 1rem), env(safe-area-inset-top));
+  padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  padding-left: max(var(--gutter), env(safe-area-inset-left, var(--gutter)));
+  padding-right: max(var(--gutter), env(safe-area-inset-right, var(--gutter)));
 }
 
 .mobile-menu__close {
@@ -3190,14 +3196,17 @@ h4 {
   position: relative;
   z-index: 1;
   border-top: 1px solid rgba(239, 230, 211, 0.12);
-  padding-block: 1.5rem;
+  padding-block: 1.75rem 1.25rem;
+  padding-inline: var(--gutter);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   color: rgba(239, 230, 211, 0.5);
-  font-size: var(--text-xs);
+  font-size: clamp(0.7rem, 1.7vw, var(--text-xs));
+  /* Mobile safe area */
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
 }
 
 .footer__bg {
@@ -4254,10 +4263,10 @@ body {
     justify-content: center;
   }
 
-  /* Touch targets back to 40px+ in the compact header. */
+  /* Touch targets back to 44px+ (iOS guideline) */
   .icon-btn {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
   }
 
   /* Category chips: compact, even, snap-aligned. */
@@ -5824,9 +5833,21 @@ body {
   }
 
   /* Footer socials tap target */
+  /* Footer socials — larger tap targets + safe area */
   .footer__social {
-    padding: 0.7rem 1.1rem;
-    font-size: var(--text-sm);
+    padding: 0.8rem 1.2rem;
+    font-size: clamp(0.75rem, 1.8vw, var(--text-sm));
+    min-height: 44px;
+    min-width: 44px;
+  }
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding-inline: var(--gutter);
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+  }
+  .footer__brand {
+    grid-column: 1 / -1;
   }
 }
 
