@@ -133,12 +133,15 @@ export function Hero({ section, locale }: HeroProps) {
           </div>
         ))}
       </div>
-      <div className="hero__brand-mark" data-animate={contentVisible ? "ready" : undefined}>
-        <span className="hero__brand-letter">A</span>
-        <span className="hero__brand-letter">R</span>
-        <span className="hero__brand-letter">E</span>
-        <span className="hero__brand-letter">M</span>
-        <span className="hero__brand-word">WORLD</span>
+      {/* Brand mark AREM — large centered, above content */}
+      <div className="hero__brand-outer" data-animate={contentVisible ? "ready" : undefined}>
+        <div className="hero__brand-mark">
+          <span className="hero__brand-letter hero__letter--a">A</span>
+          <span className="hero__brand-letter hero__letter--r">R</span>
+          <span className="hero__brand-letter hero__letter--e">E</span>
+          <span className="hero__brand-letter hero__letter--m">M</span>
+        </div>
+        <div className="hero__brand-trail"></div>
       </div>
       <div key={`${index}-${cycle}`} className="hero__content" data-animate={contentVisible ? "ready" : undefined}>
         <p className="hero__eyebrow">{slide.eyebrow}</p>
