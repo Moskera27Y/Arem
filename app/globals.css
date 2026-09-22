@@ -29,6 +29,7 @@
 
   /* Surfaces */
   --bg: var(--paper);
+  --nav-bg: var(--paper); /* navbar bg; used by nav→hero soft transition */
   --bg-alt: var(--paper-deep);
   --bg-dark: #14100b;
   --bg-dark-2: #1d1812;
@@ -603,6 +604,22 @@ h4 {
 
 .site-header__brand {
   justify-self: start;
+  position: relative; /* container for the ParticleLogo canvas overlay */
+}
+
+/*
+ * ParticleLogo canvas overlay on desktop (sm+). On mobile the SVG
+ * wordmark stays visible. When prefers-reduced-motion is active the
+ * canvas renders static dots (per ParticleLogo), so keep it visible.
+ */
+@media (min-width: 640px) {
+  .site-header__brand .particle-logo {
+    display: block;
+  }
+  /* Hide the static SVG wordmark once the animated canvas logo is active */
+  .site-header__brand .logo {
+    display: none;
+  }
 }
 
 .logo {
@@ -899,6 +916,31 @@ h4 {
   color: var(--text-inverse);
   display: flex;
   align-items: center;
+}
+
+/*
+ * Nav → Hero soft transition: blends the navbar's cream color
+ * into the hero's dark top edge so the seam dissolves.
+ * (nav-hero-transition.css integration)
+ */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: clamp(64px, 10vw, 140px);
+  background: linear-gradient(
+    to bottom,
+    var(--nav-bg, #f4f1ea) 0%,
+    color-mix(in srgb, var(--nav-bg, #f4f1ea) 55%, transparent) 45%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero::before {
+    transition: opacity 0.4s ease;
+  }
 }
 /* Smooth gradient fade-out at the bottom of hero — transitions into next section */
 .hero::after {

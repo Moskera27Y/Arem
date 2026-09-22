@@ -10,6 +10,7 @@ import { useLocale } from "@/lib/i18n/locale-context";
 import { useCart } from "@/lib/store/cart-context";
 import { useWishlist } from "@/lib/store/wishlist-context";
 import { Logo } from "@/components/ui/Logo";
+import ParticleLogo from "@/components/ui/ParticleLogo";
 import { Icon } from "@/components/ui/icons";
 import { ViewTransitionLink } from "@/components/ui/ViewTransitionLink";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
@@ -23,6 +24,7 @@ export function Header() {
   const { count, openCart } = useCart();
   const { ids } = useWishlist();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuReady, setMenuReady] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
   const site = getSiteConfig(locale);
@@ -37,6 +39,19 @@ export function Header() {
     return () => {
       document.body.style.overflow = "";
     };
+  }, [menuOpen]);
+
+  // Set data-open on the mobile menu AFTER the first paint so the CSS
+  // staggered link transition (opacity 0 → 1) fires correctly. Without
+  // this, m.div renders the menu but data-open is never set, leaving
+  // mobile menu links permanently opacity:0 (invisible on cream bg).
+  useEffect(() => {
+    if (!menuOpen) {
+      setMenuReady(false);
+      return;
+    }
+    const raf = requestAnimationFrame(() => setMenuReady(true));
+    return () => cancelAnimationFrame(raf);
   }, [menuOpen]);
 
   // Scroll state for header gradient — triggers cream→clear fade as hero enters viewport
@@ -65,7 +80,14 @@ export function Header() {
       <header className={`site-header${scrolled ? " scrolled" : ""}`}>
         <div className="container site-header__inner">
           <div className="site-header__brand">
+            {/* SVG wordmark: visible on mobile / reduced-motion, hidden on */}
+            {/* desktop when the ParticleLogo canvas is active. */}
             <Logo href={localePrefix} />
+            <ParticleLogo
+              text="AR•EM"
+              className="particle-logo absolute left-1/2 top-1/2 hidden h-[60px] w-auto -translate-x-1/2 -translate-y-1/2 sm:block"
+              aria-hidden={!reduceMotion}
+            />
           </div>
 
           <nav className="nav" aria-label="Principal">
@@ -160,6 +182,7 @@ export function Header() {
         {menuOpen && (
           <m.div
             className="mobile-menu mobile-menu--glass"
+            data-open={menuReady}
             role="dialog"
             aria-modal="true"
             aria-label="Menú"
