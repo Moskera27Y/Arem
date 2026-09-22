@@ -19,6 +19,8 @@ export function Hero({ section, locale }: HeroProps) {
   const logoRef = useRef<HTMLDivElement>(null);
   const requestRef = useRef<number>(0);
   const mouseRef = useRef<{ x: number; y: number; near: boolean }>({ x: 0, y: 0, near: false });
+  const idleStartRef = useRef<number>(0);
+  const [idlePhase, setIdlePhase] = useState(false);
 
   // — Responsive label / copy —
   const label = useMemo(() => ({
@@ -37,7 +39,6 @@ export function Hero({ section, locale }: HeroProps) {
     mq.addEventListener("change", fn);
     const onVis = () => document.hidden && setReduceMotion(true);
     document.addEventListener("visibilitychange", onVis);
-    // Entrance delay
     const t = setTimeout(() => setContentVisible(true), 200);
     return () => { clearTimeout(t); mq.removeEventListener("change", fn); document.removeEventListener("visibilitychange", onVis); };
   }, []);
@@ -51,11 +52,12 @@ export function Hero({ section, locale }: HeroProps) {
     mouseRef.current.y = e.clientY - rect.top;
     const near = Math.hypot(mouseRef.current.x - rect.width / 2, mouseRef.current.y - rect.height / 2) < rect.width * 0.35;
     mouseRef.current.near = near;
+    // Reset idle phase on activity
+    setIdlePhase(false);
   }, []);
 
   useEffect(() => {
     if (reduceMotion || !canvasRef.current) {
-      // Draw static fallback — no animation
       const canvas = canvasRef.current;
       if (!canvas) return;
       const ctx = canvas.getContext("2d");
@@ -92,60 +94,75 @@ export function Hero({ section, locale }: HeroProps) {
     }));
 
     let t = 0;
+    let idleFade = 0; // 0 = full brightness, 1 = faded
 
     const animate = () => {
       requestRef.current = requestAnimationFrame(animate);
       ctx.clearRect(0, 0, W, H);
 
-      // Dark gradient background with wood-grain texture (subtle)
+      // Idle detection: after 6s of no mouse activity → fade phase
+      if (!mouseRef.current.near) {
+        idleFade = Math.min(1, idleFade + 0.002);
+      } else {
+        idleFade = Math.max(0, idleFade - 0.008);
+      }
+
+      // Dark gradient background with wood-grain texture (subtle), darkens on idle
+      const darkBase = "#0a0502";
+      const darkMid = idleFade > 0.5 ? "#040301" : "#060301";
+      const darkEnd = idleFade > 0.5 ? "#020100" : "#040200";
       const grad = ctx.createLinearGradient(0, 0, W, H);
-      grad.addColorStop(0, "#0a0502");
-      grad.addColorStop(0.5, "#060301");
-      grad.addColorStop(1, "#040200");
+      grad.addColorStop(0, darkBase);
+      grad.addColorStop(0.5, darkMid);
+      grad.addColorStop(1, darkEnd);
       ctx.fillStyle = grad;
       ctx.fillRect(0, 0, W, H);
 
-      // Subtle radial vignette (darkness in edges)
+      // Subtle radial vignette (darkness in edges), intensifies on idle
+      const vignetteStrength = 0.35 + idleFade * 0.25;
       const rad = ctx.createRadialGradient(W / 2, H / 2, 0, W / 2, H / 2, Math.max(W, H) / 1.3);
       rad.addColorStop(0, "transparent");
-      rad.addColorStop(1, "rgba(10, 5, 2, 0.35)");
+      rad.addColorStop(1, `rgba(10, 5, 2, ${vignetteStrength})`);
       ctx.fillStyle = rad;
       ctx.fillRect(0, 0, W, H);
 
       t += 0.016;
       const mouse = mouseRef.current;
+      // Idle factor: 0 = active, 1 = idle (reduces speed + brightness)
+      const speedFactor = 1 - (idleFade * 0.8);
+      const brightnessFactor = 1 - (idleFade * 0.6);
 
       ctx.save();
       ctx.globalCompositeOperation = "lighter";
 
       particles.forEach((p) => {
-        // Organic drift
-        p.x += p.vx;
-        p.y += p.vy;
+        // Organic drift — slowed on idle
+        p.x += p.vx * speedFactor;
+        p.y += p.vy * speedFactor;
         if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
         if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
 
         // Cursor-reactive: accelerate toward pointer when nearby
-        if (mouse.near) {
+        if (mouse.near && idleFade < 0.8) {
           const dx = mouse.x - p.x, dy = mouse.y - p.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 300) {
             const force = (300 - dist) / 300;
-            p.vx += (dx / dist) * 0.18 * force;
-            p.vy += (dy / dist) * 0.12 * force;
+            p.vx += (dx / dist) * 0.18 * force * speedFactor;
+            p.vy += (dy / dist) * 0.12 * force * speedFactor;
             p.vx *= 0.97; p.vy *= 0.97;
           }
         }
 
-        // Twinkle
-        const a = p.baseAlpha + Math.sin(t * 0.6 + p.twinkle) * 0.1;
+        // Twinkle — dimmed on idle
+        const a = (p.baseAlpha + Math.sin(t * 0.6 + p.twinkle) * 0.1) * brightnessFactor;
         ctx.globalAlpha = a;
         ctx.fillStyle = p.sparkle ? "#d9c97a" : "#c9a85a";
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
         ctx.fill();
 
-        // Sparkle rays on sparkle particles
+        // Sparkle rays on sparkle particles — dimmed on idle
         if (p.sparkle && p.size > 0.9 && Math.sin(t * 2 + p.twinkle) > 0.3) {
           ctx.globalAlpha = a * 0.6;
           ctx.strokeStyle = "#d9c97a";
@@ -161,10 +178,10 @@ export function Hero({ section, locale }: HeroProps) {
         }
       });
 
-      // Golden beam when cursor is within range
-      if (mouse.near && canvasRef.current) {
+      // Golden beam when cursor is within range — fades on idle
+      if (mouse.near && canvasRef.current && idleFade < 0.8) {
         const rect = canvasRef.current.getBoundingClientRect();
-        ctx.globalAlpha = 0.15;
+        ctx.globalAlpha = 0.15 * (1 - idleFade);
         const beamGrad = ctx.createLinearGradient(rect.width / 2, rect.height / 2, mouse.x, mouse.y);
         beamGrad.addColorStop(0, "#d9a85a");
         beamGrad.addColorStop(1, "transparent");
@@ -175,7 +192,6 @@ export function Hero({ section, locale }: HeroProps) {
       ctx.restore();
     };
 
-    // Init canvas size
     const resize = () => {
       const rect = canvas.getBoundingClientRect();
       canvas.width = rect.width * DPR;
@@ -191,7 +207,7 @@ export function Hero({ section, locale }: HeroProps) {
       cancelAnimationFrame(requestRef.current);
       window.removeEventListener("resize", resize);
     };
-  }, [reduceMotion]);
+  }, [reduceMotion, idlePhase]);
 
   // Pointer event listener on canvas
   useEffect(() => {
@@ -217,15 +233,7 @@ export function Hero({ section, locale }: HeroProps) {
           height={820}
         />
 
-        {/* Floating geometric elements */}
-        <div
-          className="hero__geom hero__geom--circle"
-          style={{
-            left: "3%",
-            top: "45%",
-            animationDelay: reduceMotion ? "0s" : "0.7s",
-          }}
-        />
+        {/* Floating polyhedron (right side only — circle removed for clean space) */}
         <div
           className="hero__geom hero__geom--poly"
           style={{
