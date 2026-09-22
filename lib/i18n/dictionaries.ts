@@ -69,6 +69,7 @@ export interface Dictionary {
     sortName: string;
     empty: string;
     noResults: string;
+    count: (count: number) => string;
   };
   product: {
     addToCart: string;
@@ -179,6 +180,7 @@ export interface Dictionary {
     title: string;
     sub: string;
     filling: string;
+    count: (count: number) => string;
   };
   notFound: {
     code: string;
@@ -349,6 +351,7 @@ export interface Dictionary {
   home: {
     bestSeller: (index: string) => string;
     viewPiece: string;
+    brandKicker: string;
   };
   legal: {
     lastUpdated: string;
@@ -470,6 +473,7 @@ const en: Dictionary = {
     sortName: "Name: A–Z",
     empty: "There are no products in this category yet. Check back soon.",
     noResults: "Try another word or category.",
+    count: (count) => `${count} ${count === 1 ? "piece" : "pieces"}`,
   },
   product: {
     addToCart: "Add to cart",
@@ -580,6 +584,7 @@ const en: Dictionary = {
     title: "Collections",
     sub: "Groups of pieces that tell a story: heritage, craft and place.",
     filling: "This collection is filling up. Check back soon.",
+    count: (count) => `${count} ${count === 1 ? "collection" : "collections"}`,
   },
   notFound: {
     code: "Error 404",
@@ -750,6 +755,7 @@ const en: Dictionary = {
   home: {
     bestSeller: (index) => `Nº ${index} best seller`,
     viewPiece: "View piece",
+    brandKicker: "Handmade · Colombia",
   },
   legal: {
     lastUpdated: "Last updated:",
@@ -871,6 +877,7 @@ const es: Dictionary = {
     sortName: "Nombre: A–Z",
     empty: "No hay productos en esta categoría todavía. Vuelve pronto.",
     noResults: "Prueba con otra palabra o categoría.",
+    count: (count) => `${count} ${count === 1 ? "pieza" : "piezas"}`,
   },
   product: {
     addToCart: "Agregar al carrito",
@@ -977,10 +984,11 @@ const es: Dictionary = {
     handmade: "hecho a mano",
   },
   collections: {
-    eyebrow: "Historias que contar",
+    eyebrow: "Historias que valen la pena",
     title: "Colecciones",
     sub: "Grupos de piezas que cuentan una historia: herencia, oficio y lugar.",
     filling: "Esta colección se está llenando. Vuelve pronto.",
+    count: (count) => `${count} ${count === 1 ? "colección" : "colecciones"}`,
   },
   notFound: {
     code: "Error 404",
@@ -1151,6 +1159,7 @@ const es: Dictionary = {
   home: {
     bestSeller: (index) => `Nº ${index} más vendida`,
     viewPiece: "Conoce la pieza",
+    brandKicker: "Hecho a mano · Colombia",
   },
   legal: {
     lastUpdated: "Última actualización:",

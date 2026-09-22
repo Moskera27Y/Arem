@@ -27,15 +27,20 @@ export default async function CollectionsPage({ params }: { params: Promise<P> }
   const prefix = `/${locale}`;
 
   const rows = await listCollections({ activeOnly: true });
+  // CMS data resolution (not UI copy): pick the locale column with fallback to English.
+  const pick = (row: unknown, base: string): string => {
+    const r = row as Record<string, unknown>;
+    return String(r[`${base}_${locale}`] ?? r[`${base}_en`] ?? "");
+  };
   const items: Collection[] = await Promise.all(
     rows.map(async (c) => ({
       id: c.id,
       slug: c.slug,
-      name: locale === "es" ? c.name_es : c.name_en,
-      tagline: locale === "es" ? c.tagline_es || "" : c.tagline_en || "",
-      description: locale === "es" ? c.description_es || "" : c.description_en || "",
-      story: locale === "es" ? c.story_es || "" : c.story_en || "",
-      image: { src: c.image_url || c.image_key || "", alt: locale === "es" ? c.image_alt_es || "" : c.image_alt_en || "" },
+      name: pick(c, "name"),
+      tagline: pick(c, "tagline"),
+      description: pick(c, "description"),
+      story: pick(c, "story"),
+      image: { src: c.image_url || c.image_key || "", alt: pick(c, "image_alt") },
       productIds: await listProductIdsForCollection(c.id),
       featured: c.sort_order === 1,
       order: c.sort_order,
@@ -44,16 +49,21 @@ export default async function CollectionsPage({ params }: { params: Promise<P> }
 
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <nav className="breadcrumbs" aria-label={dict.a11y.breadcrumbs}>
+      <section className="shop-hero">
+        <div className="container shop-hero__inner">
+          <nav className="breadcrumbs shop-hero__crumbs" aria-label={dict.a11y.breadcrumbs}>
             <Link href={prefix}>{dict.common.home}</Link>
             <span className="breadcrumbs__sep">/</span>
             <span>{dict.nav.collections}</span>
           </nav>
-          <p className="eyebrow page-hero__eyebrow">{dict.collections.eyebrow}</p>
-          <h1 className="page-hero__title">{dict.collections.title}</h1>
-          <p className="page-hero__sub">{dict.collections.sub}</p>
+          <p className="eyebrow shop-hero__eyebrow">{dict.collections.eyebrow}</p>
+          <h1 className="shop-hero__title">{dict.collections.title}</h1>
+          <p className="shop-hero__sub">{dict.collections.sub}</p>
+          {items.length > 0 && (
+            <p className="shop-hero__count">
+              <span className="shop-hero__count-pill">{dict.collections.count(items.length)}</span>
+            </p>
+          )}
         </div>
       </section>
 

@@ -18,7 +18,12 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const locale = isLocale(raw) ? raw : ("en" as Locale);
   const c = await getCollectionBySlug(slug);
   if (!c) return { title: getDictionary(locale).meta.notFoundCollection };
-  return { title: locale === "es" ? c.name_es : c.name_en, description: locale === "es" ? c.description_es || undefined : c.description_en || undefined };
+  const r = c as unknown as Record<string, unknown>;
+  const pickMeta = (base: string): string | undefined => {
+    const v = r[`${base}_${locale}`] ?? r[`${base}_en`];
+    return typeof v === "string" && v ? v : undefined;
+  };
+  return { title: pickMeta("name") ?? "", description: pickMeta("description") };
 }
 
 export default async function CollectionPage({ params }: { params: Promise<Params> }) {
@@ -31,12 +36,15 @@ export default async function CollectionPage({ params }: { params: Promise<Param
   const c = await getCollectionBySlug(slug);
   if (!c || !c.is_active) notFound();
 
-  const name = locale === "es" ? c.name_es : c.name_en;
-  const description = locale === "es" ? c.description_es || "" : c.description_en || "";
-  const story = locale === "es" ? c.story_es || "" : c.story_en || "";
-  const tagline = locale === "es" ? c.tagline_es || "" : c.tagline_en || "";
+  // CMS data resolution (not UI copy): locale column with English fallback.
+  const row = c as unknown as Record<string, unknown>;
+  const pick = (base: string): string => String(row[`${base}_${locale}`] ?? row[`${base}_en`] ?? "");
+  const name = pick("name");
+  const description = pick("description");
+  const story = pick("story");
+  const tagline = pick("tagline");
   const imageSrc = c.image_url || c.image_key || "";
-  const imageAlt = locale === "es" ? c.image_alt_es || "" : c.image_alt_en || "";
+  const imageAlt = pick("image_alt");
   const ids = await listProductIdsForCollection(c.id);
   const items = ids.map((id) => getProductById(locale, id)).filter((p): p is NonNullable<typeof p> => Boolean(p));
 
@@ -60,6 +68,11 @@ export default async function CollectionPage({ params }: { params: Promise<Param
               <p className="eyebrow" style={{ color: "var(--sand)" }}>{tagline}</p>
               <h1 className="collection-hero__title">{name}</h1>
               <p className="collection-hero__sub">{description}</p>
+              {items.length > 0 && (
+                <p style={{ marginTop: "1.1rem" }}>
+                  <span className="badge badge--light">{dict.common.pieces(items.length)}</span>
+                </p>
+              )}
             </div>
           </div>
 

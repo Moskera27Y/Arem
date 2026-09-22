@@ -40,16 +40,16 @@ export function ContactDetails() {
 
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <nav className="breadcrumbs" aria-label={dict.a11y.breadcrumbs}>
+      <section className="shop-hero">
+        <div className="container shop-hero__inner">
+          <nav className="breadcrumbs shop-hero__crumbs" aria-label={dict.a11y.breadcrumbs}>
             <Link href={prefix}>{dict.common.home}</Link>
             <span className="breadcrumbs__sep">/</span>
             <span>{dict.nav.contact}</span>
           </nav>
-          <p className="eyebrow page-hero__eyebrow">{dict.contact.eyebrow}</p>
-          <h1 className="page-hero__title">{title}</h1>
-          <p className="page-hero__sub">{intro}</p>
+          <p className="eyebrow shop-hero__eyebrow">{dict.contact.eyebrow}</p>
+          <h1 className="shop-hero__title">{title}</h1>
+          <p className="shop-hero__sub">{intro}</p>
         </div>
       </section>
 

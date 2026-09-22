@@ -395,7 +395,7 @@ export function Hero({ section, locale }: HeroProps) {
         aria-label="AR❀EM"
       >
         <p className="hero__brand-kicker" aria-hidden="true">
-          {locale === "es" ? "Hecho a mano · Colombia" : "Handmade · Colombia"}
+          {getDictionary(locale).home.brandKicker}
         </p>
         <div className="hero__brand-frame">
           <span className="hero__frame-corner hero__frame-corner--tl" aria-hidden="true" />

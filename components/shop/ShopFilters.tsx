@@ -48,13 +48,13 @@ export function ShopFilters({ categories, regions, activeSlug, activeRegion, sor
       .filter((c) => bySlug.has(c.slug))
       .map((c) => {
         const seed = bySlug.get(c.slug)!;
-        const name = locale === "es" ? seed.name.es : seed.name.en;
+        const name = seed.name[locale];
         return { ...c, name: name || c.name };
       });
     for (const seed of adminCategories) {
       if (seed.enabled === false) continue;
       if (!categories.some((c) => c.slug === seed.slug)) {
-        merged.push({ slug: seed.slug, name: locale === "es" ? seed.name.es : seed.name.en, count: 0 });
+        merged.push({ slug: seed.slug, name: seed.name[locale], count: 0 });
       }
     }
     return merged;

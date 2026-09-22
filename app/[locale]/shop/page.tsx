@@ -5,6 +5,7 @@ import { getActiveProducts, getCategories, getCategoryBySlug, getRegions } from 
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import { ShopFilters, type ShopFilterCategory, type ShopFilterRegion } from "@/components/shop/ShopFilters";
+import { ShopCategoryChips } from "@/components/shop/ShopCategoryChips";
 import { ShopGrid } from "@/components/shop/ShopGrid";
 
 interface ShopPageProps {
@@ -92,22 +93,34 @@ export default async function ShopPage({ params, searchParams }: ShopPageProps) 
 
   return (
     <div className="shop-page">
-      <section className="page-hero">
-        <div className="container">
-          <nav className="breadcrumbs" aria-label={dict.a11y.breadcrumbs}>
+      <section className="shop-hero">
+        <div className="container shop-hero__inner">
+          <nav className="breadcrumbs shop-hero__crumbs" aria-label={dict.a11y.breadcrumbs}>
             <Link href={localePrefix}>{dict.common.home}</Link>
             <span className="breadcrumbs__sep">/</span>
             <span>{dict.nav.shop}</span>
           </nav>
-          <p className="eyebrow page-hero__eyebrow">{dict.shop.eyebrow}</p>
-          <h1 className="page-hero__title">
+          <p className="eyebrow shop-hero__eyebrow">{dict.shop.eyebrow}</p>
+          <h1 className="shop-hero__title">
             {activeCategory ? activeCategory.name : dict.shop.allTitle}
           </h1>
-          <p className="page-hero__sub">
+          <p className="shop-hero__sub">
             {activeCategory ? activeCategory.description : dict.shop.allSub}
+          </p>
+          <p className="shop-hero__count">
+            <span className="shop-hero__count-pill">{dict.shop.count(sorted.length)}</span>
           </p>
         </div>
       </section>
+
+      <ShopCategoryChips
+        categories={filterCategories}
+        activeSlug={activeSlug}
+        total={all.length}
+        allLabel={dict.shop.all}
+        navLabel={dict.shop.categories}
+        localePrefix={localePrefix}
+      />
 
       <section className="section">
         <div className="container">

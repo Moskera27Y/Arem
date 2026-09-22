@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getAboutContent } from "@/lib/content";
+import { getAboutContent, getActiveProducts } from "@/lib/content";
+import { listCollections } from "@/lib/server/collections";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { isLocale, type Locale } from "@/lib/i18n/config";
 import { ManagedImage } from "@/components/ui/ManagedImage";
@@ -28,19 +29,25 @@ export default async function AboutPage({ params }: AboutPageProps) {
   const dict = getDictionary(locale);
   const localePrefix = `/${locale}`;
   const content = getAboutContent(locale);
+  const pieceCount = getActiveProducts(locale).length;
+  const collectionCount = (await listCollections({ activeOnly: true })).length;
 
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <nav className="breadcrumbs" aria-label={dict.a11y.breadcrumbs}>
+      <section className="shop-hero">
+        <div className="container shop-hero__inner">
+          <nav className="breadcrumbs shop-hero__crumbs" aria-label={dict.a11y.breadcrumbs}>
             <Link href={localePrefix}>{dict.common.home}</Link>
             <span className="breadcrumbs__sep">/</span>
             <span>{dict.nav.about}</span>
           </nav>
-          <p className="eyebrow page-hero__eyebrow">{content.hero.eyebrow}</p>
-          <h1 className="page-hero__title">{content.hero.title}</h1>
-          <p className="page-hero__sub">{content.hero.sub}</p>
+          <p className="eyebrow shop-hero__eyebrow">{content.hero.eyebrow}</p>
+          <h1 className="shop-hero__title">{content.hero.title}</h1>
+          <p className="shop-hero__sub">{content.hero.sub}</p>
+          <p className="shop-hero__count">
+            <span className="shop-hero__count-pill">{dict.shop.count(pieceCount)}</span>
+            <span className="shop-hero__count-pill">{dict.collections.count(collectionCount)}</span>
+          </p>
         </div>
       </section>
 
