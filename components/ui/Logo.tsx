@@ -22,13 +22,17 @@ export function Logo({ variant = "dark", href = "/" }: LogoProps) {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/brand/arem-world-logo.svg"
-        alt="AREM WORLD — Colombian craftsmanship"
+        alt="AREM WORLD — Colombian craftmanship"
         className="logo__img"
         width={760}
         height={240}
         loading="eager"
         decoding="sync"
         fetchPriority="high"
+        onError={(e) => {
+          e.currentTarget.style.display = "none";
+          e.currentTarget.parentElement?.classList.add("logo--fallback");
+        }}
       />
     </Link>
   );

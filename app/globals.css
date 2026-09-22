@@ -604,7 +604,13 @@ h4 {
 
 .site-header__brand {
   justify-self: start;
+  min-width: 0; /* prevent grid collapse from large logo on narrow screens */
   position: relative; /* container for the ParticleLogo canvas overlay */
+}
+
+.header-actions {
+  justify-self: end;
+  min-width: 0; /* prevent grid collapse from wide action cluster */
 }
 
 /*
@@ -633,6 +639,15 @@ h4 {
   display: block;
   width: auto;
   height: auto;
+}
+.logo--fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.75rem;
+  letter-spacing: 0.15em;
 }
 
 /* Brand logo sizing — preserved aspect ratio (760:240), no distortion. */
@@ -712,6 +727,7 @@ h4 {
 
 .header-actions {
   justify-self: end;
+  min-width: 0; /* prevent grid collapse from wide action cluster */
   display: flex;
   align-items: center;
   gap: var(--sp-2);
