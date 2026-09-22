@@ -1100,17 +1100,18 @@ h4 {
 }
 
 .hero__cta {
-  position: relative;
-  padding: 1rem 2.2rem;
-  font-size: var(--text-sm);
-  letter-spacing: 0.08em;
-  border-radius: var(--r-sm);
-  background: var(--gold);
-  color: var(--ink);
-  border: 1px solid var(--gold);
-  overflow: hidden;
-  transition: all 0.25s var(--ease);
-}
+    position: relative;
+    padding: 1rem 2.2rem;
+    font-size: var(--text-sm);
+    letter-spacing: 0.08em;
+    border-radius: var(--r-sm);
+    background: var(--gold);
+    color: var(--ink);
+    border: 1px solid var(--gold);
+    overflow: hidden;
+    touch-action: manipulation;
+    transition: all 0.25s var(--ease);
+  }
 .hero__cta .btn__glow {
   position: absolute;
   inset: 0;
@@ -6166,6 +6167,132 @@ input.checkbox {
   }
   .footer__brand {
     grid-column: 1 / -1;
+  }
+
+  /* === MOBILE HERO ENHANCEMENTS === */
+
+  /* Shorter hero on mobile — content above the fold matters */
+  .hero {
+    min-height: clamp(520px, 75vh, 700px);
+  }
+
+  /* Central logo scales down for mobile */
+  .hero__brand-outer {
+    top: 2.5rem;
+    transition: opacity 0.45s ease 0.2s both; /* shorter delay than desktop */
+  }
+
+  .hero__brand-mark {
+    font-size: clamp(2.6rem, 11vw, 4.2rem);
+    letter-spacing: -0.03em;
+  }
+
+  /* Content padding — gutters + safe areas */
+  .hero__content {
+    padding-left: max(var(--gutter), env(safe-area-inset-left));
+    padding-right: max(var(--gutter), env(safe-area-inset-right));
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
+    max-width: 92vw;
+    transition: opacity 0.55s ease 0.35s both, transform 0.55s ease 0.35s both;
+  }
+
+  /* Faster staggered entrance on mobile (prefers-reduced-motion respected) */
+  .hero__eyebrow {
+    transition-delay: 0.2s;
+  }
+  .hero__title {
+    transition-delay: 0.32s;
+  }
+  .hero__title-accent {
+    transition-delay: 0.42s;
+  }
+  .hero__sub {
+    transition-delay: 0.52s;
+  }
+  .hero__actions {
+    transition-delay: 0.62s;
+  }
+
+  /* Mobile title sizing — readable, not too big */
+  .hero__title {
+    font-size: clamp(2.1rem, 7vw, 3.2rem);
+  }
+  .hero__sub {
+    font-size: clamp(0.9rem, 2.8vw, 1.05rem);
+    max-width: 30ch;
+  }
+
+  /* CTA — full width, larger tap target */
+  .hero__cta {
+    width: 100%;
+    max-width: 22rem;
+    padding: 0.95rem 1.5rem;
+    font-size: clamp(0.9rem, 2.6vw, 1rem);
+  }
+
+  /* AR❀EM logo entrance — soft float + scale */
+  @media (prefers-reduced-motion: no-preference) {
+    .hero__brand-outer {
+      animation: hero-logo-float 6s ease-in-out infinite;
+    }
+  }
+  @keyframes hero-logo-float {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-6px); }
+  }
+
+  /* Glitter density slightly reduced on mobile for perf */
+  .hero__glitter {
+    display: none; /* too heavy on low-end mobile */
+  }
+  @media (hover: hover) {
+    .hero__glitter {
+      display: block;
+    }
+  }
+
+  /* Product cards — readable prices + larger tap targets on mobile */
+  .product-card__title {
+    font-size: clamp(0.95rem, 2.4vw, 1.1rem);
+  }
+  .product-card__price {
+    font-size: clamp(1rem, 2.6vw, 1.15rem);
+  }
+  .product-card__category {
+    font-size: clamp(0.65rem, 1.6vw, 0.75rem);
+  }
+  .product-card__origin {
+    font-size: clamp(0.65rem, 1.6vw, 0.75rem);
+  }
+
+  /* Wishlist button — 44px touch target minimum */
+  .wishlist-btn {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  /* Icon actions — larger on mobile */
+  .icon-action {
+    width: 2.75rem;
+    height: 2.75rem;
+  }
+
+  /* Trust row on mobile: stacked, touch-friendly */
+  .trust-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem 0.75rem;
+  }
+  .trust-item {
+    font-size: clamp(0.65rem, 1.6vw, 0.75rem);
+  }
+
+  /* Mobile product rails: 2 products per row, dense but readable */
+  .products-row {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  .product-card {
+    max-width: 100%;
   }
 }
 
