@@ -172,7 +172,7 @@ export function AddToCart({ product }: AddToCartProps) {
             )}
             <div className="pdp-bar__info">
               <p className="pdp-bar__name">{product.name}</p>
-              <p className="pdp-bar__price">
+              <p className="pdp-bar__price" key={variant?.id ?? "none"} data-fresh="true">
                 {variant ? format(variant.price.amount) : ""}
                 {variant && <span className="pdp-bar__variant">{variant.title}</span>}
               </p>

@@ -5213,6 +5213,51 @@ input.checkbox {
   }
 }
 
+/* Touch feedback: sin hover, la respuesta va en el toque (solo transform +
+ * opacity, composited). Las acciones ya son siempre visibles en táctil. */
+@media (hover: none) {
+  .product-card {
+    -webkit-tap-highlight-color: transparent;
+  }
+  .product-card:active .product-card__media img {
+    transform: scale(1.04);
+  }
+  .product-card__media img {
+    transition: transform 0.35s var(--ease);
+  }
+  .option-btn {
+    transition:
+      background-color 0.2s var(--ease),
+      color 0.2s var(--ease),
+      border-color 0.2s var(--ease),
+      transform 0.15s var(--ease);
+  }
+  .option-btn:active {
+    transform: scale(0.96);
+  }
+  .gallery__thumb {
+    transition:
+      opacity 0.25s var(--ease),
+      border-color 0.25s var(--ease),
+      transform 0.15s var(--ease);
+  }
+  .gallery__thumb:active {
+    transform: scale(0.94);
+  }
+  .cat-chip:active .cat-chip__media {
+    transform: scale(0.97);
+  }
+  .cat-chip__media {
+    transition: transform 0.2s var(--ease);
+  }
+  .qty-btn:active {
+    transform: scale(0.9);
+  }
+  .qty-btn {
+    transition: transform 0.15s var(--ease);
+  }
+}
+
 /* Scroll-driven motion: enhancement only, gated to no-preference. */
 @media (prefers-reduced-motion: no-preference) {
   @supports (animation-timeline: view()) {
@@ -5484,6 +5529,20 @@ input.checkbox {
   .pdp-bar[data-visible="true"] {
     display: flex;
   }
+  /* La barra fija tapaba el final del contenido: reserva su altura */
+  .pdp {
+    padding-bottom: 6rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .pdp-bar__cta {
+    padding-inline: 1rem;
+  }
+  .pdp-bar__img {
+    width: 2.25rem;
+    height: 2.75rem;
+  }
 }
 
 .pdp-bar__img {
@@ -5510,15 +5569,40 @@ input.checkbox {
 .pdp-bar__price {
   font-size: var(--text-sm);
   font-weight: 700;
+  /* Una sola línea con truncado: antes el nombre de variante desbordaba
+   * la caja y se metía debajo del botón en pantallas angostas. */
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .pdp-bar__variant {
   font-weight: 400;
   color: var(--muted);
-  margin-left: 0.5rem;
+  flex: 1 1 auto;
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Entrada deslizante de la barra + micro-fade del precio al cambiar variante */
+.pdp-bar[data-visible="true"] {
+  animation: pdp-bar-in 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes pdp-bar-in {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes pdp-price-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: none; }
+}
+.pdp-bar__price[data-fresh="true"] {
+  animation: pdp-price-in 0.25s var(--ease);
 }
 
 .pdp-bar__cta {
