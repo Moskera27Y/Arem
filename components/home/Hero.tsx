@@ -134,19 +134,19 @@ export function Hero({ section, locale }: HeroProps) {
         ))}
       </div>
       <div className="hero__brand-mark" data-animate={contentVisible ? "ready" : undefined}>
-        <span className="hero__brand-letter" style={{ animationDelay: "0ms" }}>A</span>
-        <span className="hero__brand-letter" style={{ animationDelay: "120ms" }}>R</span>
-        <span className="hero__brand-letter" style={{ animationDelay: "240ms" }}>E</span>
-        <span className="hero__brand-letter" style={{ animationDelay: "360ms" }}>M</span>
-        <span className="hero__brand-word" style={{ animationDelay: "480ms" }}>WORLD</span>
+        <span className="hero__brand-letter">A</span>
+        <span className="hero__brand-letter">R</span>
+        <span className="hero__brand-letter">E</span>
+        <span className="hero__brand-letter">M</span>
+        <span className="hero__brand-word">WORLD</span>
       </div>
       <div key={`${index}-${cycle}`} className="hero__content" data-animate={contentVisible ? "ready" : undefined}>
-        <p className="hero__eyebrow" data-hero-delay="600">{slide.eyebrow}</p>
-        <TitleTag className="hero__title" data-hero-delay="750">
+        <p className="hero__eyebrow">{slide.eyebrow}</p>
+        <TitleTag className="hero__title">
           {slide.title} <em>{slide.titleAccent}</em>
         </TitleTag>
-        <p className="hero__sub" data-hero-delay="900">{slide.subtitle}</p>
-        <div className="hero__actions" data-hero-delay="1050">
+        <p className="hero__sub">{slide.subtitle}</p>
+        <div className="hero__actions">
           <Link href={`/${locale}${slide.primaryCta.href}`} className="btn btn--gold-dark btn--lg">
             {slide.primaryCta.label}
           </Link>
