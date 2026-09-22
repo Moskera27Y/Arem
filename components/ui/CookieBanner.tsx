@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getDictionary } from "@/lib/i18n/dictionaries";
 import { useLocale } from "@/lib/i18n/locale-context";
-import { useReducedMotion } from "motion/react";
 import Link from "next/link";
 
 const COOKIE_CONSENT_KEY = "arem_cookie_consent";
@@ -12,8 +10,7 @@ type Consent = "granted" | "denied" | "partial";
 
 export function CookieBanner() {
   const locale = useLocale() as "en" | "es";
-  const dict = getDictionary(locale);
-  const reduceMotion = useReducedMotion();
+  const [reduceMotion, setReduceMotion] = useState(false);
   const [consent, setConsent] = useState<Consent | null>(null);
   const [visible, setVisible] = useState(false);
 
@@ -24,6 +21,14 @@ export function CookieBanner() {
       return () => clearTimeout(t);
     }
     setConsent(stored);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setReduceMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setReduceMotion(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
   }, []);
 
   const handleSave = (c: Consent) => {
