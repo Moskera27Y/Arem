@@ -109,6 +109,16 @@ export function Hero({ section, locale }: HeroProps) {
       aria-roledescription={count > 1 ? "carousel" : undefined}
       aria-label={count > 1 ? section.eyebrow : undefined}
     >
+      {/* Persistent starry background — always visible, same for all slides */}
+      <div className="hero__bg-stars">
+        <img
+          src="/images/hero-starry-bg.webp"
+          alt=""
+          className="hero__bg-img"
+          loading="eager"
+          aria-hidden="true"
+        />
+      </div>
       <div
         className="hero__media"
         onTouchStart={(e) => {
@@ -130,6 +140,8 @@ export function Hero({ section, locale }: HeroProps) {
               sizes="100vw"
               className="hero__slide-img"
             />
+            {/* Subtle colored overlay per slide — texture, not full image */}
+            <div className="hero__slide-overlay" data-active={i === index} aria-hidden="true" />
           </div>
         ))}
       </div>

@@ -877,9 +877,24 @@ h4 {
   color: var(--text-inverse);
 }
 
+.hero__bg-stars {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+.hero__bg-stars img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  image-rendering: -webkit-optimize-contrast;
+}
+
 .hero__media {
   position: absolute;
   inset: 0;
+  z-index: 1;
 }
 
 .hero__media,
@@ -891,15 +906,17 @@ h4 {
   object-fit: cover;
   object-position: center;
   image-rendering: -webkit-optimize-contrast;
+  /* Blend slide images softly over the starry bg — texture, not full cover */
+  opacity: 0.45;
   /* Ken Burns editorial: slow settle on load, GPU-only */
-  animation: hero-media-in 1.8s var(--ease) forwards;
+  animation: hero-media-in 2.2s var(--ease) forwards;
   will-change: transform;
   backface-visibility: hidden;
 }
 
 @keyframes hero-media-in {
   from {
-    transform: scale3d(1.08, 1.08, 1.08);
+    transform: scale3d(1.06, 1.06, 1.06);
   }
   to {
     transform: scale3d(1, 1, 1);
@@ -911,6 +928,11 @@ h4 {
   inset: 0;
   opacity: 0;
   transition: opacity 0.9s var(--ease);
+  z-index: 1;
+}
+.hero__slide[data-active="true"] {
+  opacity: 1;
+  z-index: 2;
 }
 @media (prefers-reduced-motion: reduce) {
   .hero__slide { transition: none; }
@@ -1447,6 +1469,42 @@ h4 {
       0% 0%,   0% 0%,   0% 0%,   0% 0%,   0% 0%,
       0% 0%,   0% 0%,   0% 0%,   0% 0%,   0% 0%;
   }
+}
+
+/* Second star layer — moving particles (parallax drift) */
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 30% 15%, rgba(211, 172, 95, 0.025) 1px, transparent 1px),
+    radial-gradient(circle at 75% 10%, rgba(211, 172, 95, 0.02) 1px, transparent 1px),
+    radial-gradient(circle at 20% 80%, rgba(89, 100, 63, 0.02) 1px, transparent 1px),
+    radial-gradient(circle at 85% 70%, rgba(255, 248, 220, 0.025) 1px, transparent 1px);
+  background-size: 200px 200px;
+  opacity: 0;
+  animation: hero-stars-appear 2s ease-out 0.2s both,
+             hero-stars-move 35s linear 2.5s infinite;
+  pointer-events: none;
+}
+@keyframes hero-stars-move {
+  0% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(-40px, 20px, 0) scale(1.02); }
+  100% { transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* Slide overlay — subtle colored texture on active slide only */
+.hero__slide-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(12, 8, 5, 0.65) 0%, rgba(12, 8, 5, 0.85) 100%);
+  opacity: 0;
+  transition: opacity 0.9s var(--ease);
+  pointer-events: none;
+}
+.hero__slide[data-active="true"] .hero__slide-overlay {
+  opacity: 1;
 }
 
 /* Desktop positioning — AREM large and centered at top, content below it */
