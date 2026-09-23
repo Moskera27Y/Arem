@@ -106,7 +106,6 @@ export interface Dictionary {
     checkoutLater: string;
     yourSelection: string;
     lines: (count: number) => string;
-    clear: string;
     summary: string;
     subtotal: string;
     shipping: string;
@@ -511,7 +510,6 @@ const en: Dictionary = {
     checkoutLater: "Checkout and payments arrive in a later phase.",
     yourSelection: "Your selection",
     lines: (count) => `${count} ${count === 1 ? "line" : "lines"}`,
-    clear: "Clear cart",
     summary: "Summary",
     subtotal: "Subtotal",
     shipping: "Shipping",
@@ -916,7 +914,6 @@ const es: Dictionary = {
     checkoutLater: "El checkout y los pagos llegarán en una fase posterior.",
     yourSelection: "Tu selección",
     lines: (count) => `${count} ${count === 1 ? "línea" : "líneas"}`,
-    clear: "Vaciar carrito",
     summary: "Resumen",
     subtotal: "Subtotal",
     shipping: "Envío",
