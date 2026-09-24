@@ -53,6 +53,7 @@ export interface Dictionary {
     explore: string;
     viewAll: string;
     viewCollection: string;
+    skipToContent: string;
     pieces: (count: number) => string;
     products: (count: number) => string;
   };
@@ -457,6 +458,7 @@ const en: Dictionary = {
     explore: "Explore",
     viewAll: "View all",
     viewCollection: "View collection",
+    skipToContent: "Skip to main content",
     pieces: (count) => `${count} ${count === 1 ? "piece" : "pieces"}`,
     products: (count) => `${count} ${count === 1 ? "product" : "products"}`,
   },
@@ -861,6 +863,7 @@ const es: Dictionary = {
     explore: "Explorar",
     viewAll: "Ver todo",
     viewCollection: "Ver colección",
+    skipToContent: "Saltar al contenido principal",
     pieces: (count) => `${count} ${count === 1 ? "pieza" : "piezas"}`,
     products: (count) => `${count} ${count === 1 ? "producto" : "productos"}`,
   },

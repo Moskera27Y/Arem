@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isLocale, locales, type Locale } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/dictionaries";
 import { LocaleProvider } from "@/lib/i18n/locale-context";
 import { getHomepage } from "@/lib/content";
 import { StoreProvider } from "@/lib/store/store-provider";
@@ -73,6 +74,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
       <MotionProvider>
       <StoreProvider>
         <AdminProvider>
+          <a className="skip-link" href="#main">{getDictionary(locale).common.skipToContent}</a>
           <AnnouncementBar items={homepage.announcementItems} />
           <Header />
           <main id="main">{children}</main>

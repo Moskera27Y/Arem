@@ -10,6 +10,8 @@
   /* Palette */
   --paper: #f7f1e4;
   --paper-deep: #efe6d3;
+  --paper-bright: var(--paper-bright);
+  --hero-ink: var(--hero-ink);
   --cream: #e9dcc3;
   --bone: #dccaa6;
   --sand: #c9b27e;
@@ -19,9 +21,20 @@
   --gold: #b98a3e;
   --gold-soft: #d3ac5f;
   --gold-dark: #7a5c1e;
+  --gold-foil-light: var(--gold-foil-light);
+  --gold-foil-mid: var(--gold-foil-mid);
+  --gold-foil-deep: var(--gold-foil-deep);
+  --gold-sheen: var(--gold-sheen);
+  --gold-glow: var(--gold-glow);
+  --gold-pale: var(--gold-pale);
+  --gold-spark: var(--gold-spark);
+  --success: #2f7d4f;
   --clay: #a6502e;
   --clay-deep: #7e3a20;
+  --clay-deep-dark: #6e3017;
+  --gold-ink: #8a6428; /* dark gold text on tinted surfaces */
   --olive: #59643f;
+  --pine: #1e4036; /* instagram handle ink */
   --white: #fffdf8;
   --focus: #b98a3e;
   --line: rgba(28, 23, 18, 0.14);
@@ -153,6 +166,25 @@ h4 {
   outline: 2px solid var(--focus);
   outline-offset: 3px;
   border-radius: var(--r-sm);
+}
+
+/* Skip link: visually hidden until keyboard focus */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 200;
+  padding: 0.75rem 1.25rem;
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--paper);
+  background: var(--ink);
+  border-radius: 0 0 var(--r-sm) var(--r-sm);
+  transition: top 0.2s var(--ease);
+}
+.skip-link:focus-visible {
+  top: 0;
+  outline-color: var(--gold-soft);
 }
 
 ::selection {
@@ -863,7 +895,7 @@ h4 {
   position: fixed;
   inset: 0;
   z-index: 90;
-  background: #faf7f0;
+  background: var(--paper-bright);
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
   border-left: 1px solid var(--line);
@@ -989,8 +1021,8 @@ h4 {
   height: clamp(64px, 10vw, 140px);
   background: linear-gradient(
     to bottom,
-    var(--nav-bg, #f4f1ea) 0%,
-    color-mix(in srgb, var(--nav-bg, #f4f1ea) 55%, transparent) 45%,
+    var(--nav-bg, var(--paper)) 0%,
+    color-mix(in srgb, var(--nav-bg, var(--paper)) 55%, transparent) 45%,
     transparent 100%
   );
   pointer-events: none;
@@ -1099,7 +1131,7 @@ h4 {
   display: block;
   font-style: italic;
   font-weight: 300;
-  background: linear-gradient(90deg, #c9a85a, #d9a85a);
+  background: linear-gradient(90deg, var(--gold-sheen), var(--gold-glow));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1213,7 +1245,7 @@ h4 {
   letter-spacing: -0.05em;
   color: var(--paper);
   /* Intensified gold foil texture */
-  background: linear-gradient(135deg, #f8f3e7 0%, #d9c97a 25%, #b98a3e 50%, #8b7339 75%, #f8f3e7 100%);
+  background: linear-gradient(135deg, var(--gold-foil-light) 0%, var(--gold-foil-mid) 25%, var(--gold) 50%, var(--gold-foil-deep) 75%, var(--gold-foil-light) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -1331,7 +1363,7 @@ h4 {
 /* Flor central ❀ — grande, con destellos dorados: entrada pop + pulso + giro lento */
 .hero__brand-flower {
   display: inline-block;
-  color: #f3d68a;
+  color: var(--gold-pale);
   font-size: 1.6em;
   transform-origin: center;
   animation:
@@ -1444,7 +1476,7 @@ h4 {
   height: 6px;
   margin-left: -3px;
   border-radius: 50%;
-  background: #ffe9ad;
+  background: var(--gold-spark);
   box-shadow: 0 0 12px 2px rgba(255, 210, 120, 0.9);
 }
 .hero__orbit--b .hero__orbit-dot::after {
@@ -1496,7 +1528,7 @@ h4 {
   height: 5px;
   margin-left: -2.5px;
   border-radius: 50%;
-  background: #ffedb8;
+  background: var(--gold-spark);
   box-shadow: 0 0 8px 2px rgba(255, 210, 120, 0.9);
 }
 .hero__flower-dot--b {
@@ -1778,7 +1810,7 @@ h4 {
   line-height: 0.9;
   letter-spacing: -0.04em;
   /* Gold foil texture — glitter dorado */
-  background: linear-gradient(135deg, #f8f3e7 0%, #d9c97a 30%, #8b7339 65%, #f8f3e7 100%);
+  background: linear-gradient(135deg, var(--gold-foil-light) 0%, var(--gold-foil-mid) 30%, var(--gold-foil-deep) 65%, var(--gold-foil-light) 100%);
   backgroundClip: text;
   WebkitBackgroundClip: text;
   color: transparent;
@@ -2137,7 +2169,7 @@ h4 {
   font-weight: 500;
   text-transform: none;
   max-width: 14ch;
-  color: #fffdf6;
+  color: var(--hero-ink);
   text-shadow:
     0 2px 20px rgba(10, 7, 4, 0.75),
     0 1px 4px rgba(10, 7, 4, 0.85);
@@ -2566,7 +2598,7 @@ h4 {
 .insta-head__link:hover { text-decoration: underline; text-underline-offset: 4px; }
 .insta-handle {
   display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 0.5rem;
-  font-size: var(--text-sm, 14px); font-weight: 600; color: #1e4036;
+  font-size: var(--text-sm, 14px); font-weight: 600; color: var(--pine);
   text-decoration: none;
 }
 .insta-handle:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -2820,7 +2852,7 @@ h4 {
   background:
     radial-gradient(60% 90% at 85% 10%, rgba(217, 168, 74, 0.16), transparent 60%),
     radial-gradient(50% 80% at 10% 100%, rgba(154, 59, 40, 0.22), transparent 60%),
-    #14100b;
+    var(--bg-dark);
   border-bottom: 1px solid rgba(217, 168, 74, 0.25);
 }
 .shop-hero__inner {
@@ -4537,16 +4569,16 @@ section[id],
 
 /* Add-to-cart success morph (add .is-added for 1.2s after click) */
 .btn.is-added {
-  background: var(--green, #2f7d4f);
-  border-color: var(--green, #2f7d4f);
-  color: #fff;
+  background: var(--green, var(--success));
+  border-color: var(--green, var(--success));
+  color: var(--white);
   transform: scale(0.98);
 }
 
 .icon-action.is-added {
-  background: var(--green, #2f7d4f);
-  border-color: var(--green, #2f7d4f);
-  color: #fff;
+  background: var(--green, var(--success));
+  border-color: var(--green, var(--success));
+  color: var(--white);
 }
 
 /* Image hover: faster, GPU-hinted */
@@ -4692,14 +4724,14 @@ section[id],
 .product-card:focus-within,
 .cat-chip:focus-within,
 .story-card:focus-within {
-  outline: 2px solid var(--gold-soft, #d9a441);
+  outline: 2px solid var(--gold-soft);
   outline-offset: 4px;
   border-radius: var(--r-md);
 }
 
 /* Visible focus for keyboard users */
 :focus-visible {
-  outline: 2px solid var(--gold-soft, #d9a441);
+  outline: 2px solid var(--gold-soft);
   outline-offset: 3px;
   border-radius: 4px;
 }

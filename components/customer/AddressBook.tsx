@@ -146,7 +146,7 @@ export function AddressBook({ initial }: { initial: CustomerAddress[] }) {
       {status && <div className={`acc-status ${status.ok ? "acc-status--ok" : "acc-status--err"}`}>{status.message}</div>}
 
       {adding && (
-        <form onSubmit={save} style={{ marginBottom: "1.5rem", borderTop: "1px solid #efeae2", paddingTop: "1.25rem" }}>
+        <form onSubmit={save} style={{ marginBottom: "1.5rem", borderTop: "1px solid var(--line-soft)", paddingTop: "1.25rem" }}>
           <div className="acc-form__row">
             <div className="acc-field">
               <label>{a.recipientName}</label>
