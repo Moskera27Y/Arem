@@ -23,8 +23,14 @@ export async function POST(req: NextRequest) {
     const result = await createCheckoutOrder(body);
     return NextResponse.json(result);
   } catch (err) {
-    const msg = err instanceof Error ? err.message : "Error de servidor";
-    const status = /inválido|insuficiente|contacto|Carrito|pago|envío/i.test(msg) ? 400 : 500;
+    const msg = err instanceof Error ? err.message : "";
+    // Known validation messages are safe to surface; anything else (e.g. DB
+    // internals) becomes a generic error to avoid leaking implementation details.
+    const status = /inválido|insuficiente|contacto|Carrito|pago|envío|vacío|pedido/i.test(msg) ? 400 : 500;
+    if (status === 500) {
+      console.error("checkout error", msg);
+      return NextResponse.json({ error: "ERROR_INTERNO" }, { status });
+    }
     return NextResponse.json({ error: msg }, { status });
   }
 }

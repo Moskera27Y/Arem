@@ -404,6 +404,15 @@ export interface Dictionary {
     continueShopping: string;
     liveRates: (provider: string) => string;
     connectionError: string;
+    invalidContact: string;
+    serverError: string;
+    cardDetails: string;
+    cardNumber: string;
+    cardName: string;
+    cardExpiry: string;
+    cardCvc: string;
+    cardInvalid: string;
+    cardPreviewNote: string;
   };
   social: {
     followLabel: string;
@@ -809,6 +818,15 @@ const en: Dictionary = {
     continueShopping: "Continue shopping",
     liveRates: (provider) => `Live rates via ${provider}.`,
     connectionError: "Connection error",
+    invalidContact: "Check your email and shipping address.",
+    serverError: "We couldn't process your order. Try again.",
+    cardDetails: "Card details",
+    cardNumber: "Card number",
+    cardName: "Name on card",
+    cardExpiry: "Expiry (MM/YY)",
+    cardCvc: "CVC",
+    cardInvalid: "Invalid card number",
+    cardPreviewNote: "Preview in your browser — the charge is confirmed manually.",
   },
   social: {
     followLabel: "Follow on Instagram",
@@ -1214,6 +1232,15 @@ const es: Dictionary = {
     continueShopping: "Seguir explorando",
     liveRates: (provider) => `Tarifas en vivo vía ${provider}.`,
     connectionError: "Error de conexión",
+    invalidContact: "Revisa tu email y dirección de envío.",
+    serverError: "No pudimos procesar tu pedido. Inténtalo de nuevo.",
+    cardDetails: "Datos de la tarjeta",
+    cardNumber: "Número de tarjeta",
+    cardName: "Nombre en la tarjeta",
+    cardExpiry: "Vence (MM/AA)",
+    cardCvc: "CVC",
+    cardInvalid: "Número de tarjeta inválido",
+    cardPreviewNote: "Vista previa en tu navegador — el cobro se confirma manualmente.",
   },
   social: {
     followLabel: "Seguir en Instagram",

@@ -113,6 +113,20 @@ export function CheckoutForm() {
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     setError(""); setBusy(true);
+    // HTML type=email accepts addresses without a dot (a@b); the server
+    // requires a real domain — catch it here with a localized message.
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email.trim())) {
+      setError(dict.account.emailInvalid);
+      setBusy(false);
+      return;
+    }
+    // Map known Spanish server messages to the active locale; unknown or
+    // internal errors become a generic localized message (never raw internals).
+    const mapError = (raw: string): string => {
+      if (/ERROR_INTERNO/i.test(raw)) return c.serverError;
+      if (/Faltan datos|contacto/i.test(raw)) return c.invalidContact;
+      return raw;
+    };
     try {
       const res = await fetch("/api/checkout", {
         method: "POST",
@@ -131,7 +145,7 @@ export function CheckoutForm() {
         setDone({ orderNumber: d.orderNumber, orderId: d.orderId });
         router.refresh();
       } else {
-        setError(d.error || "Error");
+        setError(mapError(typeof d.error === "string" ? d.error : ""));
       }
     } catch { setError(c.connectionError); }
     finally { setBusy(false); }
@@ -187,6 +201,7 @@ export function CheckoutForm() {
               </label>
             ))}
             <p className="acc-note">{c.manualNote}</p>
+            {pay === "card" && <CardWidget />}
           </div>
 
           <div className="checkout-summary">
@@ -205,6 +220,172 @@ export function CheckoutForm() {
         </form>
       </div>
     </section>
+  );
+}
+
+function detectBrand(digits: string): string | null {
+  if (/^4/.test(digits)) return "VISA";
+  if (/^(5[1-5]|2[2-7])/.test(digits)) return "MASTERCARD";
+  if (/^3[47]/.test(digits)) return "AMEX";
+  return null;
+}
+
+function luhnOk(digits: string): boolean {
+  if (digits.length < 13) return false;
+  let sum = 0;
+  let dbl = false;
+  for (let i = digits.length - 1; i >= 0; i--) {
+    let n = Number(digits[i]);
+    if (dbl) {
+      n *= 2;
+      if (n > 9) n -= 9;
+    }
+    sum += n;
+    dbl = !dbl;
+  }
+  return sum % 10 === 0;
+}
+
+function groupNumber(digits: string): string {
+  const d = digits.slice(0, 19);
+  if (/^3[47]/.test(d)) return [d.slice(0, 4), d.slice(4, 10), d.slice(10, 15)].filter(Boolean).join(" ");
+  return (d.match(/.{1,4}/g) ?? []).join(" ");
+}
+
+function formatExpiry(v: string): string {
+  const d = v.replace(/\D/g, "").slice(0, 4);
+  if (d.length <= 2) return d;
+  return `${d.slice(0, 2)}/${d.slice(2)}`;
+}
+
+function expiryOk(v: string): boolean | null {
+  const m = /^(\d{2})\/(\d{2})$/.exec(v);
+  if (!m) return v ? false : null;
+  const mm = Number(m[1]);
+  if (mm < 1 || mm > 12) return false;
+  const now = new Date();
+  const yy = now.getFullYear() % 100;
+  const future = Number(m[2]) > yy || (Number(m[2]) === yy && mm >= now.getMonth() + 1);
+  return future ? true : false;
+}
+
+/**
+ * Animated card preview (brand detect, live formatting, Luhn + expiry
+ * checks, 3D tilt + flip). PREVIEW ONLY: card data lives in component
+ * state and is NEVER sent to the server (PCI scope zero) — the charge is
+ * confirmed manually until a tokenizing provider (Square) is configured.
+ */
+function CardWidget() {
+  const locale = useLocale();
+  const c = getDictionary(locale).checkout;
+  const [num, setNum] = useState("");
+  const [name, setName] = useState("");
+  const [exp, setExp] = useState("");
+  const [cvc, setCvc] = useState("");
+  const [flipped, setFlipped] = useState(false);
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+
+  const digits = num.replace(/\D/g, "");
+  const brand = detectBrand(digits);
+  const numState = digits.length === 0 ? null : luhnOk(digits);
+  const expState = expiryOk(exp);
+  const shown = groupNumber(digits) || "•••• •••• •••• ••••";
+
+  const onTilt = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (e.pointerType !== "mouse") return;
+    const r = e.currentTarget.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    setTilt({ x: -py * 10, y: px * 12 });
+  };
+
+  return (
+    <div className="cardwidget">
+      <h3 className="checkout-subtitle">{c.cardDetails}</h3>
+      <div
+        className="card3d-wrap"
+        onPointerMove={onTilt}
+        onPointerLeave={() => setTilt({ x: 0, y: 0 })}
+      >
+        <div
+          className="card3d"
+          data-flipped={flipped}
+          style={{ transform: `rotateX(${tilt.x}deg) rotateY(${tilt.y + (flipped ? 180 : 0)}deg)` }}
+        >
+          <div className="card3d__face card3d__front">
+            <div className="card3d__row">
+              <span className="card3d__chip" aria-hidden="true" />
+              <span className="card3d__brand">{brand ?? "CARD"}</span>
+            </div>
+            <p className="card3d__number">{shown}</p>
+            <div className="card3d__row card3d__meta">
+              <span>{(name || c.cardName).toUpperCase().slice(0, 22)}</span>
+              <span>{exp || "MM/AA"}</span>
+            </div>
+          </div>
+          <div className="card3d__face card3d__back" aria-hidden="true">
+            <div className="card3d__stripe" />
+            <div className="card3d__cvc">{cvc || "•••"}</div>
+          </div>
+        </div>
+      </div>
+      <div className="acc-form__row">
+        <div className="acc-field">
+          <label htmlFor="cc-num">{c.cardNumber}</label>
+          <input
+            id="cc-num"
+            className="acc-input"
+            inputMode="numeric"
+            autoComplete="cc-number"
+            placeholder="4111 1111 1111 1111"
+            value={num}
+            onChange={(e) => setNum(groupNumber(e.target.value.replace(/\D/g, "")))}
+            aria-invalid={numState === false}
+          />
+          {numState === false && <span className="field__error" style={{ display: "block" }}>{c.cardInvalid}</span>}
+        </div>
+        <div className="acc-field">
+          <label htmlFor="cc-name">{c.cardName}</label>
+          <input
+            id="cc-name"
+            className="acc-input"
+            autoComplete="cc-name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+        </div>
+      </div>
+      <div className="acc-form__row">
+        <div className="acc-field">
+          <label htmlFor="cc-exp">{c.cardExpiry}</label>
+          <input
+            id="cc-exp"
+            className="acc-input"
+            inputMode="numeric"
+            autoComplete="cc-exp"
+            placeholder="MM/AA"
+            value={exp}
+            onChange={(e) => setExp(formatExpiry(e.target.value))}
+            aria-invalid={expState === false}
+          />
+        </div>
+        <div className="acc-field">
+          <label htmlFor="cc-cvc">{c.cardCvc}</label>
+          <input
+            id="cc-cvc"
+            className="acc-input"
+            inputMode="numeric"
+            autoComplete="cc-csc"
+            placeholder="123"
+            value={cvc}
+            onFocus={() => setFlipped(true)}
+            onBlur={() => setFlipped(false)}
+            onChange={(e) => setCvc(e.target.value.replace(/\D/g, "").slice(0, 4))}
+          />
+        </div>
+      </div>
+      <p className="acc-note">{c.cardPreviewNote}</p>
+    </div>
   );
 }
 

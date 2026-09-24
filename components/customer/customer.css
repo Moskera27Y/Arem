@@ -1,4 +1,76 @@
 /* Customer account + auth area — professional, responsive. */
+.checkout-subtitle { font-size: var(--text-base, 1rem); margin: 1.25rem 0 0.75rem; }
+
+/* Animated card preview (visual only — no PAN ever leaves the browser). */
+.cardwidget { margin-top: 0.5rem; }
+.card3d-wrap { perspective: 1200px; max-width: 26rem; margin-bottom: 1.25rem; }
+.card3d {
+  position: relative;
+  aspect-ratio: 1.586;
+  transform-style: preserve-3d;
+  transition: transform 0.25s ease-out;
+}
+.card3d__face {
+  position: absolute;
+  inset: 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: 0 1.5rem 3rem rgba(20, 16, 11, 0.35);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.card3d__front {
+  background:
+    radial-gradient(120% 140% at 85% 0%, rgba(217, 168, 74, 0.35), transparent 55%),
+    linear-gradient(135deg, #241b12 0%, #14100b 60%, #2b2114 100%);
+  color: var(--hero-ink, #fffdf6);
+}
+.card3d__front::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 42%, rgba(255, 238, 190, 0.16) 50%, transparent 58%);
+  pointer-events: none;
+}
+.card3d__back {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #1d1812 0%, #14100b 100%);
+  padding: 0;
+  justify-content: flex-start;
+}
+.card3d__stripe { height: 2.75rem; background: #000; margin-top: 1.5rem; }
+.card3d__cvc {
+  align-self: flex-end;
+  margin: 1.25rem 1.5rem 0;
+  background: var(--paper, #f7f1e4);
+  color: var(--ink, #1c1712);
+  font-family: var(--font-mono, monospace);
+  padding: 0.4rem 0.9rem;
+  border-radius: 0.35rem;
+  letter-spacing: 0.2em;
+}
+.card3d__row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.card3d__chip {
+  width: 2.75rem;
+  height: 2.1rem;
+  border-radius: 0.4rem;
+  background: linear-gradient(135deg, var(--gold-foil-mid, #d9c97a), var(--gold-dark, #7a5c1e));
+}
+.card3d__brand { font-weight: 800; letter-spacing: 0.12em; font-size: 0.95rem; color: var(--gold-soft, #d3ac5f); }
+.card3d__number {
+  font-family: var(--font-mono, monospace);
+  font-size: clamp(1.05rem, 4.5vw, 1.4rem);
+  letter-spacing: 0.08em;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+.card3d__meta { font-size: 0.8rem; letter-spacing: 0.14em; opacity: 0.85; }
+@media (prefers-reduced-motion: reduce) {
+  .card3d { transition: none; }
+}
 .checkout-form { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2.5rem; align-items: start; }
 .checkout-col { min-width: 0; }
 .checkout-title { font-size: var(--text-md, 17px); margin: 1.5rem 0 0.75rem; }
