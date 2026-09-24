@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/server/auth";
 import { q } from "@/lib/server/db";
+import { transitionOrder } from "@/lib/server/orders";
 
 type Ctx = { params: Promise<{ id: string }> };
 
@@ -50,4 +51,22 @@ export async function PATCH(req: NextRequest, { params }: Ctx) {
     await q("update public.orders set payment_status = $1, updated_at = now() where id = $2", [body.payment_status, id]);
   }
   return NextResponse.json({ ok: true });
+}
+
+export async function DELETE(_req: NextRequest, { params }: Ctx) {
+  try {
+    await requireAdmin();
+  } catch {
+    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  }
+  const { id } = await params;
+  try {
+    await transitionOrder(id, "delete");
+    return NextResponse.json({ ok: true });
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : "Error de servidor";
+    const status = /not allowed|not found/i.test(msg) ? 400 : 500;
+    if (status === 500) console.error("order delete error", msg);
+    return NextResponse.json({ error: status === 500 ? "Error de servidor" : msg }, { status });
+  }
 }

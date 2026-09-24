@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getCustomerEmail, getCustomerProfileId } from "@/lib/server/customer-auth";
 import { getOrder, type Order, type Shipment, type TrackingEvent } from "@/lib/server/customer-db";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { ConfirmReceiptButton } from "@/components/customer/ConfirmReceiptButton";
 import type { Locale } from "@/lib/i18n/config";
 
 export const dynamic = "force-dynamic";
@@ -150,6 +151,11 @@ export default async function OrderDetailPage({ params }: { params: Promise<{ lo
           ← {a.backToOrders}
         </Link>
       </div>
+      {order.status === "shipped" && (
+        <div style={{ marginTop: "1.5rem" }}>
+          <ConfirmReceiptButton orderId={orderId} label={a.markReceived} doneLabel={a.receivedOk} />
+        </div>
+      )}
     </div>
   );
 }

@@ -276,6 +276,8 @@ export interface Dictionary {
     trackingPending: string;
     shipmentTimeline: string;
     backToOrders: string;
+    markReceived: string;
+    receivedOk: string;
     statusPendingPayment: string;
     statusPaid: string;
     statusProcessing: string;
@@ -690,6 +692,8 @@ const en: Dictionary = {
     trackingPending: "Tracking will appear once your order ships.",
     shipmentTimeline: "Shipment status",
     backToOrders: "Back to orders",
+    markReceived: "Mark as received",
+    receivedOk: "Thanks! Order marked as delivered.",
     statusPendingPayment: "Pending payment",
     statusPaid: "Paid",
     statusProcessing: "Processing",
@@ -1104,6 +1108,8 @@ const es: Dictionary = {
     trackingPending: "El seguimiento aparecerá cuando tu pedido sea enviado.",
     shipmentTimeline: "Estado del envío",
     backToOrders: "Volver a pedidos",
+    markReceived: "Marcar como recibido",
+    receivedOk: "¡Gracias! Pedido marcado como entregado.",
     statusPendingPayment: "Pago pendiente",
     statusPaid: "Pagado",
     statusProcessing: "En preparación",

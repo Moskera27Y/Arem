@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { q } from "@/lib/server/db";
-import { OrderStatusEditor } from "@/components/admin/OrderStatusEditor";
+import { allowedActions } from "@/lib/server/orders";
+import { OrderActions } from "@/components/admin/OrderActions";
 
 export const dynamic = "force-dynamic";
 
@@ -131,7 +132,7 @@ export default async function AdminOrderDetailPage({ params }: { params: Promise
         )}
       </div>
 
-      <OrderStatusEditor orderId={order.id} initialStatus={order.status} initialPayment={order.payment_status} />
+      <OrderActions orderId={order.id} status={order.status} actions={allowedActions(order.status)} />
     </div>
   );
 }

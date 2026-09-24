@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { q } from "@/lib/server/db";
 import { markOrderFailed, markOrderPaid, recordWebhookEvent, verifySquareWebhook } from "@/lib/server/payments/square";
 import { autoCreateShipment } from "@/lib/server/shipping/auto";
+import { notifyCustomer } from "@/lib/server/orders";
 
 export const dynamic = "force-dynamic";
 
@@ -47,6 +48,8 @@ export async function POST(req: NextRequest) {
             await markOrderPaid(rows[0].id, squarePaymentId, squareOrderId, amountCents, currency);
             // Auto-generate shipping guide once paid (never blocks payment).
             await autoCreateShipment(rows[0].id).catch((e) => console.error("auto shipment error", e));
+            // Notify the customer that payment was approved (best-effort).
+            await notifyCustomer(rows[0].id, "paid");
           } else if (status === "FAILED" || status === "CANCELED") await markOrderFailed(rows[0].id, squarePaymentId);
         }
       }

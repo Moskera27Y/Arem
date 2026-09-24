@@ -11,7 +11,8 @@ interface Row {
   total: string;
   currency: string;
   created_at: string;
-  customer_email: string;
+  customer_email: string | null;
+  order_email: string | null;
   item_count: string;
 }
 
@@ -27,11 +28,11 @@ const STATUS_LABEL: Record<string, string> = {
 
 export default async function AdminOrdersPage() {
   const orders = await q<Row>(
-    `select o.id, o.order_number, o.status, o.payment_status, o.total, o.currency, o.created_at,
+    `select o.id, o.order_number, o.status, o.payment_status, o.total, o.currency, o.created_at, o.email as order_email,
             cp.email as customer_email,
             (select coalesce(sum(oi.quantity),0) from public.order_items oi where oi.order_id = o.id) as item_count
        from public.orders o
-       join public.customer_profiles cp on cp.id = o.customer_profile_id
+       left join public.customer_profiles cp on cp.id = o.customer_profile_id
        order by o.created_at desc`,
   );
 
@@ -67,7 +68,7 @@ export default async function AdminOrdersPage() {
                       {o.order_number}
                     </Link>
                   </td>
-                  <td>{o.customer_email}</td>
+                  <td>{o.customer_email ?? o.order_email ?? "—"}</td>
                   <td>{new Date(o.created_at).toLocaleDateString()}</td>
                   <td>{o.item_count}</td>
                   <td>
